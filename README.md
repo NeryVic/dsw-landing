@@ -1,22 +1,140 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# DSW Landing Page
 
-## Getting Started
+Una landing page moderna y escalable construida con Next.js 15, React 19 y Tailwind CSS.
 
-First, run the development server:
+## 🚀 Características
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- ⚡ **Next.js 15** - El framework React más moderno
+- 🎨 **Tailwind CSS** - Diseño moderno y responsive
+- 🧩 **Componentes modulares** - Fácil mantenimiento y reutilización
+- 📱 **Responsive** - Optimizado para todos los dispositivos
+- 🎯 **SEO optimizado** - Meta tags y Open Graph configurados
+- 🔧 **TypeScript ready** - Preparado para migrar a TypeScript
+- 📊 **Performance** - Optimizado para velocidad y Core Web Vitals
+
+## 📁 Estructura del Proyecto
+
+```
+src/
+├── app/                    # App Router de Next.js
+│   ├── layout.js          # Layout principal con Header/Footer
+│   ├── page.js            # Página principal
+│   └── globals.css        # Estilos globales
+├── components/            # Componentes reutilizables
+│   ├── ui/               # Componentes de UI básicos
+│   │   ├── Button.jsx    # Botón reutilizable
+│   │   ├── Card.jsx      # Tarjetas
+│   │   └── Input.jsx     # Inputs para formularios
+│   ├── layout/           # Componentes de layout
+│   │   ├── Header.jsx    # Navegación principal
+│   │   └── Footer.jsx    # Pie de página
+│   └── sections/         # Secciones de la landing
+│       ├── HeroSection.jsx      # Sección principal
+│       └── FeaturesSection.jsx  # Sección de características
+├── lib/                  # Utilidades y configuraciones
+│   ├── utils.js         # Funciones utilitarias
+│   ├── constants.js     # Constantes de la aplicación
+│   └── validations.js   # Esquemas de validación
+├── hooks/               # Custom hooks
+│   ├── useForm.js       # Hook para formularios
+│   ├── useScroll.js     # Hook para scroll tracking
+│   └── useIntersectionObserver.js  # Hook para animations
+└── data/               # Datos estáticos
+    ├── features.js     # Datos de características
+    ├── testimonials.js # Testimonios
+    └── pricing.js      # Planes de precios
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Instalación y Desarrollo
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+1. **Clonar el repositorio**
+   ```bash
+   git clone <tu-repositorio>
+   cd dsw-landing
+   ```
+
+2. **Instalar dependencias**
+   ```bash
+   npm install
+   ```
+
+3. **Ejecutar en desarrollo**
+   ```bash
+   npm run dev
+   ```
+
+4. **Construir para producción**
+   ```bash
+   npm run build
+   npm start
+   ```
+
+## 🎨 Personalización
+
+### Colores y Branding
+- Edita `src/lib/constants.js` para cambiar información de la empresa
+- Modifica los colores en `tailwind.config.js`
+- Actualiza el logo en el componente `Header.jsx`
+
+### Contenido
+- **Hero Section**: Edita `src/components/sections/HeroSection.jsx`
+- **Features**: Modifica `src/data/features.js`
+- **Testimonials**: Actualiza `src/data/testimonials.js`
+- **Pricing**: Cambia `src/data/pricing.js`
+
+### Agregar Nuevas Secciones
+1. Crea un nuevo componente en `src/components/sections/`
+2. Agrega los datos en `src/data/` si es necesario
+3. Importa y usa en `src/app/page.js`
+
+## 📱 Componentes Disponibles
+
+### UI Components
+- `Button` - Botón con variantes (primary, secondary, outline, ghost)
+- `Card` - Tarjetas con header, content y footer
+- `Input` - Input con validación y estilos
+- `Textarea` - Textarea para formularios
+
+### Layout Components
+- `Header` - Navegación fija con logo y menú
+- `Footer` - Pie de página con links y redes sociales
+
+### Section Components
+- `HeroSection` - Sección principal con CTA
+- `FeaturesSection` - Características del producto/servicio
+
+## 🔧 Hooks Disponibles
+
+- `useForm` - Manejo de formularios con validación
+- `useScroll` - Tracking de scroll y dirección
+- `useIntersectionObserver` - Animaciones en scroll
+
+## 🚀 Próximos Pasos
+
+Para hacer tu landing page aún mejor, considera agregar:
+
+1. **Más Secciones**:
+   - Testimonios
+   - Pricing
+   - FAQ
+   - Contact Form
+   - Blog/News
+
+2. **Funcionalidades**:
+   - Animaciones (Framer Motion)
+   - Analytics (Google Analytics, Vercel Analytics)
+   - SEO avanzado (next-seo)
+   - Formularios (React Hook Form + API routes)
+
+3. **Optimizaciones**:
+   - Imágenes optimizadas (next/image)
+   - Lazy loading
+   - Code splitting
+   - PWA support
+
+## 📄 Licencia
+
+Este proyecto está bajo la licencia MIT.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
