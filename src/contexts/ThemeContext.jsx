@@ -8,24 +8,30 @@ export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState('light')
 
   useEffect(() => {
-    // Cargar tema guardado o detectar preferencia del sistema
-    const savedTheme = localStorage.getItem('theme')
-    if (savedTheme) {
-      setTheme(savedTheme)
-    } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-      setTheme(prefersDark ? 'dark' : 'light')
+    // Solo ejecutar en el cliente
+    if (typeof window !== 'undefined') {
+      // Cargar tema guardado o detectar preferencia del sistema
+      const savedTheme = localStorage.getItem('theme')
+      if (savedTheme) {
+        setTheme(savedTheme)
+      } else {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        setTheme(prefersDark ? 'dark' : 'light')
+      }
     }
   }, [])
 
   useEffect(() => {
-    // Aplicar tema al documento
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
+    // Solo ejecutar en el cliente
+    if (typeof window !== 'undefined') {
+      // Aplicar tema al documento
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+      localStorage.setItem('theme', theme)
     }
-    localStorage.setItem('theme', theme)
   }, [theme])
 
   const toggleTheme = () => {

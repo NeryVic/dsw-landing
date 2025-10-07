@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import CriticalResourceHints from "@/components/CriticalResourceHints";
 import { SITE_CONFIG } from "@/lib/constants";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
@@ -10,14 +11,22 @@ import { DefaultJsonLd } from "@/components/JsonLd";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: 'swap',
+  preload: true,
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: 'swap',
+  preload: false, // No es crítica
 });
 
 export const metadata = {
+  metadataBase: new URL(process.env.NODE_ENV === 'production' 
+    ? SITE_CONFIG.url 
+    : 'http://localhost:3000'
+  ),
   title: {
     default: SITE_CONFIG.name,
     template: `%s | ${SITE_CONFIG.name}`
@@ -68,12 +77,16 @@ export const metadata = {
   verification: {
     google: 'your-google-verification-code',
   },
+  other: {
+    'preload-image': '/images/hero/dswBG.png',
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="es" suppressHydrationWarning>
       <head>
+        <CriticalResourceHints />
         <DefaultJsonLd />
         <script
           dangerouslySetInnerHTML={{
@@ -91,6 +104,7 @@ export default function RootLayout({ children }) {
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300`}
+        suppressHydrationWarning
       >
         <ThemeProvider>
           <LanguageProvider>
@@ -99,6 +113,7 @@ export default function RootLayout({ children }) {
               {children}
             </main>
             <Footer />
+            {/* <WebVitals /> */}
           </LanguageProvider>
         </ThemeProvider>
       </body>
