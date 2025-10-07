@@ -9,7 +9,7 @@ const WhyChooseUsData = [
     titleEn: 'Proven Experience',
     description: 'Aunque somos nuevos, nuestro equipo tiene años de experiencia en desarrollo web y conoce las mejores prácticas del mercado.',
     descriptionEn: 'Although we are new, our team has years of experience in web development and knows the best market practices.',
-    icon: '🎯'
+    icon: 'ri-target-line'
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ const WhyChooseUsData = [
     titleEn: 'Modern Technology',
     description: 'Utilizamos las últimas tecnologías para garantizar sitios web rápidos, seguros y escalables.',
     descriptionEn: 'We use the latest technologies to ensure fast, secure and scalable websites.',
-    icon: '⚡'
+    icon: 'ri-flashlight-line'
   },
   {
     id: 3,
@@ -25,7 +25,7 @@ const WhyChooseUsData = [
     titleEn: 'Competitive Prices',
     description: 'Como empresa nueva, ofrecemos precios especiales para nuestros primeros clientes sin comprometer la calidad.',
     descriptionEn: 'As a new company, we offer special prices for our first clients without compromising quality.',
-    icon: '💰'
+    icon: 'ri-money-dollar-circle-line'
   },
   {
     id: 4,
@@ -33,7 +33,7 @@ const WhyChooseUsData = [
     titleEn: 'Personalized Support',
     description: 'Cada cliente es importante para nosotros. Brindamos atención personalizada y soporte dedicado.',
     descriptionEn: 'Every client is important to us. We provide personalized attention and dedicated support.',
-    icon: '🤝'
+    icon: 'ri-customer-service-line'
   },
   {
     id: 5,
@@ -41,7 +41,7 @@ const WhyChooseUsData = [
     titleEn: 'Fast Delivery',
     description: 'Optimizamos nuestros procesos para entregar proyectos de calidad en tiempo récord.',
     descriptionEn: 'We optimize our processes to deliver quality projects in record time.',
-    icon: '🚀'
+    icon: 'ri-rocket-line'
   },
   {
     id: 6,
@@ -49,7 +49,7 @@ const WhyChooseUsData = [
     titleEn: 'SEO Included',
     description: 'Todos nuestros proyectos incluyen optimización SEO básica para mejorar tu visibilidad online.',
     descriptionEn: 'All our projects include basic SEO optimization to improve your online visibility.',
-    icon: '📈'
+    icon: 'ri-line-chart-line'
   }
 ]
 
@@ -57,7 +57,7 @@ export default function WhyChooseUsSection() {
   const { language, t } = useLanguage()
 
   return (
-    <section className="py-20 bg-gray-50 dark:bg-gray-800">
+    <section id="why-choose-us" className="py-20 bg-gray-50 dark:bg-gray-800">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
@@ -82,7 +82,9 @@ export default function WhyChooseUsSection() {
               key={item.id} 
               className="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
             >
-              <div className="text-4xl mb-4">{item.icon}</div>
+              <div className="text-4xl mb-4 text-blue-600 dark:text-blue-400">
+                <i className={`${item.icon} text-4xl`}></i>
+              </div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
                 {language === 'es' ? item.title : item.titleEn}
               </h3>

@@ -16,9 +16,9 @@ export const SITE_CONFIG = {
 export const NAVIGATION_ITEMS = [
   { name: 'Inicio', href: '#hero', nameEn: 'Home' },
   { name: 'Servicios', href: '#services', nameEn: 'Services' },
-  { name: 'Portafolio', href: '#portfolio', nameEn: 'Portfolio' },
+  { name: '¿Por qué nosotros?', href: '#why-choose-us', nameEn: 'Why Choose Us' },
   { name: 'Testimonios', href: '#testimonials', nameEn: 'Testimonials' },
-  { name: 'Contacto', href: '#contact', nameEn: 'Contact' }
+  //{ name: 'Contacto', href: '#contact', nameEn: 'Contact' }
 ]
 
 export const CONTACT_INFO = {

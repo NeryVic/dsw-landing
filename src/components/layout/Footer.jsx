@@ -25,8 +25,9 @@ export default function Footer() {
                   rel="noopener noreferrer"
                 >
                   <span className="sr-only">{social.name}</span>
-                  {/* Aquí irían los iconos SVG */}
-                  <div className="w-6 h-6 bg-gray-400 rounded"></div>
+                  {social.icon === 'whatsapp' && <i className="ri-whatsapp-line text-xl"></i>}
+                  {social.icon === 'instagram' && <i className="ri-instagram-line text-xl"></i>}
+                  {social.icon === 'linkedin' && <i className="ri-linkedin-line text-xl"></i>}
                 </Link>
               ))}
             </div>
@@ -52,10 +53,19 @@ export default function Footer() {
           {/* Contact */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Contacto</h3>
-            <ul className="space-y-2 text-gray-400">
-              <li>{CONTACT_INFO.email}</li>
-              <li>{CONTACT_INFO.phone}</li>
-              <li>{CONTACT_INFO.address}</li>
+            <ul className="space-y-3 text-gray-400">
+              <li className="flex items-center">
+                <i className="ri-mail-line text-lg mr-3"></i>
+                {CONTACT_INFO.email}
+              </li>
+              <li className="flex items-center">
+                <i className="ri-phone-line text-lg mr-3"></i>
+                {CONTACT_INFO.phone}
+              </li>
+              <li className="flex items-center">
+                <i className="ri-map-pin-line text-lg mr-3"></i>
+                {CONTACT_INFO.address}
+              </li>
             </ul>
           </div>
         </div>

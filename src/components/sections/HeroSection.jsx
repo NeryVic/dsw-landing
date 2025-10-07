@@ -68,16 +68,18 @@ export default function HeroSection() {
           <div className="flex flex-col sm:flex-row gap-4 mb-16">
             <Button 
               size="lg" 
-              className="px-8 py-4 text-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 shadow-xl"
+              className="px-8 py-4 text-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 shadow-xl inline-flex items-center justify-center"
             >
               {t('hero_cta_primary', 'Empezar Mi Proyecto', 'Start My Project')}
+              <i className="ri-arrow-right-line ml-2"></i>
             </Button>
             <Button 
               variant="outline" 
               size="lg" 
-              className="px-8 py-4 text-lg border-white/30 text-white hover:bg-white/10 backdrop-blur-sm"
+              className="px-8 py-4 text-lg border-white/30 text-white hover:bg-white/10 backdrop-blur-sm inline-flex items-center justify-center"
             >
               {t('hero_cta_secondary', 'Ver Portafolio', 'View Portfolio')}
+              <i className="ri-eye-line ml-2"></i>
             </Button>
           </div>
           

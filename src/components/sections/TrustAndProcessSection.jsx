@@ -10,7 +10,7 @@ const TrustSignals = [
     titleEn: 'Satisfaction Guarantee',
     description: '30 días para solicitar cambios sin costo adicional',
     descriptionEn: '30 days to request changes at no additional cost',
-    icon: '✅'
+    icon: 'ri-check-line'
   },
   {
     id: 2,
@@ -18,7 +18,7 @@ const TrustSignals = [
     titleEn: 'Technical Support',
     description: '3 meses de soporte técnico gratuito incluido',
     descriptionEn: '3 months of free technical support included',
-    icon: '🛠️'
+    icon: 'ri-tools-line'
   },
   {
     id: 3,
@@ -26,7 +26,7 @@ const TrustSignals = [
     titleEn: 'Free Hosting',
     description: 'Primer año de hosting incluido en todos los proyectos',
     descriptionEn: 'First year of hosting included in all projects',
-    icon: '🌐'
+    icon: 'ri-global-line'
   },
   {
     id: 4,
@@ -34,7 +34,7 @@ const TrustSignals = [
     titleEn: 'SSL & Security',
     description: 'Certificado SSL y medidas de seguridad incluidas',
     descriptionEn: 'SSL certificate and security measures included',
-    icon: '🔒'
+    icon: 'ri-shield-check-line'
   }
 ]
 
@@ -90,7 +90,9 @@ export default function TrustAndProcessSection() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {TrustSignals.map((signal) => (
               <div key={signal.id} className="text-center p-6 bg-gray-50 dark:bg-gray-800 rounded-xl">
-                <div className="text-3xl mb-3">{signal.icon}</div>
+                <div className="text-3xl mb-3 text-green-600 dark:text-green-400">
+                  <i className={`${signal.icon} text-3xl`}></i>
+                </div>
                 <h3 className="font-bold text-gray-900 dark:text-white mb-2">
                   {language === 'es' ? signal.title : signal.titleEn}
                 </h3>
