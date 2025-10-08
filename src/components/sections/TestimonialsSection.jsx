@@ -12,7 +12,7 @@ export default function TestimonialsSection() {
       <span
         key={index}
         className={`text-lg ${
-          index < rating ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600'
+          index < rating ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-700'
         }`}
       >
         ★
@@ -21,11 +21,11 @@ export default function TestimonialsSection() {
   }
 
   return (
-    <section id="testimonials" className="py-20 bg-white dark:bg-gray-900">
+    <section id="testimonials" className="py-20 bg-white dark:bg-black">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-sm font-medium mb-4">
+          <span className="inline-block px-4 py-2 bg-blue-100 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 rounded-full text-sm font-medium mb-4">
             {t('testimonials_badge', 'Testimonios', 'Testimonials')}
           </span>
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">

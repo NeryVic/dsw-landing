@@ -3,15 +3,15 @@ import { SOCIAL_LINKS, NAVIGATION_ITEMS, CONTACT_INFO } from '@/lib/constants'
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-gray-100 dark:bg-black text-gray-900 dark:text-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
             <Link href="/" className="text-2xl font-bold mb-4 block">
-              DSW Landing
+              DSW
             </Link>
-            <p className="text-gray-400 mb-4 max-w-md">
+            <p className="text-gray-600 dark:text-gray-400 mb-4 max-w-md">
               Transformamos ideas en soluciones digitales innovadoras. 
               Construyendo el futuro, una línea de código a la vez.
             </p>
@@ -20,7 +20,7 @@ export default function Footer() {
                 <Link
                   key={social.name}
                   href={social.url}
-                  className="text-gray-400 hover:text-white transition-colors duration-200"
+                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -41,7 +41,7 @@ export default function Footer() {
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-gray-400 hover:text-white transition-colors duration-200"
+                    className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
                   >
                     {item.name}
                   </Link>
@@ -53,7 +53,7 @@ export default function Footer() {
           {/* Contact */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Contacto</h3>
-            <ul className="space-y-3 text-gray-400">
+            <ul className="space-y-3 text-gray-600 dark:text-gray-400">
               <li className="flex items-center">
                 <i className="ri-mail-line text-lg mr-3"></i>
                 {CONTACT_INFO.email}
@@ -70,8 +70,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; {new Date().getFullYear()} DSW Landing. Todos los derechos reservados.</p>
+        <div className="border-t border-gray-300 dark:border-gray-700 mt-8 pt-8 text-center text-gray-600 dark:text-gray-400">
+          <p>&copy; {new Date().getFullYear()} Digital Solutions Web Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>

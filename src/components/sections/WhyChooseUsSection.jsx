@@ -57,11 +57,11 @@ export default function WhyChooseUsSection() {
   const { language, t } = useLanguage()
 
   return (
-    <section id="why-choose-us" className="py-20 bg-gray-50 dark:bg-gray-800">
+    <section id="why-choose-us" className="py-20 bg-gray-50 dark:bg-black">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-2 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full text-sm font-medium mb-4">
+          <span className="inline-block px-4 py-2 bg-green-100 dark:bg-green-950/50 text-green-600 dark:text-green-400 rounded-full text-sm font-medium mb-4">
             {t('why_badge', '¿Por qué elegir Digital Solutions Web?', 'Why choose Digital Solutions Web?')}
           </span>
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">

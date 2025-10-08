@@ -30,7 +30,7 @@ export const CONTACT_INFO = {
 
 export const SOCIAL_LINKS = [
   { name: 'WhatsApp', url: 'https://wa.me/1234567890', icon: 'whatsapp' },
-  { name: 'Instagram', url: 'https://instagram.com/digitalsolutionsweb', icon: 'instagram' },
+  { name: 'Instagram', url: 'https://www.instagram.com/dsw3.0', icon: 'instagram' },
   { name: 'LinkedIn', url: 'https://linkedin.com/company/digital-solutions-web', icon: 'linkedin' }
 ]
 

@@ -17,11 +17,11 @@ export default function ServicesSection() {
   const { language, t } = useLanguage()
 
   return (
-    <section id="services" className="py-20 bg-white dark:bg-gray-900">
+    <section id="services" className="py-20 bg-white dark:bg-black">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-sm font-medium mb-4">
+          <span className="inline-block px-4 py-2 bg-blue-100 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 rounded-full text-sm font-medium mb-4">
             {t('services_badge', 'Nuestros Servicios', 'Our Services')}
           </span>
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">
@@ -38,9 +38,9 @@ export default function ServicesSection() {
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           {SERVICES.map((service, index) => (
-            <Card key={service.id} className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg bg-white dark:bg-gray-800 hover:scale-105">
+            <Card key={service.id} className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg bg-white dark:bg-gray-900 hover:scale-105">
               <CardHeader className="text-center pb-4">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl mx-auto mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 rounded-xl mx-auto mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
                   {ServiceIcons[service.icon]}
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
