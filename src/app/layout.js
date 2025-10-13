@@ -79,9 +79,6 @@ export const metadata = {
   verification: {
     google: 'your-google-verification-code',
   },
-  other: {
-    'preload-image': '/images/hero/dswBG.png',
-  },
 };
 
 export default function RootLayout({ children }) {
