@@ -6,10 +6,10 @@ const CHAT_MESSAGES = {
   inicio: {
     text: "¡Hola! 👋 Soy el asistente virtual de DSW. ¿En qué puedo ayudarte?",
     options: [
-      { label: "🛠️ ¿Qué servicios ofrecen?", value: "servicios" },
-      { label: "📞 ¿Cómo los contacto?", value: "contacto" },
-      { label: "📍 ¿Dónde están ubicados?", value: "ubicacion" },
-      { label: "💰 ¿Cuánto cuestan sus servicios?", value: "precios" },
+      { label: " ¿Qué servicios ofrecen?", value: "servicios" },
+      { label: " ¿Cómo los contacto?", value: "contacto" },
+      { label: " ¿Dónde están ubicados?", value: "ubicacion" },
+      { label: " ¿Cuánto cuestan sus servicios?", value: "precios" },
       { label: "🤖 Pregunta con IA", value: "ai-mode" },
     ],
   },
@@ -35,14 +35,14 @@ const CHAT_MESSAGES = {
     ],
   },
   precios: {
-    text: "Nuestros precios varían según el proyecto. Te recomendamos contactarnos para obtener una cotización personalizada y sin compromiso.",
+    text: "Nuestros precios varían según la complejidad del proyecto. Te recomendamos contactarnos para obtener una cotización personalizada y sin compromiso.",
     options: [
       { label: "Sí, tengo otra pregunta", value: "inicio" },
       { label: "No, gracias", value: "fin" },
     ],
   },
   fin: {
-    text: "¡Perfecto! Estamos aquí cuando nos necesites. ¡Que tengas un excelente día! 🚀",
+    text: "¡Perfecto! Estamos aquí cuando nos necesites. ¡Que tengas un excelente día! 😊",
     options: [],
   },
   "ai-mode": {
@@ -61,6 +61,8 @@ export default function LandingChatBot() {
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  // Historial para IA, formato [{ role: 'user'|'assistant', content: string }]
+  const [aiHistory, setAiHistory] = useState([]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -103,6 +105,10 @@ export default function LandingChatBot() {
         }
         addBotMessage(nextStep.text, nextStep.enableInput ? [] : nextStep.options);
         setCurrentStep(option.value);
+        // Si el usuario vuelve al inicio, salir de AI mode
+        if (option.value === "inicio") {
+          setAiMode(false);
+        }
       }
     }, 500);
   };
@@ -114,6 +120,10 @@ export default function LandingChatBot() {
     setInputValue("");
     addUserMessage(question);
     setIsLoading(true);
+    // Construir historial saliente incluyendo la nueva pregunta
+    const outgoingHistory = [...aiHistory, { role: 'user', content: question }];
+    // Actualizar historial local inmediatamente para coherencia en UI
+    setAiHistory(outgoingHistory);
 
     try {
       const response = await fetch("/api/chat", {
@@ -121,7 +131,9 @@ export default function LandingChatBot() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: question }),
+        body: JSON.stringify({
+          history: outgoingHistory,
+        }),
       });
 
       const data = await response.json();
@@ -132,6 +144,8 @@ export default function LandingChatBot() {
             { label: "Hacer otra pregunta", value: "ai-mode" },
             { label: "Volver al menú principal", value: "inicio" },
           ]);
+          // Registrar respuesta del asistente en historial
+          setAiHistory((prev) => [...prev, { role: 'assistant', content: data.answer }]);
           setIsLoading(false);
         }, 500);
       } else {
@@ -158,6 +172,7 @@ export default function LandingChatBot() {
     setAiMode(false);
     setInputValue("");
     setIsLoading(false);
+    setAiHistory([]);
   };
 
 
@@ -180,12 +195,12 @@ export default function LandingChatBot() {
         <div className="fixed bottom-[100px] right-6 w-[350px] h-[500px] bg-white dark:bg-gray-800 rounded-lg shadow-2xl z-[1000] flex flex-col overflow-hidden">
           {/* Header */}
           <div className="bg-blue-600 text-white p-4 flex items-center justify-between">
-            <h3 className="font-semibold">Chat DSW 💬</h3>
+            <h3 className="font-semibold">Asistente 💬</h3>
             <button
               onClick={handleClose}
               className="w-7 h-7 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center transition-colors"
             >
-              ✕
+              x
             </button>
           </div>
 

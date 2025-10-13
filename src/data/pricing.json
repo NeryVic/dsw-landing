@@ -1,0 +1,33 @@
+{
+  "currency": "USD",
+  "updatedAt": "2025-10-13",
+  "contact": {
+    "whatsapp": "+54 9 3704 360388",
+    "email": "digitalsolutionsweb3.0@gmail.com"
+  },
+  "services": {
+    "landing": {
+      "label": "Landing page",
+      "desde": 299,
+      "incluye": ["Diseño responsive", "3 secciones", "Formulario de contacto", "Integración SEO básica"],
+      "nota": "Definir precio final tras brief."
+    },
+    "ecommerce": {
+      "label": "Ecommerce",
+      "desde": 999,
+      "incluye": ["Catálogo", "Carrito", "Pasarela de pago estándar"],
+      "nota": "Precio depende de catálogo, variantes y logística."
+    },
+    "pos": {
+      "label": "Sistema POS (SaaS)",
+      "desde": 15,
+      "pricing": {
+        "type": "subscription",
+        "period": "monthly",
+        "amount": 15
+      },
+      "incluye": ["Caja", "Inventario", "Reportes"],
+      "nota": "Suscripción mensual. Según módulos y cantidad de equipos conectados."
+    }
+  }
+}
