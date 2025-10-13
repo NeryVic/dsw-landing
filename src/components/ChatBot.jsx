@@ -10,6 +10,7 @@ const CHAT_MESSAGES = {
       { label: "📞 ¿Cómo los contacto?", value: "contacto" },
       { label: "📍 ¿Dónde están ubicados?", value: "ubicacion" },
       { label: "💰 ¿Cuánto cuestan sus servicios?", value: "precios" },
+      { label: "🤖 Pregunta con IA", value: "ai-mode" },
     ],
   },
   servicios: {
@@ -44,6 +45,11 @@ const CHAT_MESSAGES = {
     text: "¡Perfecto! Estamos aquí cuando nos necesites. ¡Que tengas un excelente día! 🚀",
     options: [],
   },
+  "ai-mode": {
+    text: "¡Perfecto! Ahora puedes hacerme cualquier pregunta y te responderé usando IA. 🤖",
+    options: [],
+    enableInput: true,
+  },
 };
 
 export default function LandingChatBot() {
@@ -51,6 +57,9 @@ export default function LandingChatBot() {
   const [isMounted, setIsMounted] = useState(false);
   const [messages, setMessages] = useState([]);
   const [currentStep, setCurrentStep] = useState("inicio");
+  const [aiMode, setAiMode] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -89,16 +98,66 @@ export default function LandingChatBot() {
     setTimeout(() => {
       const nextStep = CHAT_MESSAGES[option.value];
       if (nextStep) {
-        addBotMessage(nextStep.text, nextStep.options);
+        if (option.value === "ai-mode") {
+          setAiMode(true);
+        }
+        addBotMessage(nextStep.text, nextStep.enableInput ? [] : nextStep.options);
         setCurrentStep(option.value);
       }
     }, 500);
+  };
+
+  const handleAiQuestion = async () => {
+    if (!inputValue.trim() || isLoading) return;
+
+    const question = inputValue.trim();
+    setInputValue("");
+    addUserMessage(question);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: question }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setTimeout(() => {
+          addBotMessage(data.answer, [
+            { label: "Hacer otra pregunta", value: "ai-mode" },
+            { label: "Volver al menú principal", value: "inicio" },
+          ]);
+          setIsLoading(false);
+        }, 500);
+      } else {
+        throw new Error(data.error || "Error al procesar");
+      }
+    } catch (error) {
+      setTimeout(() => {
+        addBotMessage(
+          "Lo siento, hubo un error al procesar tu pregunta. Por favor, intenta de nuevo.",
+          [
+            { label: "Intentar de nuevo", value: "ai-mode" },
+            { label: "Volver al menú principal", value: "inicio" },
+          ]
+        );
+        setIsLoading(false);
+      }, 500);
+    }
   };
 
   const handleClose = () => {
     setIsOpen(false);
     setMessages([]);
     setCurrentStep("inicio");
+    setAiMode(false);
+    setInputValue("");
+    setIsLoading(false);
   };
 
 
@@ -162,8 +221,39 @@ export default function LandingChatBot() {
                 )}
               </div>
             ))}
+            {isLoading && (
+              <div className="flex justify-start">
+                <div className="max-w-[80%] bg-white dark:bg-gray-700 rounded-lg p-3 shadow">
+                  <p className="text-sm text-gray-800 dark:text-gray-100">Escribiendo...</p>
+                </div>
+              </div>
+            )}
             <div ref={messagesEndRef} />
           </div>
+
+          {/* Input para modo IA */}
+          {aiMode && (
+            <div className="p-3 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyPress={(e) => e.key === "Enter" && handleAiQuestion()}
+                  placeholder="Escribe tu pregunta..."
+                  disabled={isLoading}
+                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white disabled:opacity-50"
+                />
+                <button
+                  onClick={handleAiQuestion}
+                  disabled={isLoading || !inputValue.trim()}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg text-sm transition-colors disabled:cursor-not-allowed"
+                >
+                  {isLoading ? "..." : "→"}
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </>
