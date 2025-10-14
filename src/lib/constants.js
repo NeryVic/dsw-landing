@@ -8,7 +8,8 @@ export const SITE_CONFIG = {
   links: {
     whatsapp: 'https://wa.me/+5493704360388',
     instagram: 'https://instagram.com/dsw3.0',
-    linkedin: 'https://linkedin.com/company/digital-solutions-web',
+    linkedin1: 'https://www.linkedin.com/in/nerydev-2206-it/',
+    linkedin2: 'https://www.linkedin.com/in/alejandro-pintos-44b0a62a6/',
     email: 'digitalsolutionsweb3.0@gmail.com'
   }
 }
@@ -32,7 +33,8 @@ export const CONTACT_INFO = {
 export const SOCIAL_LINKS = [
   { name: 'WhatsApp', url: SITE_CONFIG.links.whatsapp, icon: 'whatsapp' },
   { name: 'Instagram', url: SITE_CONFIG.links.instagram, icon: 'instagram' },
-  { name: 'LinkedIn', url: SITE_CONFIG.links.linkedin, icon: 'linkedin' }
+  { name: 'LinkedIn', url: SITE_CONFIG.links.linkedin1, icon: 'linkedin' },
+  { name: 'LinkedIn2', url: SITE_CONFIG.links.linkedin2, icon: 'linkedin' },
 ]
 
 export const SERVICES = [
