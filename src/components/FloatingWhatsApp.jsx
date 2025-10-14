@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useWssp } from '@/hooks/wssp';
+import { SITE_CONFIG } from '@/lib/constants';
 
 const WhatsAppIcon = ({ className = '' }) => (
   <svg 
@@ -21,7 +22,7 @@ export default function FloatingWhatsApp() {
 
   const handleClick = () => {
     openWhatsApp(
-      '+573012345678', // Cambia este número por el tuyo
+      SITE_CONFIG.links.whatsapp,
       '¡Hola! Me interesa conocer más sobre sus servicios de desarrollo web. ¿Podrían ayudarme?'
     );
   };

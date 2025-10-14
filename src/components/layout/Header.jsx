@@ -7,16 +7,25 @@ import { NAVIGATION_ITEMS } from '@/lib/constants'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { useTheme } from '@/contexts/ThemeContext'
 import Button from '@/components/ui/Button'
+import { useWssp } from '@/hooks/wssp'
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
   const { language, toggleLanguage, t, isInitialized } = useLanguage()
   const { theme, toggleTheme } = useTheme()
+  const { openWhatsApp } = useWssp()
 
   useEffect(() => {
     setIsMounted(true)
   }, [])
+
+  const handleStartProject = () => {
+    const message = language === 'es'
+      ? '¡Hola! Quiero empezar mi proyecto con Digital Solutions Web. Me gustaría recibir más información sobre sus servicios.'
+      : 'Hello! I want to start my project with Digital Solutions Web. I would like to receive more information about your services.'
+    openWhatsApp(undefined, message)
+  }
 
   // No renderizar hasta que esté montado en el cliente
   if (!isMounted || !t || typeof t !== 'function') {
@@ -42,7 +51,7 @@ export default function Header() {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center relative">
+              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center relative dark:bg-gradient-to-br dark:from-blue-400 dark:to-purple-800">
                 <Image 
                   src="/images/icons/logoo.png" 
                   alt="Logo Digital Solutions Web" 
@@ -99,7 +108,7 @@ export default function Header() {
 
             {/* CTA Buttons */}
             <div className="hidden sm:flex items-center space-x-2">
-              <Button size="sm">
+              <Button size="sm" onClick={handleStartProject}>
                 {t('cta', 'Empezar Proyecto', 'Start Project')}
               </Button>
             </div>
@@ -129,7 +138,7 @@ export default function Header() {
                 </Link>
               ))}
               <div className="flex flex-col space-y-2 pt-4">
-                <Button size="sm">
+                <Button size="sm" onClick={handleStartProject}>
                   {t('cta', 'Empezar Proyecto', 'Start Project')}
                 </Button>
               </div>

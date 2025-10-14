@@ -3,14 +3,23 @@
 import Image from 'next/image'
 import Button from '@/components/ui/Button'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { useWssp } from '@/hooks/wssp'
 
 export default function HeroSection() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
+  const { openWhatsApp } = useWssp()
+
+  const handleStartProject = () => {
+    const message = language === 'es'
+      ? '¡Hola! Quiero empezar mi proyecto con Digital Solutions Web. Me gustaría recibir más información sobre sus servicios.'
+      : 'Hello! I want to start my project with Digital Solutions Web. I would like to receive more information about your services.'
+    openWhatsApp(undefined, message)
+  }
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden group">
       {/* Background Image */}
-      <div className="absolute inset-0 z-0 group">
+      <div className="absolute inset-0 z-0" suppressHydrationWarning>
         <Image
           src="/images/hero/dswBG.png"
           alt="Digital Solutions Web Background"
@@ -72,6 +81,7 @@ export default function HeroSection() {
             <Button 
               size="lg" 
               className="px-8 py-4 text-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 shadow-xl inline-flex items-center justify-center"
+              onClick={handleStartProject}
             >
               {t('hero_cta_primary', 'Empezar Mi Proyecto', 'Start My Project')}
               <i className="ri-arrow-right-line ml-2"></i>

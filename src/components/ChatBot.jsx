@@ -149,6 +149,38 @@ export default function LandingChatBot() {
           setIsLoading(false);
         }, 500);
       } else {
+        if (response.status === 429) {
+          addBotMessage(
+            data.error || "Estás enviando muchas solicitudes seguidas. Espera unos segundos e intenta nuevamente.",
+            [
+              { label: "Intentar de nuevo", value: "ai-mode" },
+              { label: "Volver al menú principal", value: "inicio" },
+            ]
+          );
+          setIsLoading(false);
+          return;
+        }
+        if (response.status === 413) {
+          addBotMessage(
+            data.error || "Tu mensaje es muy largo. Por favor, resume tu consulta.",
+            [
+              { label: "Intentar de nuevo", value: "ai-mode" },
+              { label: "Volver al menú principal", value: "inicio" },
+            ]
+          );
+          setIsLoading(false);
+          return;
+        }
+        if (response.status === 403) {
+          addBotMessage(
+            data.error || "No puedes usar este chat desde este origen.",
+            [
+              { label: "Volver al menú principal", value: "inicio" },
+            ]
+          );
+          setIsLoading(false);
+          return;
+        }
         throw new Error(data.error || "Error al procesar");
       }
     } catch (error) {
