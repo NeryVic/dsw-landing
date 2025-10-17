@@ -21,13 +21,20 @@ export default function Home() {
     <div className="min-h-screen">
       {/* Secciones críticas y de navegación - carga inmediata */}
       <HeroSection />
-      <ServicesSection />
-      <WhyChooseUsSection />
-      <TrustAndProcessSection />
-      <TestimonialsSection />
-      
-      {/* Secciones secundarias - lazy loading */}
+      <LazySection animationClass="animate-fadeIn duration-1000">
+        <ServicesSection />
+      </LazySection>
+      <LazySection animationClass="animate-fadeIn duration-1000">
+        <WhyChooseUsSection />
+      </LazySection>
+      <LazySection animationClass="animate-fadeIn duration-1000">
+        <TrustAndProcessSection />
+      </LazySection>
       <LazySection>
+        <TestimonialsSection />
+      </LazySection>
+      {/* Secciones secundarias - lazy loading */}
+      <LazySection animationClass="animate-fadeout duration-1000">
         <FeaturesSection />
       </LazySection>
     </div>

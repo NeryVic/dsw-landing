@@ -33,7 +33,7 @@ export default function ServicesSection() {
   }
 
   return (
-    <section id="services" className="py-20 bg-white dark:bg-black">
+    <section id="services" className="py-20 bg-white dark:bg-black animate-fadeIn duration-1000">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
