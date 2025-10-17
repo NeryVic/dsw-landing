@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { NAVIGATION_ITEMS } from '@/lib/constants'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { useTheme } from '@/contexts/ThemeContext'
@@ -15,10 +15,47 @@ export default function Header() {
   const { language, toggleLanguage, t, isInitialized } = useLanguage()
   const { theme, toggleTheme } = useTheme()
   const { openWhatsApp } = useWssp()
+  const [activeId, setActiveId] = useState('#hero')
+  const observerRef = useRef(null)
 
   useEffect(() => {
     setIsMounted(true)
   }, [])
+
+  // Observador para actualizar el item activo según la sección visible
+  useEffect(() => {
+    // limpiar observador previo
+    if (observerRef.current) {
+      observerRef.current.disconnect()
+    }
+
+    const sectionIds = NAVIGATION_ITEMS.map((it) => it.href).filter(Boolean).map(h => h.replace('#', ''))
+    const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean)
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveId(`#${entry.target.id}`)
+          }
+        })
+      },
+      {
+        root: null,
+        rootMargin: '0px 0px -40% 0px', // marcar cuando la sección entra en la parte superior del viewport
+        threshold: 0.15,
+      }
+    )
+
+    sections.forEach((el) => observer.observe(el))
+    observerRef.current = observer
+
+    // también actualizar activeId si hay hash en la URL al cargar
+    const hash = window.location.hash
+    if (hash) setActiveId(hash)
+
+    return () => observer.disconnect()
+  }, [isMounted])
 
   const handleStartProject = () => {
     const message = language === 'es'
@@ -69,15 +106,24 @@ export default function Header() {
 
           {/* Navigation */}
           <nav className="hidden md:flex space-x-8">
-            {NAVIGATION_ITEMS.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
-              >
-                {language === 'es' ? item.name : item.nameEn}
-              </Link>
-            ))}
+            {NAVIGATION_ITEMS.map((item) => {
+              const isActive = activeId === item.href
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setActiveId(item.href)}
+                  className={`group relative px-1 py-2 -my-2 inline-flex items-center transition-colors duration-200 ${isActive ? 'text-blue-600 dark:text-blue-400 font-semibold' : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'}`}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  <span className="relative z-10">
+                    {language === 'es' ? item.name : item.nameEn}
+                  </span>
+                  {/* underline animated */}
+                  <span className={`absolute left-0 bottom-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transform origin-left transition-transform duration-300 ${isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`} style={{width: '100%'}} />
+                </Link>
+              )
+            })}
           </nav>
 
           {/* Controls */}
@@ -127,16 +173,26 @@ export default function Header() {
         {isMobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-200 dark:border-gray-800">
             <nav className="flex flex-col space-y-4">
-              {NAVIGATION_ITEMS.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {language === 'es' ? item.name : item.nameEn}
-                </Link>
-              ))}
+              {NAVIGATION_ITEMS.map((item) => {
+                const isActive = activeId === item.href
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    onClick={() => {
+                      setIsMobileMenuOpen(false)
+                      setActiveId(item.href)
+                    }}
+                    className={`text-gray-600 dark:text-gray-300 transition-colors duration-200 py-2 px-1 ${isActive ? 'text-blue-600 dark:text-blue-400 font-semibold' : 'hover:text-blue-600 dark:hover:text-blue-400'}`}
+                    aria-current={isActive ? 'page' : undefined}
+                  >
+                    <span className="block relative">
+                      {language === 'es' ? item.name : item.nameEn}
+                      <span className={`absolute left-0 bottom-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transform origin-left transition-transform duration-300 ${isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`} style={{width: '100%'}} />
+                    </span>
+                  </Link>
+                )
+              })}
               <div className="flex flex-col space-y-2 pt-4">
                 <Button size="sm" onClick={handleStartProject}>
                   {t('cta', 'Empezar Proyecto', 'Start Project')}

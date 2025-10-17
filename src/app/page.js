@@ -19,21 +19,14 @@ const TestimonialsSection = dynamic(() => import("@/components/sections/Testimon
 export default function Home() {
   return (
     <div className="min-h-screen">
-      {/* Secciones críticas y de navegación - carga inmediata */}
+      {/* Secciones críticas y de navegación - carga inmediata para asegurar que los anchors funcionen */}
       <HeroSection />
-      <LazySection animationClass="animate-fadeIn duration-1000">
-        <ServicesSection />
-      </LazySection>
-      <LazySection animationClass="animate-fadeIn duration-1000">
-        <WhyChooseUsSection />
-      </LazySection>
-      <LazySection animationClass="animate-fadeIn duration-1000">
-        <TrustAndProcessSection />
-      </LazySection>
-      <LazySection>
-        <TestimonialsSection />
-      </LazySection>
-      {/* Secciones secundarias - lazy loading */}
+      <ServicesSection  animationClass="animate-fadein duration-1000"/>
+      <WhyChooseUsSection />
+      <TrustAndProcessSection />
+      <TestimonialsSection />
+
+      {/* Sección secundaria - lazy loading */}
       <LazySection animationClass="animate-fadeout duration-1000">
         <FeaturesSection />
       </LazySection>
