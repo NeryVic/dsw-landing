@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { SERVICES } from '@/lib/constants'
+import { useWssp } from '@/hooks/wssp'
 
 // Iconos de Remix Icon para cada servicio
 const ServiceIcons = {
@@ -15,6 +16,21 @@ const ServiceIcons = {
 
 export default function ServicesSection() {
   const { language, t } = useLanguage()
+  const { openWhatsApp } = useWssp()
+
+  const handleServiceQuote = (serviceName) => {
+    const message = language === 'es' 
+      ? `¡Hola! Me interesa obtener una cotización para el servicio: ${serviceName}. ¿Podrían darme más información?`
+      : `Hello! I'm interested in getting a quote for the service: ${serviceName}. Could you give me more information?`
+    openWhatsApp(undefined, message)
+  }
+
+  const handleCustomQuote = () => {
+    const message = language === 'es'
+      ? '¡Hola! Me interesa solicitar una cotización personalizada para mi proyecto. ¿Podemos hablar sobre mis necesidades?'
+      : 'Hello! I\'m interested in requesting a custom quote for my project. Can we discuss my needs?'
+    openWhatsApp(undefined, message)
+  }
 
   return (
     <section id="services" className="py-20 bg-white dark:bg-black">
@@ -29,8 +45,8 @@ export default function ServicesSection() {
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             {t('services_description', 
-              'Desde landing pages que convierten hasta sistemas complejos de gestión. Tenemos la solución perfecta para hacer crecer tu negocio.',
-              'From converting landing pages to complex management systems. We have the perfect solution to grow your business.'
+              'Desde landing pages hasta sistemas complejos de gestión. Tenemos la solución perfecta para hacer crecer tu negocio.',
+              'From landing pages to complex management systems. We have the perfect solution to grow your business.'
             )}
           </p>
         </div>
@@ -65,7 +81,11 @@ export default function ServicesSection() {
                   <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                     {language === 'es' ? service.price : service.priceEn}
                   </span>
-                  <Button variant="outline" size="sm">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => handleServiceQuote(language === 'es' ? service.title : service.titleEn)}
+                  >
                     {t('service_cta', 'Cotizar', 'Quote')}
                   </Button>
                 </div>
@@ -85,7 +105,12 @@ export default function ServicesSection() {
               'We develop custom solutions for your business. Tell us your idea and we\'ll make it happen.'
             )}
           </p>
-          <Button variant="secondary" size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
+          <Button 
+            variant="secondary" 
+            size="lg" 
+            className="bg-white text-blue-600 hover:bg-gray-100"
+            onClick={handleCustomQuote}
+          >
             {t('services_cta_button', 'Solicitar Cotización Personalizada', 'Request Custom Quote')}
           </Button>
         </div>

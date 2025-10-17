@@ -28,6 +28,7 @@ export default function Footer() {
                   {social.icon === 'whatsapp' && <i className="ri-whatsapp-line text-xl"></i>}
                   {social.icon === 'instagram' && <i className="ri-instagram-line text-xl"></i>}
                   {social.icon === 'linkedin' && <i className="ri-linkedin-line text-xl"></i>}
+                  {social.icon === 'linkedin2' && <i className="ri-linkedin-line text-xl"></i>}
                 </Link>
               ))}
             </div>

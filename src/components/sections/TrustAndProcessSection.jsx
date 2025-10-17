@@ -2,78 +2,22 @@
 
 import { useLanguage } from '@/contexts/LanguageContext'
 import Button from '@/components/ui/Button'
-
-const TrustSignals = [
-  {
-    id: 1,
-    title: 'Garantía de Satisfacción',
-    titleEn: 'Satisfaction Guarantee',
-    description: '30 días para solicitar cambios sin costo adicional',
-    descriptionEn: '30 days to request changes at no additional cost',
-    icon: 'ri-check-line'
-  },
-  {
-    id: 2,
-    title: 'Soporte Técnico',
-    titleEn: 'Technical Support',
-    description: '3 meses de soporte técnico gratuito incluido',
-    descriptionEn: '3 months of free technical support included',
-    icon: 'ri-tools-line'
-  },
-  {
-    id: 3,
-    title: 'Hosting Gratuito',
-    titleEn: 'Free Hosting',
-    description: 'Primer año de hosting incluido en todos los proyectos',
-    descriptionEn: 'First year of hosting included in all projects',
-    icon: 'ri-global-line'
-  },
-  {
-    id: 4,
-    title: 'SSL y Seguridad',
-    titleEn: 'SSL & Security',
-    description: 'Certificado SSL y medidas de seguridad incluidas',
-    descriptionEn: 'SSL certificate and security measures included',
-    icon: 'ri-shield-check-line'
-  }
-]
-
-const ProcessSteps = [
-  {
-    step: 1,
-    title: 'Consulta Inicial',
-    titleEn: 'Initial Consultation',
-    description: 'Reunión para entender tus necesidades y objetivos',
-    descriptionEn: 'Meeting to understand your needs and objectives'
-  },
-  {
-    step: 2,
-    title: 'Propuesta y Cotización',
-    titleEn: 'Proposal & Quote',
-    description: 'Desarrollo de propuesta detallada con cronograma',
-    descriptionEn: 'Development of detailed proposal with timeline'
-  },
-  {
-    step: 3,
-    title: 'Desarrollo',
-    titleEn: 'Development',
-    description: 'Creación de tu proyecto con actualizaciones constantes',
-    descriptionEn: 'Creation of your project with constant updates'
-  },
-  {
-    step: 4,
-    title: 'Entrega y Soporte',
-    titleEn: 'Delivery & Support',
-    description: 'Lanzamiento y capacitación con soporte continuo',
-    descriptionEn: 'Launch and training with continuous support'
-  }
-]
+import {TrustSignals , ProcessSteps}  from '@/data/features'
+import { useWssp } from '@/hooks/wssp'
 
 export default function TrustAndProcessSection() {
   const { language, t } = useLanguage()
+  const { openWhatsApp } = useWssp()
+
+  const handleStartProject = () => {
+    const message = language === 'es'
+      ? '¡Hola! Quiero empezar mi proyecto con Digital Solutions Web. Me gustaría agendar una consulta inicial gratuita para discutir mis necesidades.'
+      : 'Hello! I want to start my project with Digital Solutions Web. I would like to schedule a free initial consultation to discuss my needs.'
+    openWhatsApp(undefined, message)
+  }
 
   return (
-    <section className="py-20 bg-white dark:bg-black">
+    <section id="process" className="py-20 bg-white dark:bg-black">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Trust Signals */}
@@ -144,7 +88,7 @@ export default function TrustAndProcessSection() {
 
           {/* CTA */}
           <div className="text-center">
-            <Button size="lg" className="px-8 py-4">
+            <Button size="lg" className="px-8 py-4" onClick={handleStartProject}>
               {t('process_cta', 'Empezar Mi Proyecto Ahora', 'Start My Project Now')}
             </Button>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">

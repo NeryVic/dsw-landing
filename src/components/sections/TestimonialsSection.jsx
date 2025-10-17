@@ -73,39 +73,6 @@ export default function TestimonialsSection() {
             </div>
           ))}
         </div>
-
-        {/* CTA Section */}
-        <div className="text-center mt-16">
-          <div className="bg-gradient-to-r from-green-500 to-blue-600 rounded-2xl p-8 md:p-12 text-white">
-            <h3 className="text-3xl font-bold mb-4">
-              {t('testimonials_cta_title', '¿Listo para ser nuestro próximo caso de éxito?', 'Ready to be our next success story?')}
-            </h3>
-            <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-              {t('testimonials_cta_description', 
-                'Únete a empresarios exitosos que ya transformaron sus negocios con nuestras soluciones digitales.',
-                'Join successful entrepreneurs who have already transformed their businesses with our digital solutions.'
-              )}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a
-                href="#contact"
-                className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-300 inline-flex items-center"
-              >
-                {t('testimonials_cta_button', 'Comenzar Mi Proyecto', 'Start My Project')}
-                <i className="ri-arrow-right-line ml-2"></i>
-              </a>
-              <a
-                href="https://wa.me/1234567890"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors duration-300 inline-flex items-center"
-              >
-                {t('testimonials_cta_whatsapp', 'Consulta por WhatsApp', 'WhatsApp Consultation')}
-                <i className="ri-whatsapp-line ml-2"></i>
-              </a>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   )

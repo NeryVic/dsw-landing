@@ -67,7 +67,7 @@ export default function FeaturesSection() {
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
                   Arquitectura escalable en la nube
                 </li>
-                <li className="flex items-center text-gray-700">
+                <li className="flex items-center text-gray-700 dark:text-gray-300">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
                   Seguridad de nivel empresarial
                 </li>
@@ -77,7 +77,7 @@ export default function FeaturesSection() {
                 </li>
               </ul>
             </div>
-            <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl p-8 text-white">
+            <div className="bg-gradient-to-br from-blue-800 to-purple-900 rounded-xl p-8 text-white">
               <div className="text-center">
                 <div className="text-4xl mb-4">📊</div>
                 <h4 className="text-2xl font-bold mb-2">Analytics en Tiempo Real</h4>

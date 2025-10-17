@@ -6,9 +6,10 @@ export const SITE_CONFIG = {
   ogImage: '/images/og-digital-solutions.jpg',
   keywords: 'landing pages, sistemas web, POS, reservas, ecommerce, desarrollo web, soluciones digitales, páginas web',
   links: {
-    whatsapp: 'https://wa.me/1234567890',
-    instagram: 'https://instagram.com/digitalsolutionsweb',
-    linkedin: 'https://linkedin.com/company/digital-solutions-web',
+    whatsapp: 'https://wa.me/+5493704360388',
+    instagram: 'https://instagram.com/dsw3.0',
+    linkedin1: 'https://www.linkedin.com/in/nerydev-2206-it/',
+    linkedin2: 'https://www.linkedin.com/in/alejandro-pintos-44b0a62a6/',
     email: 'digitalsolutionsweb3.0@gmail.com'
   }
 }
@@ -17,21 +18,23 @@ export const NAVIGATION_ITEMS = [
   { name: 'Inicio', href: '#hero', nameEn: 'Home' },
   { name: 'Servicios', href: '#services', nameEn: 'Services' },
   { name: '¿Por qué nosotros?', href: '#why-choose-us', nameEn: 'Why Choose Us' },
+  { name: 'Proceso', href: '#process', nameEn: 'Process' },
   { name: 'Testimonios', href: '#testimonials', nameEn: 'Testimonials' },
   //{ name: 'Contacto', href: '#contact', nameEn: 'Contact' }
 ]
 
 export const CONTACT_INFO = {
-  email: 'digitalsolutionsweb3.0@gmail.com',
-  phone: '+1 (555) 123-4567',
-  whatsapp: '+1 (555) 123-4567',
+  email: SITE_CONFIG.links.email,
+  phone: '+54 9 3704 360388',
+  whatsapp: SITE_CONFIG.links.whatsapp,
   address: 'Formosa, Argentina'
 }
 
 export const SOCIAL_LINKS = [
-  { name: 'WhatsApp', url: 'https://wa.me/1234567890', icon: 'whatsapp' },
-  { name: 'Instagram', url: 'https://www.instagram.com/dsw3.0', icon: 'instagram' },
-  { name: 'LinkedIn', url: 'https://linkedin.com/company/digital-solutions-web', icon: 'linkedin' }
+  { name: 'WhatsApp', url: SITE_CONFIG.links.whatsapp, icon: 'whatsapp' },
+  { name: 'Instagram', url: SITE_CONFIG.links.instagram, icon: 'instagram' },
+  { name: 'LinkedIn', url: SITE_CONFIG.links.linkedin1, icon: 'linkedin' },
+  { name: 'LinkedIn2', url: SITE_CONFIG.links.linkedin2, icon: 'linkedin' },
 ]
 
 export const SERVICES = [
@@ -80,8 +83,8 @@ export const SERVICES = [
     icon: 'pos',
     features: ['Gestión de inventario', 'Reportes en tiempo real', 'Multi-usuario', 'Facturación'],
     featuresEn: ['Inventory management', 'Real-time reports', 'Multi-user', 'Billing'],
-    price: 'Desde $1199',
-    priceEn: 'From $1199'
+    price: 'Desde $15/mes',
+    priceEn: 'From $15/month'
   },
  
 ]
