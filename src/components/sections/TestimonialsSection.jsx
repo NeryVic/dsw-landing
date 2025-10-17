@@ -58,9 +58,17 @@ export default function TestimonialsSection() {
 
               {/* Author */}
               <div className="flex items-center">
-                <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
-                  {testimonial.name.charAt(0)}
-                </div>
+                {testimonial.avatar ? (
+                  <img
+                    src={testimonial.avatar}
+                    alt={`Avatar de ${testimonial.name}`}
+                    className="w-12 h-12 rounded-full object-cover mr-4 border-2 border-blue-400 dark:border-blue-600"
+                  />
+                ) : (
+                  <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
+                    {testimonial.name.charAt(0)}
+                  </div>
+                )}
                 <div>
                   <h4 className="font-bold text-gray-900 dark:text-white">
                     {testimonial.name}

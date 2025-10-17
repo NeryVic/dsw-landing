@@ -79,7 +79,9 @@ export default function FeaturesSection() {
             </div>
             <div className="bg-gradient-to-br from-blue-800 to-purple-900 rounded-xl p-8 text-white">
               <div className="text-center">
-                <div className="text-4xl mb-4">📊</div>
+                <div className="text-4xl mb-4">
+                  <i className="ri-bar-chart-2-line"></i>
+                </div>
                 <h4 className="text-2xl font-bold mb-2">Analytics en Tiempo Real</h4>
                 <p className="text-blue-100">
                   Monitorea el rendimiento de tu aplicación con dashboards interactivos 
