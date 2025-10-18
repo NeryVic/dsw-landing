@@ -128,7 +128,16 @@ export default function Header() {
                   key={item.name}
                   href={item.href}
                   onClick={() => setActiveId(item.href)}
-                  className={`group relative px-1 py-2 -my-2 inline-flex items-center transition-colors duration-200 ${isActive ? (isScrolled ? 'text-blue-600 dark:text-blue-400 font-semibold' : 'text-white font-semibold') : (isScrolled ? 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-white hover:text-white/80')}`}
+                  className={`group relative px-1 py-2 -my-2 inline-flex items-center transition-colors duration-200
+                    ${isActive
+                      ? (isScrolled
+                        ? 'text-blue-600 dark:text-blue-400 font-semibold'
+                        : 'text-white font-semibold')
+                      : (isScrolled
+                        ? 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
+                        : 'text-white hover:text-blue-100')
+                    }
+                  `}
                   aria-current={isActive ? 'page' : undefined}
                 >
                   <span className="relative z-10">
@@ -136,10 +145,10 @@ export default function Header() {
                   </span>
                   {/* animated underline: blurred glow + crisp line */}
                   <span className={`absolute left-0 bottom-0 h-1 rounded-full pointer-events-none transform origin-left transition-all duration-300 ${isActive ? 'opacity-100 translate-x-0 scale-x-100' : 'opacity-0 -translate-x-2 scale-x-75 group-hover:opacity-100 group-hover:translate-x-0 group-hover:scale-x-100'}`} style={{width: '100%'}}>
-                    {/* blurred glow */}
-                    <span className="block w-full h-full rounded-full bg-gradient-to-r from-blue-600 to-purple-600 opacity-60 filter blur-sm" />
-                    {/* crisp line */}
-                    <span className="block w-full h-0.5 rounded-full mt-[-0.35rem] bg-gradient-to-r from-white/90 via-white/40 to-transparent opacity-90 mix-blend-screen" />
+          {/* blurred glow */}
+          <span className="block w-full h-full rounded-full bg-gradient-to-r from-blue-700 via-blue-500 to-white/50 opacity-80 filter blur-md bg-clip-padding" />
+          {/* crisp line */}
+          <span className="block w-full h-0.5 rounded-full mt-[-0.35rem] bg-gradient-to-r from-blue-700 via-blue-500 to-white/90 dark:from-white/90 dark:via-white/40 dark:to-transparent opacity-100 mix-blend-screen" />
                   </span>
                 </Link>
               )

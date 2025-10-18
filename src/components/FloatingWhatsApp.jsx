@@ -63,20 +63,6 @@ export default function FloatingWhatsApp() {
           <div className="absolute top-1/2 left-full w-0 h-0 border-l-4 border-l-gray-800 border-y-4 border-y-transparent transform -translate-y-1/2"></div>
         </div>
       </button>
-
-      {/* Botón para ocultar (opcional) */}
-      <button
-        onClick={() => setIsVisible(false)}
-        className={`
-          absolute -top-2 -right-2 w-6 h-6 bg-gray-600 hover:bg-gray-700 
-          rounded-full flex items-center justify-center text-white text-xs
-          transition-all duration-200 ${isHovered ? 'opacity-100' : 'opacity-0'}
-          focus:outline-none focus:ring-2 focus:ring-gray-400
-        `}
-        aria-label="Ocultar botón de WhatsApp"
-      >
-        ×
-      </button>
     </div>
   );
 }
