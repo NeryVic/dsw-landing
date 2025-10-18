@@ -1,10 +1,12 @@
 'use client'
 
+import React, { useEffect, useRef } from 'react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { testimonialsData } from '@/data/testimonials'
 
 export default function TestimonialsSection() {
   const { language, t } = useLanguage()
+  const testimonialsRef = useRef(null)
 
   // Función para renderizar estrellas
   const renderStars = (rating) => {
@@ -19,6 +21,45 @@ export default function TestimonialsSection() {
       </span>
     ))
   }
+
+  // Animación GSAP para las tarjetas de testimonios
+  useEffect(() => {
+    let ctx = null
+
+    async function initTestimonialsAnim() {
+      try {
+        const mod = await import('gsap')
+        const gsapLib = mod.default ?? mod
+        const stMod = await import('gsap/dist/ScrollTrigger')
+        const ScrollTrigger = stMod.default ?? stMod
+        try { gsapLib.registerPlugin && gsapLib.registerPlugin(ScrollTrigger) } catch (e) {}
+
+        const cards = testimonialsRef.current ? Array.from(testimonialsRef.current.querySelectorAll('.testimonial-card')) : []
+        if (cards.length === 0) return
+
+        // Animación de derecha a izquierda
+        ctx = gsapLib.context(() => {
+          gsapLib.from(cards, {
+            opacity: 0,
+            x: 50, // Animar desde la derecha
+            duration: 0.8,
+            stagger: { amount: 0.4, from: 'start' }, // 'from: start' para que sea de izq a der en el grid
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: testimonialsRef.current,
+              start: 'top 80%',
+              toggleActions: 'play none none reverse'
+            }
+          })
+        }, testimonialsRef)
+      } catch (err) {
+        // Progressive enhancement: la animación no es crítica
+      }
+    }
+
+    initTestimonialsAnim()
+    return () => ctx && ctx.revert()
+  }, [])
 
   return (
     <section id="testimonials" className="py-20 bg-white dark:bg-black">
@@ -40,11 +81,11 @@ export default function TestimonialsSection() {
         </div>
 
         {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div ref={testimonialsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonialsData.map((testimonial, index) => (
             <div 
               key={testimonial.id}
-              className="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+              className="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 testimonial-card"
             >
               {/* Rating */}
               <div className="flex mb-4">

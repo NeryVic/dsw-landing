@@ -25,11 +25,7 @@ export default function Home() {
       <WhyChooseUsSection />
       <TrustAndProcessSection />
       <TestimonialsSection />
-
-      {/* Sección secundaria - lazy loading */}
-      <LazySection animationClass="animate-fadeout duration-1000">
         <FeaturesSection />
-      </LazySection>
     </div>
   );
 }

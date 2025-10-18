@@ -1,17 +1,30 @@
 'use client'
 
-import { Card, CardContent, CardHeader } from '@/components/ui/Card'
+import React, { useRef } from 'react'
 import { featuresData } from '@/data/features'
+import { Card, CardContent, CardHeader } from '@/components/ui/Card'
+import { useGsapStagger } from '@/hooks/useGsapStagger'
 
-// Mapeo de iconos para cada característica
 const FeatureIcons = {
-  'speed': 'ri-flashlight-line',
-  'user-friendly': 'ri-user-smile-line', 
-  'security': 'ri-shield-check-line',
-  'support': 'ri-customer-service-line'
+  'speed': <i className="ri-flashlight-line text-2xl text-blue-600"></i>,
+  'user-friendly': <i className="ri-user-smile-line text-2xl text-blue-600"></i>,
+  'security': <i className="ri-shield-check-line text-2xl text-blue-600"></i>,
+  'support': <i className="ri-customer-service-line text-2xl text-blue-600"></i>
+}
+
+// ✅ Definir opciones fuera del componente (constante estática)
+const FEATURES_ANIMATION = {
+  opacity: 0,
+  y: -30,
+  duration: 0.7,
+  stagger: { amount: 0.5, from: 'start' },
+  ease: 'power2.inOut'
 }
 
 export default function FeaturesSection() {
+  const gridRef = useRef(null)
+  useGsapStagger(gridRef, '.feature-item', FEATURES_ANIMATION)
+
   return (
     <section id="features" className="py-20 bg-white dark:bg-black">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -27,12 +40,12 @@ export default function FeaturesSection() {
         </div>
 
         {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {featuresData.map((feature) => (
-            <Card key={feature.id} className="text-center hover:shadow-lg transition-shadow duration-300">
+            <Card key={feature.id} className="text-center hover:shadow-lg transition-shadow duration-300 feature-item">
               <CardHeader>
                 <div className="w-16 h-16 bg-blue-100 dark:bg-blue-950/50 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <i className={`${FeatureIcons[feature.icon]} text-2xl text-blue-600`}></i>
+                  {FeatureIcons[feature.icon]}
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                   {feature.title}

@@ -8,6 +8,7 @@ import { useWssp } from '@/hooks/wssp'
 export default function TrustAndProcessSection() {
   const { language, t } = useLanguage()
   const { openWhatsApp } = useWssp()
+  const trustTitleRef = useRef(null)
   const ctaRef = useRef(null)
   const ctaTitleRef = useRef(null)
   const ctaDescRef = useRef(null)
@@ -27,25 +28,25 @@ export default function TrustAndProcessSection() {
         // Respect user's reduced-motion preference
         const prefersReduced = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
         if (prefersReduced) {
-          console.warn('[GSAP] prefers-reduced-motion está activado, pero se fuerza la animación para pruebas.')
+          console.warn('prefers-reduced-motion está activado')
           // No retornamos, forzamos animación
         }
 
         if (gsapLib.context) {
           ctx = gsapLib.context(() => {
-            // 1. Animación para el encabezado del proceso (CTA)
-            if (ctaRef.current) {
-              const tl = gsapLib.timeline({
+            // Animación de entrada para el título de Trust Signals
+            if (trustTitleRef.current) {
+              gsapLib.from(trustTitleRef.current, {
+                opacity: 0,
+                y: 10,
+                duration: 0.8,
+                ease: 'power2.out',
                 scrollTrigger: {
-                  trigger: ctaRef.current,
+                  trigger: trustTitleRef.current,
                   start: 'top 85%',
                   toggleActions: 'play none none reverse'
                 }
               })
-              tl.from(ctaTitleRef.current, { opacity: 0, y: 10, duration: 0.8, ease: 'power2.out' })
-                .from(ctaDescRef.current, { opacity: 0, y: 12, duration: 0.8, ease: 'power2.out' }, '-=0.5')
-              
-              // Solo animación de entrada, sin pulso infinito
             }
 
             // 2. Animación para los pasos del proceso
@@ -148,7 +149,7 @@ export default function TrustAndProcessSection() {
             <span className="inline-block px-4 py-2 bg-purple-100 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 rounded-full text-sm font-medium mb-4">
               {t('trust_badge', 'Tu Tranquilidad es Nuestra Prioridad', 'Your Peace of Mind is Our Priority')}
             </span>
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 ref={trustTitleRef} className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
               {t('trust_title', 'Trabajamos con Garantías Reales', 'We Work with Real Guarantees')}
             </h2>
           </div>
