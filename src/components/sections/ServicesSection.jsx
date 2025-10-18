@@ -1,5 +1,6 @@
 'use client'
 
+import React, { useEffect, useRef } from 'react'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -17,6 +18,125 @@ const ServiceIcons = {
 export default function ServicesSection() {
   const { language, t } = useLanguage()
   const { openWhatsApp } = useWssp()
+  const servicesRef = useRef(null)
+  const ctaRef = useRef(null)
+  const ctaTitleRef = useRef(null)
+  const ctaDescRef = useRef(null)
+
+  useEffect(() => {
+    let ctx = null
+    let gsapLib = null
+    let st = null
+
+    async function init() {
+      try {
+        const mod = await import('gsap')
+        gsapLib = mod.default ?? mod
+        const stMod = await import('gsap/dist/ScrollTrigger')
+        st = stMod.default ?? stMod
+        try { gsapLib.registerPlugin && gsapLib.registerPlugin(st) } catch (e) {}
+
+        const cards = servicesRef.current ? Array.from(servicesRef.current.querySelectorAll('.service-card')) : []
+        if (cards.length === 0) return
+
+        // create a context for scoped animations (if gsap.context available)
+        if (gsapLib.context) {
+          ctx = gsapLib.context(() => {
+            gsapLib.from(cards, {
+              opacity: 0,
+              x: -32,
+              duration: 1.7,
+              stagger: { from: 'start' },
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: servicesRef.current,
+                start: 'top 60%',
+                toggleActions: 'play none none reverse'
+              }
+            })
+          }, servicesRef.current)
+        } else {
+          // fallback if context not available
+          gsapLib.from(cards, {
+            opacity: 0,
+            y: 30,
+            duration: 0.7,
+            stagger: 0.12,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: servicesRef.current,
+              start: 'top 80%',
+              toggleActions: 'play none none reverse'
+            }
+          })
+        }
+      } catch (err) {
+        // ignore - animation is progressive enhancement
+      }
+    }
+
+    init()
+
+    return () => {
+      try { ctx && ctx.revert && ctx.revert() } catch (e) {}
+      try { st && st.kill && st.kill() } catch (e) {}
+    }
+  }, [])
+
+  // CTA animation: entrada sutil y pulso discreto en el título
+  useEffect(() => {
+    let ctx = null
+    async function initCTA() {
+      try {
+        const mod = await import('gsap')
+        const gsapLib = mod.default ?? mod
+        const stMod = await import('gsap/dist/ScrollTrigger')
+        const ScrollTrigger = stMod.default ?? stMod
+        try { gsapLib.registerPlugin && gsapLib.registerPlugin(ScrollTrigger) } catch (e) {}
+
+        if (!ctaRef.current) return
+
+        if (gsapLib.context) {
+          ctx = gsapLib.context(() => {
+            const tl = gsapLib.timeline({
+              scrollTrigger: {
+                trigger: ctaRef.current,
+                start: 'top 85%',
+                toggleActions: 'play none none reverse'
+              }
+            })
+
+            tl.from(ctaTitleRef.current, { opacity: 0, y: 18, duration: 0.8, ease: 'power2.out' })
+              .from(ctaDescRef.current, { opacity: 0, y: 12, duration: 0.8, ease: 'power2.out' }, '-=0.5')
+
+            // pulso sutil y profesional en el título
+            gsapLib.to(ctaTitleRef.current, {
+              scale: 1.02,
+              duration: 1.2,
+              ease: 'sine.inOut',
+              repeat: -1,
+              yoyo: true,
+              transformOrigin: 'center center',
+              delay: 0.3
+            })
+          }, ctaRef.current)
+        } else {
+          // fallback: simple animation without context
+          gsapLib.from(ctaTitleRef.current, { opacity: 0, y: 18, duration: 0.8, ease: 'power2.out' })
+          gsapLib.from(ctaDescRef.current, { opacity: 0, y: 12, duration: 0.8, ease: 'power2.out', delay: 0.3 })
+          gsapLib.to(ctaTitleRef.current, { scale: 1.02, duration: 1.2, ease: 'sine.inOut', repeat: -1, yoyo: true, transformOrigin: 'center center', delay: 0.6 })
+        }
+      } catch (e) {
+        // progressive enhancement: ignore errors
+      }
+    }
+
+    initCTA()
+
+    return () => {
+      try { ctx && ctx.revert && ctx.revert() } catch (e) {}
+    }
+  }, [])
 
   const handleServiceQuote = (serviceName) => {
     const message = language === 'es' 
@@ -52,9 +172,9 @@ export default function ServicesSection() {
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+        <div ref={servicesRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           {SERVICES.map((service, index) => (
-            <Card key={service.id} className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg bg-white dark:bg-gray-900 hover:scale-105">
+            <Card key={service.id} className="service-card group hover:shadow-xl transition-all duration-300 border-0 shadow-lg bg-white dark:bg-gray-900 hover:scale-105">
               <CardHeader className="text-center pb-4">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 rounded-xl mx-auto mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
                   {ServiceIcons[service.icon]}
@@ -95,11 +215,11 @@ export default function ServicesSection() {
         </div>
 
         {/* CTA Section */}
-        <div className="text-center bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-12 text-white">
-          <h3 className="text-3xl font-bold mb-4">
+        <div ref={ctaRef} className="text-center bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-12 text-white">
+          <h3 ref={ctaTitleRef} className="text-3xl font-bold mb-4">
             {t('services_cta_title', '¿No encuentras lo que buscas?', "Can't find what you're looking for?")}
           </h3>
-          <p className="text-xl mb-8 opacity-90">
+          <p ref={ctaDescRef} className="text-xl mb-8 opacity-90">
             {t('services_cta_description', 
               'Desarrollamos soluciones personalizadas para tu negocio. Cuéntanos tu idea y la haremos realidad.',
               'We develop custom solutions for your business. Tell us your idea and we\'ll make it happen.'
