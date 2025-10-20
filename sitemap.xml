@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://digitalsolutionsweb.com.ar/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://digitalsolutionsweb.com.ar/#services</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://digitalsolutionsweb.com.ar/#why-choose-us</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://digitalsolutionsweb.com.ar/#process</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://digitalsolutionsweb.com.ar/#testimonials</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://digitalsolutionsweb.com.ar/#features</loc>
+    <priority>0.5</priority>
+  </url>
+</urlset>
