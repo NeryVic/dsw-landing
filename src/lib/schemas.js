@@ -1,26 +1,28 @@
+import { SITE_CONFIG, CONTACT_INFO } from './constants'
+
 export const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "Digital Solutions Web",
+  "name": SITE_CONFIG.name,
   "alternateName": "DSW",
-  "description": "Empresa especializada en desarrollo de landing pages, sistemas POS, ecommerce y sistemas de reservas para empresas y emprendedores",
-  "url": "https://digitalsolutionsweb.com",
-  "logo": "https://digitalsolutionsweb.com/images/logo.png",
-  "image": "https://digitalsolutionsweb.com/images/og-digital-solutions.jpg",
-  "telephone": "+1-555-123-4567",
-  "email": "contacto@digitalsolutionsweb.com",
+  "description": SITE_CONFIG.description,
+  "url": SITE_CONFIG.url,
+  "logo": `${SITE_CONFIG.url}/images/logo.png`,
+  "image": `${SITE_CONFIG.url}${SITE_CONFIG.ogImage}`,
+  "telephone": CONTACT_INFO.phone,
+  "email": CONTACT_INFO.email,
   "foundingDate": "2024",
   "address": {
     "@type": "PostalAddress",
-    "addressCountry": "MX",
-    "addressLocality": "Tu Ciudad"
+    "addressCountry": "AR",
+    "addressLocality": "Formosa"
   },
   "contactPoint": [
     {
       "@type": "ContactPoint",
-      "telephone": "+1-555-123-4567",
+      "telephone": CONTACT_INFO.phone,
       "contactType": "customer service",
-      "areaServed": ["MX", "US"],
+      "areaServed": ["AR", "US"],
       "availableLanguage": ["Spanish", "English"],
       "hoursAvailable": {
         "@type": "OpeningHoursSpecification",
@@ -31,13 +33,13 @@ export const organizationSchema = {
     }
   ],
   "sameAs": [
-    "https://instagram.com/digitalsolutionsweb",
-    "https://linkedin.com/company/digital-solutions-web",
-    "https://wa.me/1234567890"
+    SITE_CONFIG.links.instagram,
+    SITE_CONFIG.links.linkedin1,
+    SITE_CONFIG.links.whatsapp
   ],
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
-    "name": "Servicios de Digital Solutions Web",
+    "name": `Servicios de ${SITE_CONFIG.name}`,
     "itemListElement": [
       {
         "@type": "Service",
@@ -45,7 +47,7 @@ export const organizationSchema = {
         "description": "Páginas web optimizadas para conversión que atraen y convierten visitantes en clientes",
         "provider": {
           "@type": "Organization",
-          "name": "Digital Solutions Web"
+          "name": SITE_CONFIG.name
         },
         "offers": {
           "@type": "Offer",
@@ -54,16 +56,16 @@ export const organizationSchema = {
           "priceValidUntil": "2025-12-31",
           "availability": "https://schema.org/InStock"
         },
-        "areaServed": ["MX", "US"],
+        "areaServed": ["AR", "US"],
         "serviceType": "Web Development"
       },
       {
-        "@type": "Service", 
+        "@type": "Service",
         "name": "Sistemas POS",
         "description": "Sistemas de punto de venta completos para gestionar tu negocio de manera eficiente",
         "provider": {
           "@type": "Organization",
-          "name": "Digital Solutions Web"
+          "name": SITE_CONFIG.name
         },
         "offers": {
           "@type": "Offer",
@@ -72,16 +74,16 @@ export const organizationSchema = {
           "priceValidUntil": "2025-12-31",
           "availability": "https://schema.org/InStock"
         },
-        "areaServed": ["MX", "US"],
+        "areaServed": ["AR", "US"],
         "serviceType": "Software Development"
       },
       {
         "@type": "Service",
-        "name": "Desarrollo de Ecommerce", 
+        "name": "Desarrollo de Ecommerce",
         "description": "Tiendas online completas con pasarelas de pago y gestión de productos",
         "provider": {
           "@type": "Organization",
-          "name": "Digital Solutions Web"
+          "name": SITE_CONFIG.name
         },
         "offers": {
           "@type": "Offer",
@@ -90,7 +92,7 @@ export const organizationSchema = {
           "priceValidUntil": "2025-12-31",
           "availability": "https://schema.org/InStock"
         },
-        "areaServed": ["MX", "US"],
+        "areaServed": ["AR", "US"],
         "serviceType": "Ecommerce Development"
       },
       {
@@ -99,7 +101,7 @@ export const organizationSchema = {
         "description": "Plataformas de reservas online para restaurantes, salones, consultorios y más",
         "provider": {
           "@type": "Organization",
-          "name": "Digital Solutions Web"
+          "name": SITE_CONFIG.name
         },
         "offers": {
           "@type": "Offer",
@@ -108,7 +110,7 @@ export const organizationSchema = {
           "priceValidUntil": "2025-12-31",
           "availability": "https://schema.org/InStock"
         },
-        "areaServed": ["MX", "US"],
+        "areaServed": ["AR", "US"],
         "serviceType": "Software Development"
       }
     ]
@@ -118,21 +120,21 @@ export const organizationSchema = {
 export const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "Digital Solutions Web",
-  "url": "https://digitalsolutionsweb.com",
-  "description": "Soluciones digitales profesionales: landing pages, sistemas POS, ecommerce y reservas",
+  "name": SITE_CONFIG.name,
+  "url": SITE_CONFIG.url,
+  "description": SITE_CONFIG.description,
   "inLanguage": ["es", "en"],
   "potentialAction": {
     "@type": "SearchAction",
-    "target": "https://digitalsolutionsweb.com/buscar?q={search_term_string}",
+    "target": `${SITE_CONFIG.url}/buscar?q={search_term_string}`,
     "query-input": "required name=search_term_string"
   },
   "publisher": {
     "@type": "Organization",
-    "name": "Digital Solutions Web",
+    "name": SITE_CONFIG.name,
     "logo": {
       "@type": "ImageObject",
-      "url": "https://digitalsolutionsweb.com/images/logo.png"
+      "url": `${SITE_CONFIG.url}/images/logo.png`
     }
   }
 }

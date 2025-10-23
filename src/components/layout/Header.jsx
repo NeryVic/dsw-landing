@@ -11,7 +11,6 @@ import { useWssp } from '@/hooks/wssp'
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isMounted, setIsMounted] = useState(false)
   const { language, toggleLanguage, t, isInitialized } = useLanguage()
   const { theme, toggleTheme } = useTheme()
   const { openWhatsApp } = useWssp()
@@ -20,7 +19,7 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
 
   useEffect(() => {
-    setIsMounted(true)
+    // Eliminado isMounted
   }, [])
 
   // Detectar si el usuario hizo scroll para cambiar la transparencia del header
@@ -66,7 +65,7 @@ export default function Header() {
     if (hash) setActiveId(hash)
 
     return () => observer.disconnect()
-  }, [isMounted])
+  }, [])
 
   const handleStartProject = () => {
     const message = language === 'es'
@@ -76,7 +75,7 @@ export default function Header() {
   }
 
   // No renderizar hasta que esté montado en el cliente
-  if (!isMounted || !t || typeof t !== 'function') {
+  if (!t || typeof t !== 'function') {
     return (
       <header className="fixed top-0 w-full bg-white/90 dark:bg-black/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 z-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -92,18 +91,18 @@ export default function Header() {
     )
   }
 
-  const headerBgClass = isScrolled
+  const headerBgClass = (isScrolled || isMobileMenuOpen)
     ? 'bg-white/90 dark:bg-black/90 border-b border-gray-200 dark:border-gray-800 backdrop-blur-sm'
     : 'bg-transparent border-transparent'
 
   return (
-    <header className={`fixed top-0 w-full z-50 transition-colors duration-300 ${headerBgClass}`}>
+  <header className={`fixed top-0 w-full z-50 transition-colors duration-300 ${headerBgClass} ${isMobileMenuOpen ? 'bg-white dark:bg-black bg-opacity-100' : ''}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center relative dark:bg-gradient-to-br dark:from-blue-400 dark:to-purple-800">
+              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center relative dark:bg-gradient-to-br dark:from-blue-400 dark:to-purple-800 logo-mobile">
                 <Image 
                   src="/images/icons/logoo.png" 
                   alt="Logo Digital Solutions Web" 
@@ -113,7 +112,7 @@ export default function Header() {
                   priority={true}
                 />
               </div>
-              <span className={`text-xl font-bold ${isScrolled ? 'text-gray-900 dark:text-white' : 'text-white dark:text-white'}`}>
+              <span className={`text-xl font-bold ${(isScrolled || isMobileMenuOpen) ? 'text-gray-900 dark:text-white' : 'text-white dark:text-white'}`}>
                 Digital Solutions Web
               </span>
             </Link>
@@ -156,11 +155,11 @@ export default function Header() {
           </nav>
 
           {/* Controls */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 pr-4 md:pr-0">
             {/* Language Toggle */}
             <button
               onClick={toggleLanguage}
-              className={`p-2 ${isScrolled ? 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-white hover:text-white/80'} transition-colors`}
+              className={`p-2 ${isMobileMenuOpen ? 'text-black dark:text-white' : (isScrolled ? 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-white hover:text-white/80')} transition-colors`}
               aria-label="Toggle language"
             >
               <span className="text-sm font-medium">
@@ -171,7 +170,7 @@ export default function Header() {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className={`p-2 ${isScrolled ? 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-white hover:text-white/80'} transition-colors`}
+              className={`p-2 ${isMobileMenuOpen ? 'text-black dark:text-white' : (isScrolled ? 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-white hover:text-white/80')} transition-colors`}
               aria-label="Toggle theme"
             >
               {theme === 'light' ? (
@@ -190,17 +189,18 @@ export default function Header() {
 
             {/* Mobile menu button */}
             <button 
-              className={`md:hidden p-2 ${isScrolled ? 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-white hover:text-white/80'}`}
+              className={`md:hidden p-2 mr-2 ${isMobileMenuOpen ? 'text-black dark:text-white' : (isScrolled ? 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-white hover:text-white/80')}`}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Abrir menú"
             >
-              <i className={`${isMobileMenuOpen ? 'ri-close-line' : 'ri-menu-line'} text-xl`}></i>
+              <i className={`${isMobileMenuOpen ? 'ri-close-line' : 'ri-menu-line'} text-2xl`}></i>
             </button>
           </div>
         </div>
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-200 dark:border-gray-800">
+          <div className="md:hidden py-4 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-black bg-opacity-100">
             <nav className="flex flex-col space-y-4">
               {NAVIGATION_ITEMS.map((item) => {
                 const isActive = activeId === item.href
@@ -225,8 +225,8 @@ export default function Header() {
                   </Link>
                 )
               })}
-              <div className="flex flex-col space-y-2 pt-4">
-                <Button size="sm" onClick={handleStartProject}>
+              <div className="flex flex-col space-y-2 pt-4 px-4">
+                <Button size="sm" onClick={handleStartProject} className="w-full max-w-xs mx-auto">
                   {t('cta', 'Empezar Proyecto', 'Start Project')}
                 </Button>
               </div>
