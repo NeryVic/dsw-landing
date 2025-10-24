@@ -60,8 +60,8 @@ export default function WhyChooseUsSection() {
     return () => { try { ctx && ctx.revert && ctx.revert() } catch (e) {} }
   }, [])
 
-  return (
-    <section id="why-choose-us" className="py-20 bg-gray-50 dark:bg-black">
+    return (
+      <section id="why-choose-us" className="py-20 bg-gradient-to-r from-[#1C3166]/10 via-[#00A9D4]/10 to-white dark:from-[#1C0021]/40 dark:via-[#240047]/40 dark:to-black">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">

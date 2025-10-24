@@ -215,7 +215,7 @@ export default function ServicesSection() {
         </div>
 
         {/* CTA Section */}
-        <div ref={ctaRef} className="text-center bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-12 text-white">
+        <div ref={ctaRef} className="text-center bg-gradient-to-r from-[#00A9D4] to-[#1C3166] rounded-2xl p-12 text-white">
           <h3 ref={ctaTitleRef} className="text-3xl font-bold mb-4">
             {t('services_cta_title', '¿No encuentras lo que buscas?', "Can't find what you're looking for?")}
           </h3>

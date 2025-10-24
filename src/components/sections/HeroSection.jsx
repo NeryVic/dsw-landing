@@ -34,7 +34,7 @@ export default function HeroSection() {
         {/* Dark overlay for better text readability */}
         <div className="absolute inset-0 bg-black/50 transition-opacity duration-500 group-hover:bg-black/40"></div>
         {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1C3166]/80 via-[#00A9D4]/40 to-transparent"></div>
       </div>
 
       {/* Content */}
@@ -43,7 +43,7 @@ export default function HeroSection() {
           {/* Badge */}
           <div className="mb-8">
             <span className="inline-block px-6 py-3 bg-white/10 backdrop-blur-sm text-white border border-white/20 rounded-full text-sm font-medium">
-              {t('hero_badge', 'Soluciones Digitales Profesionales', '🚀 Professional Digital Solutions')}
+              {t('hero_badge', 'Soluciones Digitales Profesionales', ' Professional Digital Solutions')}
             </span>
           </div>
           
@@ -52,10 +52,10 @@ export default function HeroSection() {
             <span className="block">
               {t('hero_title_line1', 'DIGITAL', 'DIGITAL')}
             </span>
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-purple-600">
+              <span className="block  bg-clip-text bg-gradient-to-r from-[#00A9D4] to-[#1C0021]">
               {t('hero_title_line2', 'SOLUTIONS', 'SOLUTIONS')}
             </span>
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-white/40 to-white">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#40FFDC]/60 to-white">
               {t('hero_title_line3', 'WEB', 'WEB')}
             </span>
           </h1>
@@ -80,7 +80,7 @@ export default function HeroSection() {
           <div className="flex flex-col sm:flex-row gap-4 mb-16">
             <Button 
               size="lg" 
-              className="px-8 py-4 text-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 shadow-xl inline-flex items-center justify-center"
+              className="px-8 py-4 text-lg bg-gradient-to-r from-[#00A9D4] to-[#1C3166] hover:from-[#40FFDC] hover:to-[#240047] text-white border-0 shadow-xl inline-flex items-center justify-center"
               onClick={handleStartProject}
             >
               {t('hero_cta_primary', 'Empezar Mi Proyecto', 'Start My Project')}

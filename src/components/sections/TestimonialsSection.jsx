@@ -14,7 +14,7 @@ export default function TestimonialsSection() {
       <span
         key={index}
         className={`text-lg ${
-          index < rating ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-700'
+          index < rating ? 'text-[#40FFDC]' : 'text-gray-300 dark:text-gray-700'
         }`}
       >
         ★
@@ -62,7 +62,7 @@ export default function TestimonialsSection() {
   }, [])
 
   return (
-    <section id="testimonials" className="py-20 bg-white dark:bg-black">
+    <section id="testimonials" className="py-20 bg-gradient-to-r from-[#1C3166]/10 via-[#00A9D4]/10 to-white dark:from-[#1C0021]/40 dark:via-[#240047]/40 dark:to-black">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">

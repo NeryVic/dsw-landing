@@ -6,10 +6,10 @@ import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import { useGsapStagger } from '@/hooks/useGsapStagger'
 
 const FeatureIcons = {
-  'speed': <i className="ri-flashlight-line text-2xl text-blue-600"></i>,
-  'user-friendly': <i className="ri-user-smile-line text-2xl text-blue-600"></i>,
-  'security': <i className="ri-shield-check-line text-2xl text-blue-600"></i>,
-  'support': <i className="ri-customer-service-line text-2xl text-blue-600"></i>
+  'speed': <i className="ri-flashlight-line text-2xl text-[#00A9D4]"></i>,
+  'user-friendly': <i className="ri-user-smile-line text-2xl text-[#00A9D4]"></i>,
+  'security': <i className="ri-shield-check-line text-2xl text-[#00A9D4]"></i>,
+  'support': <i className="ri-customer-service-line text-2xl text-[#00A9D4]"></i>
 }
 
 // ✅ Definir opciones fuera del componente (constante estática)
@@ -26,7 +26,7 @@ export default function FeaturesSection() {
   useGsapStagger(gridRef, '.feature-item', FEATURES_ANIMATION)
 
   return (
-    <section id="features" className="py-20 bg-white dark:bg-black">
+  <section id="features" className="py-20 bg-gradient-to-r from-[#1C3166]/10 via-[#00A9D4]/10 to-white dark:from-[#1C0021]/40 dark:via-[#240047]/40 dark:to-black">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
@@ -90,7 +90,7 @@ export default function FeaturesSection() {
                 </li>
               </ul>
             </div>
-            <div className="bg-gradient-to-br from-blue-800 to-purple-900 rounded-xl p-8 text-white">
+            <div className="bg-gradient-to-br from-[#00A9D4] to-[#1C3166] rounded-xl p-8 text-white">
               <div className="text-center">
                 <div className="text-4xl mb-4">
                   <i className="ri-bar-chart-2-line"></i>
