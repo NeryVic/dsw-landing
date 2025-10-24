@@ -216,7 +216,7 @@ export default function LandingChatBot() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-[100px] right-6 w-[60px] h-[60px] rounded-full bg-blue-600 hover:bg-blue-700 text-white text-2xl shadow-lg hover:scale-110 transition-transform z-[999] flex items-center justify-center"
+          className="fixed bottom-22 right-9 z-0 md:right-20 w-[60px] h-[60px] rounded-full bg-blue-600 hover:bg-blue-700 text-white text-2xl shadow-lg hover:scale-110 transition-transform z-[999] flex items-center justify-center"
         >
           💬
         </button>
@@ -224,7 +224,7 @@ export default function LandingChatBot() {
 
       {/* Ventana del chat */}
       {isOpen && (
-        <div className="fixed bottom-[100px] right-6 w-[350px] h-[500px] bg-white dark:bg-gray-800 rounded-lg shadow-2xl z-[1000] flex flex-col overflow-hidden">
+        <div className="fixed bottom-5 right-5 w-[calc(100%-2.5rem)] h-[70vh] max-w-[350px] max-h-[500px] md:bottom-[100px] md:right-6 bg-white dark:bg-gray-800 rounded-lg shadow-2xl z-[1000] flex flex-col overflow-hidden">
           {/* Header */}
           <div className="bg-blue-600 text-white p-4 flex items-center justify-between">
             <h3 className="font-semibold">Asistente 💬</h3>

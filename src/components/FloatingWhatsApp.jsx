@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useWssp } from '@/hooks/wssp';
 import { SITE_CONFIG } from '@/lib/constants';
 
@@ -16,7 +16,7 @@ const WhatsAppIcon = ({ className = '' }) => (
 );
 
 export default function FloatingWhatsApp() {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const { openWhatsApp } = useWssp();
 
@@ -27,10 +27,14 @@ export default function FloatingWhatsApp() {
     );
   };
 
-  if (!isVisible) return null;
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-6 right-9 md:right-20 z-50">
       {/* Botón principal */}
       <button
         onClick={handleClick}
