@@ -5,6 +5,12 @@ import ServicesSection from "@/components/sections/ServicesSection";
 import WhyChooseUsSection from "@/components/sections/WhyChooseUsSection";
 import TrustAndProcessSection from "@/components/sections/TrustAndProcessSection";
 
+export const metadata = {
+  title: "Software y Sistemas a Medida para Empresas",
+  description:
+    "Desarrollamos software a medida y sistemas a medida para empresas que necesitan automatizar procesos, reducir errores y escalar su operacion.",
+};
+
 // Lazy load secciones no críticas (no están en el nav)
 const FeaturesSection = dynamic(() => import("@/components/sections/FeaturesSection"), {
   ssr: true,

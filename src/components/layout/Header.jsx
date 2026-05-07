@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { useState, useEffect, useRef } from 'react'
 import { NAVIGATION_ITEMS } from '@/lib/constants'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -101,17 +100,7 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link href="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center relative dark:bg-gradient-to-br dark:from-blue-400 dark:to-purple-800 logo-mobile">
-                <Image 
-                  src="/images/icons/logoo.png" 
-                  alt="Logo Digital Solutions Web" 
-                  width={28}
-                  height={28}
-                  className="object-contain"
-                  priority={true}
-                />
-              </div>
+            <Link href="/" className="flex items-center">
               <span className={`text-xl font-bold ${(isScrolled || isMobileMenuOpen) ? 'text-gray-900 dark:text-white' : 'text-white dark:text-white'}`}>
                 Digital Solutions Web
               </span>

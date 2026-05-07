@@ -116,22 +116,22 @@ img {
   contain-intrinsic-size: 300px;
 }
 
-/* Efecto hover para la imagen del hero */
+/* Efecto hover para el media del hero */
 #hero {
   position: relative;
 }
 
-#hero img {
+#hero .hero-media {
   transition: filter 0.5s ease-in-out, transform 0.7s ease-in-out;
 }
 
-#hero:hover img {
+#hero:hover .hero-media {
   filter: saturate(200%) brightness(100%);
   transform: scale(1.02);
 
 }
 
-/* Capa azul semi-transparente en hover */
+/* Capa oscura sutil en hover para mantener legibilidad */
 #hero::before {
   content: '';
   position: absolute;
@@ -139,7 +139,7 @@ img {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(5, 20, 31, 0.24) 0%, rgba(2, 11, 26, 0.767) 100%);
+  background: rgba(5, 20, 31, 0.24);
   opacity: 0;
   transition: opacity 0.5s ease;
   pointer-events: none;

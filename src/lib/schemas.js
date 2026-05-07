@@ -7,7 +7,7 @@ export const organizationSchema = {
   "alternateName": "DSW",
   "description": SITE_CONFIG.description,
   "url": SITE_CONFIG.url,
-  "logo": `${SITE_CONFIG.url}/images/logo.png`,
+  "logo": `${SITE_CONFIG.url}/images/icons/logoo.png`,
   "image": `${SITE_CONFIG.url}${SITE_CONFIG.ogImage}`,
   "telephone": CONTACT_INFO.phone,
   "email": CONTACT_INFO.email,
@@ -43,6 +43,24 @@ export const organizationSchema = {
     "itemListElement": [
       {
         "@type": "Service",
+        "name": "Software a Medida",
+        "description": "Desarrollo de software a medida para resolver procesos manuales y cuellos de botella operativos",
+        "provider": {
+          "@type": "Organization",
+          "name": SITE_CONFIG.name
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "1500",
+          "priceCurrency": "USD",
+          "priceValidUntil": "2027-12-31",
+          "availability": "https://schema.org/InStock"
+        },
+        "areaServed": ["AR", "US"],
+        "serviceType": "Software Development"
+      },
+      {
+        "@type": "Service",
         "name": "Landing Pages Profesionales",
         "description": "Páginas web optimizadas para conversión que atraen y convierten visitantes en clientes",
         "provider": {
@@ -53,7 +71,7 @@ export const organizationSchema = {
           "@type": "Offer",
           "price": "299",
           "priceCurrency": "USD",
-          "priceValidUntil": "2025-12-31",
+          "priceValidUntil": "2027-12-31",
           "availability": "https://schema.org/InStock"
         },
         "areaServed": ["AR", "US"],
@@ -71,7 +89,7 @@ export const organizationSchema = {
           "@type": "Offer",
           "price": "799",
           "priceCurrency": "USD",
-          "priceValidUntil": "2025-12-31",
+          "priceValidUntil": "2027-12-31",
           "availability": "https://schema.org/InStock"
         },
         "areaServed": ["AR", "US"],
@@ -89,7 +107,7 @@ export const organizationSchema = {
           "@type": "Offer",
           "price": "999",
           "priceCurrency": "USD",
-          "priceValidUntil": "2025-12-31",
+          "priceValidUntil": "2027-12-31",
           "availability": "https://schema.org/InStock"
         },
         "areaServed": ["AR", "US"],
@@ -107,7 +125,7 @@ export const organizationSchema = {
           "@type": "Offer",
           "price": "599", 
           "priceCurrency": "USD",
-          "priceValidUntil": "2025-12-31",
+          "priceValidUntil": "2027-12-31",
           "availability": "https://schema.org/InStock"
         },
         "areaServed": ["AR", "US"],
@@ -124,17 +142,12 @@ export const websiteSchema = {
   "url": SITE_CONFIG.url,
   "description": SITE_CONFIG.description,
   "inLanguage": ["es", "en"],
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": `${SITE_CONFIG.url}/buscar?q={search_term_string}`,
-    "query-input": "required name=search_term_string"
-  },
   "publisher": {
     "@type": "Organization",
     "name": SITE_CONFIG.name,
     "logo": {
       "@type": "ImageObject",
-      "url": `${SITE_CONFIG.url}/images/logo.png`
+      "url": `${SITE_CONFIG.url}/images/icons/logoo.png`
     }
   }
 }

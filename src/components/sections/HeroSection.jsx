@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import Button from '@/components/ui/Button'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { useWssp } from '@/hooks/wssp'
@@ -11,114 +10,97 @@ export default function HeroSection() {
 
   const handleStartProject = () => {
     const message = language === 'es'
-      ? '¡Hola! Quiero empezar mi proyecto con Digital Solutions Web. Me gustaría recibir más información sobre sus servicios.'
-      : 'Hello! I want to start my project with Digital Solutions Web. I would like to receive more information about your services.'
+      ? 'Hola, quiero un diagnostico para desarrollar un sistema a medida y resolver cuellos de botella en mi operacion.'
+      : 'Hi, I want a diagnostic call to build a custom system and solve bottlenecks in my operation.'
     openWhatsApp(undefined, message)
   }
 
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden group">
-      {/* Background Image */}
+      {/* Background video */}
       <div className="absolute inset-0 z-0" suppressHydrationWarning>
-        <Image
-          src="/images/hero/dswBG.png"
-          alt="Digital Solutions Web Background"
-          fill
-          className="object-cover object-center transition-all duration-500 group-hover:saturate-[180%]"
-          priority={true}
-          quality={85}
-          sizes="100vw"
-          placeholder="blur"
-          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
-        />
-        {/* Dark overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/50 transition-opacity duration-500 group-hover:bg-black/40"></div>
-        {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#1C3166]/80 via-[#00A9D4]/40 to-transparent"></div>
+        <video
+          className="hero-media absolute inset-0 h-full w-full object-cover object-[center_top] sm:object-center"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+        >
+          <source src="/images/hero/dsw-hero2.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-black/60 transition-opacity duration-500 group-hover:bg-black/50"></div>
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-20 pt-24">
-        <div className="max-w-4xl">
-          {/* Badge */}
-          <div className="mb-8">
-            <span className="inline-block px-6 py-3 bg-white/10 backdrop-blur-sm text-white border border-white/20 rounded-full text-sm font-medium">
-              {t('hero_badge', 'Soluciones Digitales Profesionales', ' Professional Digital Solutions')}
-            </span>
-          </div>
-          
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-24 sm:py-20 sm:pt-28">
+        <div className="w-full max-w-4xl mx-auto sm:mx-0">
+
           {/* Main Heading */}
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-8 leading-tight">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-6 sm:mb-8 leading-tight text-center sm:text-left">
             <span className="block">
-              {t('hero_title_line1', 'DIGITAL', 'DIGITAL')}
+              {t('hero_title_line1', 'SISTEMAS', 'SYSTEMS')}
             </span>
-              <span className="block  bg-clip-text bg-gradient-to-r from-[#00A9D4] to-[#1C0021]">
-              {t('hero_title_line2', 'SOLUTIONS', 'SOLUTIONS')}
+            <span className="block text-[#d4e9ff]">
+              {t('hero_title_line2', 'A MEDIDA', 'BUILT AROUND')}
             </span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#40FFDC]/60 to-white">
-              {t('hero_title_line3', 'WEB', 'WEB')}
+            <span className="block text-white/85">
+              {t('hero_title_line3', 'PARA TU NEGOCIO', 'YOUR BUSINESS')}
             </span>
           </h1>
-          
+
           {/* Subtitle */}
-          <p className="text-xl sm:text-2xl text-gray-200 mb-8 max-w-3xl leading-relaxed">
-            {t('hero_subtitle', 
-              'Convertimos ideas en soluciones digitales', 
-              'We turn ideas into digital solutions'
+          <p className="text-base sm:text-xl lg:text-2xl text-gray-200 mb-6 sm:mb-8 leading-relaxed text-center sm:text-left">
+            {t('hero_subtitle',
+              'Eliminamos tareas manuales, errores operativos y falta de control con software diseñado para tu flujo real.',
+              'We remove manual work, operational errors, and blind spots with software designed for your real workflow.'
             )}
           </p>
-          
-          {/* Description */}
-          <p className="text-lg text-gray-300 mb-12 max-w-2xl">
-            {t('hero_description', 
-              'Creamos landing pages modernas y profesionales, sistemas POS eficientes, plataformas de reservas y tiendas online completas. Tu éxito digital comienza aquí.',
-              'We create profesional landing pages, efficient POS systems, booking platforms and complete online stores. Your digital success starts here.'
+
+          {/* Description — oculto en móvil para no saturar */}
+          <p className="hidden sm:block text-base lg:text-lg text-gray-300 mb-10 sm:mb-12 max-w-2xl">
+            {t('hero_description',
+              'Analizamos cómo trabaja tu equipo, detectamos cuellos de botella y construimos un sistema que automatiza lo crítico sin romper tu operación actual.',
+              'We analyze how your team works, detect bottlenecks, and build a system that automates critical tasks without disrupting your current operation.'
             )}
           </p>
-          
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-16">
-            <Button 
-              size="lg" 
-              className="px-8 py-4 text-lg bg-gradient-to-r from-[#00A9D4] to-[#1C3166] hover:from-[#40FFDC] hover:to-[#240047] text-white border-0 shadow-xl inline-flex items-center justify-center"
+
+          {/* CTA */}
+          <div className="flex justify-center sm:justify-start mb-12 sm:mb-16">
+            <Button
+              size="lg"
+              className="w-full sm:w-auto px-8 py-4 text-base sm:text-lg bg-[#0f62fe] hover:bg-[#0b4fd1] text-white border-0 shadow-xl inline-flex items-center justify-center"
               onClick={handleStartProject}
             >
-              {t('hero_cta_primary', 'Empezar Mi Proyecto', 'Start My Project')}
+              {t('hero_cta_primary', 'Quiero un Diagnostico', 'Book a Diagnostic Call')}
               <i className="ri-arrow-right-line ml-2"></i>
             </Button>
           </div>
-          
+
           {/* Trust indicators */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl">
+          <div className="grid grid-cols-3 gap-4 sm:gap-8 max-w-2xl mx-auto sm:mx-0">
             <div className="text-center sm:text-left">
-              <div className="text-4xl font-bold text-white mb-2">50+</div>
-              <div className="text-gray-300 text-sm">
-                {t('hero_stat1', 'Proyectos Exitosos', 'Successful Projects')}
+              <div className="text-2xl sm:text-4xl font-bold text-white mb-1 sm:mb-2">48h</div>
+              <div className="text-gray-300 text-xs sm:text-sm">
+                {t('hero_stat1', 'Diagnostico inicial', 'Initial diagnostic')}
               </div>
             </div>
             <div className="text-center sm:text-left">
-              <div className="text-4xl font-bold text-white mb-2">100%</div>
-              <div className="text-gray-300 text-sm">
-                {t('hero_stat2', 'Clientes Satisfechos', 'Satisfied Clients')}
+              <div className="text-2xl sm:text-4xl font-bold text-white mb-1 sm:mb-2">Sprints</div>
+              <div className="text-gray-300 text-xs sm:text-sm">
+                {t('hero_stat2', 'Implementacion por etapas', 'Phased implementation')}
               </div>
             </div>
             <div className="text-center sm:text-left">
-              <div className="text-4xl font-bold text-white mb-2">24/7</div>
-              <div className="text-gray-300 text-sm">
-                {t('hero_stat3', 'Soporte Técnico', 'Technical Support')}
+              <div className="text-2xl sm:text-4xl font-bold text-white mb-1 sm:mb-2">1:1</div>
+              <div className="text-gray-300 text-xs sm:text-sm">
+                {t('hero_stat3', 'Acompanamiento tecnico', 'Technical guidance')}
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Floating Elements */}
-      <div className="absolute top-20 right-10 w-12 h-12 bg-yellow-400/80 backdrop-blur-sm rounded-full flex items-center justify-center text-xl animate-bounce z-20">
-        💡
-      </div>
-
-    
-    
     </section>
   )
 }

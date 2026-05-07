@@ -1,10 +1,10 @@
 export const SITE_CONFIG = {
   name: 'Digital Solutions Web',
-  tagline: 'Convertimos ideas en soluciones digitales',
-  description: 'Creamos landing pages, sistemas web (POS, Reservas) y ecommerce para impulsar tu negocio. Especialistas en soluciones digitales modernas y efectivas.',
+  tagline: 'Desarrollo de software y sistemas a medida para empresas',
+  description: 'Desarrollamos software a medida y sistemas a medida para empresas que necesitan automatizar procesos, eliminar cuellos de botella y escalar su operacion con control real.',
   url: 'https://digitalsolutionsweb.com.ar',
   ogImage: '/images/og-digital-solutions.jpg',
-  keywords: 'landing pages, sistemas web, POS, reservas, ecommerce, desarrollo web, soluciones digitales, páginas web',
+  keywords: 'software a medida, sistemas a medida, desarrollo de software a medida, sistema a medida para empresas, automatizacion de procesos, desarrollo web a medida, digital solutions web',
   links: {
     whatsapp: 'https://wa.me/+5493704360388',
     instagram: 'https://instagram.com/dsw3.0',
