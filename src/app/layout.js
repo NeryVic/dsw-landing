@@ -24,6 +24,10 @@ export const metadata = {
     ? SITE_CONFIG.url 
     : 'http://localhost:3000'
   ),
+  icons: {
+    icon: '/images/icons/logoo.png',
+    apple: '/images/icons/logoo.png',
+  },
   title: {
     default: SITE_CONFIG.name,
     template: `%s | ${SITE_CONFIG.name}`
