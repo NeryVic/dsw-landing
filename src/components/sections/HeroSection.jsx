@@ -1,10 +1,12 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import Button from '@/components/ui/Button'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { useWssp } from '@/hooks/wssp'
 
 export default function HeroSection() {
+  const pathname = usePathname()
   const { t, language } = useLanguage()
   const { openWhatsApp } = useWssp()
 

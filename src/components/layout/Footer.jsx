@@ -12,8 +12,8 @@ export default function Footer() {
               DSW
             </Link>
             <p className="text-gray-600 dark:text-gray-400 mb-4 max-w-md">
-              Transformamos ideas en soluciones digitales innovadoras. 
-              Construyendo el futuro, una línea de código a la vez.
+              Ayudamos a empresas a operar mejor con sistemas a medida,
+              desarrollo web profesional y soporte técnico confiable.
             </p>
             <div className="flex space-x-4">
               {SOCIAL_LINKS.map((social) => (
@@ -42,6 +42,7 @@ export default function Footer() {
                 <li key={item.name}>
                   <Link
                     href={item.href}
+                    suppressHydrationWarning
                     className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
                   >
                     {item.name}

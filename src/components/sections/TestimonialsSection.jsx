@@ -1,12 +1,16 @@
 'use client'
 
 import React, { useEffect, useRef } from 'react'
+import { usePathname } from 'next/navigation'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { testimonialsData } from '@/data/testimonials'
 
 export default function TestimonialsSection() {
   const { language, t } = useLanguage()
+  const pathname = usePathname()
   const testimonialsRef = useRef(null)
+  const stRef = useRef(null)
+  const gsapRef = useRef(null)
 
   // Función para renderizar estrellas
   const renderStars = (rating) => {
@@ -14,7 +18,7 @@ export default function TestimonialsSection() {
       <span
         key={index}
         className={`text-lg ${
-          index < rating ? 'text-[#40FFDC]' : 'text-gray-300 dark:text-gray-700'
+          index < rating ? 'text-amber-400' : 'text-gray-300 dark:text-gray-700'
         }`}
       >
         ★
@@ -25,6 +29,7 @@ export default function TestimonialsSection() {
   // Animación GSAP para las tarjetas de testimonios
   useEffect(() => {
     let ctx = null
+    let cancelled = false
 
     async function initTestimonialsAnim() {
       try {
@@ -32,37 +37,49 @@ export default function TestimonialsSection() {
         const gsapLib = mod.default ?? mod
         const stMod = await import('gsap/dist/ScrollTrigger')
         const ScrollTrigger = stMod.default ?? stMod
-        try { gsapLib.registerPlugin && gsapLib.registerPlugin(ScrollTrigger) } catch (e) {}
+        if (cancelled) return
+        gsapLib.registerPlugin(ScrollTrigger)
+        gsapRef.current = gsapLib
+        stRef.current = ScrollTrigger
 
         const cards = testimonialsRef.current ? Array.from(testimonialsRef.current.querySelectorAll('.testimonial-card')) : []
         if (cards.length === 0) return
 
-        // Animación de derecha a izquierda
+        gsapLib.set(cards, { clearProps: 'all' })
+
         ctx = gsapLib.context(() => {
-          gsapLib.from(cards, {
-            opacity: 0,
-            x: 50, // Animar desde la derecha
-            duration: 0.8,
-            stagger: { amount: 0.4, from: 'start' }, // 'from: start' para que sea de izq a der en el grid
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: testimonialsRef.current,
-              start: 'top 80%',
-              toggleActions: 'play none none reverse'
+          gsapLib.fromTo(cards,
+            { opacity: 0, x: 50 },
+            {
+              opacity: 1,
+              x: 0,
+              duration: 0.8,
+              stagger: { amount: 0.4, from: 'start' },
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: testimonialsRef.current,
+                start: 'top 80%',
+                toggleActions: 'play none none reverse'
+              }
             }
-          })
-        }, testimonialsRef)
-      } catch (err) {
-        // Progressive enhancement: la animación no es crítica
-      }
+          )
+        }, testimonialsRef.current)
+
+        ScrollTrigger.refresh()
+      } catch (err) {}
     }
 
-    initTestimonialsAnim()
-    return () => ctx && ctx.revert()
-  }, [])
+    const raf = requestAnimationFrame(() => initTestimonialsAnim())
+
+    return () => {
+      cancelAnimationFrame(raf)
+      cancelled = true
+      try { ctx?.revert() } catch (e) {}
+    }
+  }, [pathname])
 
   return (
-    <section id="testimonials" className="py-20 bg-gradient-to-r from-[#1C3166]/10 via-[#00A9D4]/10 to-white dark:from-[#1C0021]/40 dark:via-[#240047]/40 dark:to-black">
+    <section id="testimonials" className="py-20 bg-white dark:bg-slate-950">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
@@ -85,7 +102,7 @@ export default function TestimonialsSection() {
           {testimonialsData.map((testimonial, index) => (
             <div 
               key={testimonial.id}
-              className="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 testimonial-card"
+              className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-8 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 testimonial-card"
             >
               {/* Rating */}
               <div className="flex mb-4">
@@ -106,7 +123,7 @@ export default function TestimonialsSection() {
                     className="w-12 h-12 rounded-full object-cover mr-4 border-2 border-blue-400 dark:border-blue-600"
                   />
                 ) : (
-                  <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
+                  <div className="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
                     {testimonial.name.charAt(0)}
                   </div>
                 )}

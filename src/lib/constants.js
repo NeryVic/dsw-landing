@@ -15,12 +15,12 @@ export const SITE_CONFIG = {
 }
 
 export const NAVIGATION_ITEMS = [
-  { name: 'Inicio', href: '#hero', nameEn: 'Home' },
-  { name: 'Servicios', href: '#services', nameEn: 'Services' },
-  { name: '¿Por qué nosotros?', href: '#why-choose-us', nameEn: 'Why Choose Us' },
-  { name: 'Proceso', href: '#process', nameEn: 'Process' },
-  { name: 'Testimonios', href: '#testimonials', nameEn: 'Testimonials' },
-  //{ name: 'Contacto', href: '#contact', nameEn: 'Contact' }
+  { name: 'Inicio', href: '/', nameEn: 'Home' },
+  { name: 'Servicios', href: '/servicios', nameEn: 'Services' },
+  { name: 'Sistemas a Medida', href: '/sistemas-a-medida', nameEn: 'Custom Systems' },
+  { name: 'Soporte Técnico', href: '/soporte-tecnico', nameEn: 'Technical Support' },
+  { name: 'FAQs', href: '/faqs', nameEn: 'FAQs' },
+  { name: 'Contacto', href: '/contacto', nameEn: 'Contact' }
 ]
 
 export const CONTACT_INFO = {

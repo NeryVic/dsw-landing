@@ -1,35 +1,45 @@
 'use client'
 
+import React, { useEffect, useRef } from 'react'
+import { usePathname } from 'next/navigation'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { WhyChooseUsData } from '@/data/features'
-
-import React, { useEffect, useRef } from 'react'
 
 
 
 export default function WhyChooseUsSection() {
   const { language, t } = useLanguage()
+  const pathname = usePathname()
   const gridRef = useRef(null)
+  const stRef = useRef(null)
+  const gsapRef = useRef(null)
 
   useEffect(() => {
     let ctx = null
+    let cancelled = false
+
     async function initAnim() {
       try {
         const mod = await import('gsap')
         const gsapLib = mod.default ?? mod
         const stMod = await import('gsap/dist/ScrollTrigger')
         const ScrollTrigger = stMod.default ?? stMod
-        try { gsapLib.registerPlugin && gsapLib.registerPlugin(ScrollTrigger) } catch (e) {}
+        if (cancelled) return
+        gsapLib.registerPlugin(ScrollTrigger)
+        gsapRef.current = gsapLib
+        stRef.current = ScrollTrigger
 
         const items = gridRef.current ? Array.from(gridRef.current.querySelectorAll('.why-item')) : []
         if (items.length === 0) return
 
-        // Animación de abajo hacia arriba
-        if (gsapLib.context) {
-          ctx = gsapLib.context(() => {
-            gsapLib.from(items, {
-              opacity: 0,
-              y: 32,
+        gsapLib.set(items, { clearProps: 'all' })
+
+        ctx = gsapLib.context(() => {
+          gsapLib.fromTo(items,
+            { opacity: 0, y: 32 },
+            {
+              opacity: 1,
+              y: 0,
               duration: 0.7,
               stagger: { amount: 0.5, from: 'start' },
               ease: 'power2.out',
@@ -38,30 +48,25 @@ export default function WhyChooseUsSection() {
                 start: 'top 80%',
                 toggleActions: 'play none none reverse'
               }
-            })
-          }, gridRef.current)
-        } else {
-          gsapLib.from(items, {
-            opacity: 0,
-            y: 32,
-            duration: 0.7,
-            stagger: { amount: 0.5, from: 'start' },
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: gridRef.current,
-              start: 'top 87%',
-              toggleActions: 'play none none reverse'
             }
-          })
-        }
+          )
+        }, gridRef.current)
+
+        ScrollTrigger.refresh()
       } catch (e) {}
     }
-    initAnim()
-    return () => { try { ctx && ctx.revert && ctx.revert() } catch (e) {} }
-  }, [])
+
+    const raf = requestAnimationFrame(() => initAnim())
+
+    return () => {
+      cancelAnimationFrame(raf)
+      cancelled = true
+      try { ctx?.revert() } catch (e) {}
+    }
+  }, [pathname])
 
     return (
-      <section id="why-choose-us" className="py-20 bg-gradient-to-r from-[#1C3166]/10 via-[#00A9D4]/10 to-white dark:from-[#1C0021]/40 dark:via-[#240047]/40 dark:to-black">
+      <section id="why-choose-us" className="py-20 bg-slate-50 dark:bg-slate-900">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
@@ -84,7 +89,7 @@ export default function WhyChooseUsSection() {
           {WhyChooseUsData.map((item, index) => (
             <div 
               key={item.id} 
-              className="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 why-item"
+              className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-8 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 why-item"
             >
               <div className="text-4xl mb-4 text-blue-600 dark:text-blue-400">
                 <i className={`${item.icon} text-4xl`}></i>

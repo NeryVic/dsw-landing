@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef } from 'react'
+import { usePathname } from 'next/navigation'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -22,121 +23,121 @@ export default function ServicesSection() {
   const ctaRef = useRef(null)
   const ctaTitleRef = useRef(null)
   const ctaDescRef = useRef(null)
+  const stRef = useRef(null)
+  const gsapRef = useRef(null)
+
+  const pathname = usePathname()
 
   useEffect(() => {
     let ctx = null
-    let gsapLib = null
-    let st = null
+    let cancelled = false
 
     async function init() {
       try {
         const mod = await import('gsap')
-        gsapLib = mod.default ?? mod
+        const gsapLib = mod.default ?? mod
         const stMod = await import('gsap/dist/ScrollTrigger')
-        st = stMod.default ?? stMod
-        try { gsapLib.registerPlugin && gsapLib.registerPlugin(st) } catch (e) {}
+        const ScrollTrigger = stMod.default ?? stMod
+        if (cancelled) return
+        gsapLib.registerPlugin(ScrollTrigger)
+        gsapRef.current = gsapLib
+        stRef.current = ScrollTrigger
 
         const cards = servicesRef.current ? Array.from(servicesRef.current.querySelectorAll('.service-card')) : []
         if (cards.length === 0) return
 
-        // create a context for scoped animations (if gsap.context available)
-        if (gsapLib.context) {
-          ctx = gsapLib.context(() => {
-            gsapLib.from(cards, {
-              opacity: 0,
-              x: -32,
-              duration: 1.7,
-              stagger: { from: 'start' },
+        gsapLib.set(cards, { clearProps: 'all' })
+
+        ctx = gsapLib.context(() => {
+          gsapLib.fromTo(cards,
+            { opacity: 0, x: -32 },
+            {
+              opacity: 1,
+              x: 0,
+              duration: 1.0,
+              stagger: { from: 'start', amount: 0.4 },
               ease: 'power2.out',
               scrollTrigger: {
                 trigger: servicesRef.current,
                 start: 'top 60%',
                 toggleActions: 'play none none reverse'
               }
-            })
-          }, servicesRef.current)
-        } else {
-          // fallback if context not available
-          gsapLib.from(cards, {
-            opacity: 0,
-            y: 30,
-            duration: 0.7,
-            stagger: 0.12,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: servicesRef.current,
-              start: 'top 80%',
-              toggleActions: 'play none none reverse'
             }
-          })
-        }
-      } catch (err) {
-        // ignore - animation is progressive enhancement
-      }
+          )
+        }, servicesRef.current)
+
+        ScrollTrigger.refresh()
+      } catch (err) {}
     }
 
-    init()
+    const raf = requestAnimationFrame(() => init())
 
     return () => {
-      try { ctx && ctx.revert && ctx.revert() } catch (e) {}
-      try { st && st.kill && st.kill() } catch (e) {}
+      cancelAnimationFrame(raf)
+      cancelled = true
+      try { ctx?.revert() } catch (e) {}
     }
-  }, [])
+  }, [pathname])
 
-  // CTA animation: entrada sutil y pulso discreto en el título
+  // CTA animation
   useEffect(() => {
     let ctx = null
+    let cancelled = false
+
     async function initCTA() {
       try {
         const mod = await import('gsap')
         const gsapLib = mod.default ?? mod
         const stMod = await import('gsap/dist/ScrollTrigger')
         const ScrollTrigger = stMod.default ?? stMod
-        try { gsapLib.registerPlugin && gsapLib.registerPlugin(ScrollTrigger) } catch (e) {}
+        if (cancelled) return
+        gsapLib.registerPlugin(ScrollTrigger)
 
         if (!ctaRef.current) return
 
-        if (gsapLib.context) {
-          ctx = gsapLib.context(() => {
-            const tl = gsapLib.timeline({
-              scrollTrigger: {
-                trigger: ctaRef.current,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse'
-              }
-            })
+        gsapLib.set([ctaTitleRef.current, ctaDescRef.current], { clearProps: 'all' })
 
-            tl.from(ctaTitleRef.current, { opacity: 0, y: 18, duration: 0.8, ease: 'power2.out' })
-              .from(ctaDescRef.current, { opacity: 0, y: 12, duration: 0.8, ease: 'power2.out' }, '-=0.5')
+        ctx = gsapLib.context(() => {
+          const tl = gsapLib.timeline({
+            scrollTrigger: {
+              trigger: ctaRef.current,
+              start: 'top 85%',
+              toggleActions: 'play none none reverse'
+            }
+          })
 
-            // pulso sutil y profesional en el título
-            gsapLib.to(ctaTitleRef.current, {
-              scale: 1.02,
-              duration: 1.2,
-              ease: 'sine.inOut',
-              repeat: -1,
-              yoyo: true,
-              transformOrigin: 'center center',
-              delay: 0.3
-            })
-          }, ctaRef.current)
-        } else {
-          // fallback: simple animation without context
-          gsapLib.from(ctaTitleRef.current, { opacity: 0, y: 18, duration: 0.8, ease: 'power2.out' })
-          gsapLib.from(ctaDescRef.current, { opacity: 0, y: 12, duration: 0.8, ease: 'power2.out', delay: 0.3 })
-          gsapLib.to(ctaTitleRef.current, { scale: 1.02, duration: 1.2, ease: 'sine.inOut', repeat: -1, yoyo: true, transformOrigin: 'center center', delay: 0.6 })
-        }
-      } catch (e) {
-        // progressive enhancement: ignore errors
-      }
+          tl.fromTo(ctaTitleRef.current,
+            { opacity: 0, y: 18 },
+            { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }
+          ).fromTo(ctaDescRef.current,
+            { opacity: 0, y: 12 },
+            { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' },
+            '-=0.5'
+          )
+
+          gsapLib.to(ctaTitleRef.current, {
+            scale: 1.02,
+            duration: 1.2,
+            ease: 'sine.inOut',
+            repeat: -1,
+            yoyo: true,
+            transformOrigin: 'center center',
+            delay: 0.3
+          })
+        }, ctaRef.current)
+
+        ScrollTrigger.refresh()
+      } catch (e) {}
     }
 
-    initCTA()
+    const raf = requestAnimationFrame(() => initCTA())
 
     return () => {
-      try { ctx && ctx.revert && ctx.revert() } catch (e) {}
+      cancelAnimationFrame(raf)
+      cancelled = true
+      try { ctx?.revert() } catch (e) {}
     }
-  }, [])
+  }, [pathname])
 
   const handleServiceQuote = (serviceName) => {
     const message = language === 'es' 

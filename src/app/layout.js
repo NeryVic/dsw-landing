@@ -1,14 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import FloatingWhatsApp from "@/components/FloatingWhatsApp";
-import ChatBot from "@/components/ChatBot";
 import CriticalResourceHints from "@/components/CriticalResourceHints";
 import { SITE_CONFIG } from "@/lib/constants";
-import { LanguageProvider } from "@/contexts/LanguageContext";
-import { ThemeProvider } from "@/contexts/ThemeContext";
 import { DefaultJsonLd } from "@/components/JsonLd";
+import ClientWrapper from "@/components/ClientWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -86,7 +81,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="es" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <CriticalResourceHints />
         <DefaultJsonLd />
@@ -108,18 +103,9 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300`}
         suppressHydrationWarning
       >
-        <ThemeProvider>
-          <LanguageProvider>
-            <Header />
-            <main>
-              {children}
-            </main>
-            <Footer />
-            <ChatBot />
-            <FloatingWhatsApp />
-            {/* <WebVitals /> */}
-          </LanguageProvider>
-        </ThemeProvider>
+        <ClientWrapper>
+          {children}
+        </ClientWrapper>
       </body>
     </html>
   );

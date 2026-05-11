@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import { NAVIGATION_ITEMS } from '@/lib/constants'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { useTheme } from '@/contexts/ThemeContext'
@@ -10,16 +11,11 @@ import { useWssp } from '@/hooks/wssp'
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { language, toggleLanguage, t, isInitialized } = useLanguage()
+  const { language, toggleLanguage, t } = useLanguage()
   const { theme, toggleTheme } = useTheme()
   const { openWhatsApp } = useWssp()
-  const [activeId, setActiveId] = useState('#hero')
-  const observerRef = useRef(null)
+  const pathname = usePathname() || '/'
   const [isScrolled, setIsScrolled] = useState(false)
-
-  useEffect(() => {
-    // Eliminado isMounted
-  }, [])
 
   // Detectar si el usuario hizo scroll para cambiar la transparencia del header
   useEffect(() => {
@@ -29,41 +25,6 @@ export default function Header() {
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
-  // Observador para actualizar el item activo según la sección visible
-  useEffect(() => {
-    // limpiar observador previo
-    if (observerRef.current) {
-      observerRef.current.disconnect()
-    }
-
-    const sectionIds = NAVIGATION_ITEMS.map((it) => it.href).filter(Boolean).map(h => h.replace('#', ''))
-    const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean)
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(`#${entry.target.id}`)
-          }
-        })
-      },
-      {
-        root: null,
-        rootMargin: '0px 0px -10% 0px', // marcar cuando la sección se acerca al centro-superior del viewport
-        threshold: 0.5,
-      }
-    )
-
-    sections.forEach((el) => observer.observe(el))
-    observerRef.current = observer
-
-    // también actualizar activeId si hay hash en la URL al cargar
-    const hash = window.location.hash
-    if (hash) setActiveId(hash)
-
-    return () => observer.disconnect()
   }, [])
 
   const handleStartProject = () => {
@@ -90,7 +51,9 @@ export default function Header() {
     )
   }
 
-  const headerBgClass = (isScrolled || isMobileMenuOpen)
+  const isInternalPage = pathname !== '/'
+  const hasSolidBg = isScrolled || isMobileMenuOpen || isInternalPage
+  const headerBgClass = hasSolidBg
     ? 'bg-white/90 dark:bg-black/90 border-b border-gray-200 dark:border-gray-800 backdrop-blur-sm'
     : 'bg-transparent border-transparent'
 
@@ -110,18 +73,18 @@ export default function Header() {
           {/* Navigation */}
           <nav className="hidden md:flex space-x-8">
             {NAVIGATION_ITEMS.map((item) => {
-              const isActive = activeId === item.href
+              const isActive = pathname === item.href
               return (
                 <Link
                   key={item.name}
                   href={item.href}
-                  onClick={() => setActiveId(item.href)}
+                  suppressHydrationWarning
                   className={`group relative px-1 py-2 -my-2 inline-flex items-center transition-colors duration-200
                     ${isActive
-                      ? (isScrolled
+                      ? (hasSolidBg
                         ? 'text-blue-600 dark:text-blue-400 font-semibold'
                         : 'text-white font-semibold')
-                      : (isScrolled
+                      : (hasSolidBg
                         ? 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
                         : 'text-white hover:text-blue-100')
                     }
@@ -131,12 +94,7 @@ export default function Header() {
                   <span className="relative z-10">
                     {language === 'es' ? item.name : item.nameEn}
                   </span>
-                  {/* animated underline: blurred glow + crisp line */}
-                  <span className={`absolute left-0 bottom-0 h-1 rounded-full pointer-events-none transform origin-left transition-all duration-300 ${isActive ? 'opacity-100 translate-x-0 scale-x-100' : 'opacity-0 -translate-x-2 scale-x-75 group-hover:opacity-100 group-hover:translate-x-0 group-hover:scale-x-100'}`} style={{width: '100%'}}>
-          {/* blurred glow */}
-          <span className="block w-full h-full rounded-full bg-gradient-to-r from-blue-700 via-blue-500 to-white/50 opacity-80 filter blur-md bg-clip-padding" />
-          {/* crisp line */}
-          <span className="block w-full h-0.5 rounded-full mt-[-0.35rem] bg-gradient-to-r from-blue-700 via-blue-500 to-white/90 dark:from-white/90 dark:via-white/40 dark:to-transparent opacity-100 mix-blend-screen" />
+                  <span className={`absolute left-0 bottom-0 h-0.5 rounded-full bg-blue-600 dark:bg-blue-400 pointer-events-none transform origin-left transition-all duration-300 ${isActive ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-75 group-hover:opacity-100 group-hover:scale-x-100'}`} style={{width: '100%'}}>
                   </span>
                 </Link>
               )
@@ -192,23 +150,21 @@ export default function Header() {
           <div className="md:hidden py-4 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-black bg-opacity-100">
             <nav className="flex flex-col space-y-4">
               {NAVIGATION_ITEMS.map((item) => {
-                const isActive = activeId === item.href
+                const isActive = pathname === item.href
                 return (
                   <Link
                     key={item.name}
                     href={item.href}
+                    suppressHydrationWarning
                     onClick={() => {
                       setIsMobileMenuOpen(false)
-                      setActiveId(item.href)
                     }}
                     className={`text-gray-600 dark:text-gray-300 transition-colors duration-200 py-2 px-1 ${isActive ? 'text-blue-600 dark:text-blue-400 font-semibold' : 'hover:text-blue-600 dark:hover:text-blue-400'}`}
                     aria-current={isActive ? 'page' : undefined}
                   >
                     <span className="block relative">
                       {language === 'es' ? item.name : item.nameEn}
-                      <span className={`absolute left-0 bottom-0 h-1 rounded-full pointer-events-none transform origin-left transition-all duration-300 ${isActive ? 'opacity-100 translate-x-0 scale-x-100' : 'opacity-0 -translate-x-2 scale-x-75 group-hover:opacity-100 group-hover:translate-x-0 group-hover:scale-x-100'}`} style={{width: '100%'}}>
-                        <span className="block w-full h-full rounded-full bg-gradient-to-r from-blue-600 to-purple-600 opacity-60 filter blur-sm" />
-                        <span className="block w-full h-0.5 rounded-full mt-[-0.35rem] bg-gradient-to-r from-white/90 via-white/40 to-transparent opacity-90 mix-blend-screen" />
+                      <span className={`absolute left-0 bottom-0 h-0.5 rounded-full bg-blue-600 dark:bg-blue-400 pointer-events-none transform origin-left transition-all duration-300 ${isActive ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-75 group-hover:opacity-100 group-hover:scale-x-100'}`} style={{width: '100%'}}>
                       </span>
                     </span>
                   </Link>
