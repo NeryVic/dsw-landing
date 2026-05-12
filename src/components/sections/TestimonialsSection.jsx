@@ -103,7 +103,7 @@ export default function TestimonialsSection() {
           {testimonialsData.map((testimonial) => (
             <div
               key={testimonial.id}
-              className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-7 flex flex-col transition-all duration-300 hover:-translate-y-1 hover:border-slate-300 dark:hover:border-slate-700 testimonial-card"
+              className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 border-t-2 border-t-amber-400 dark:border-t-amber-500 border-l-2 border-l-amber-400 dark:border-l-amber-500 rounded-xl p-7 flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-sm testimonial-card"
             >
               {/* Stars */}
               <div className="flex gap-0.5 mb-4">

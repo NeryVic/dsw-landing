@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const isProd = process.env.NODE_ENV === 'production';
+
 const nextConfig = {
   // Optimizaciones de imágenes
   images: {
@@ -20,31 +22,14 @@ const nextConfig = {
   experimental: {
     optimizeCss: true,
     scrollRestoration: true,
-    optimizePackageImports: ['react-simple-chatbot', 'react-icons'],
   },
 
-  // Optimización de bundles
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          default: false,
-          vendors: false,
-          commons: {
-            name: 'commons',
-            chunks: 'all',
-            minChunks: 2,
-          },
-        },
-      };
-    }
-    return config;
-  },
+  // Permitir acceso desde la red local durante desarrollo (mobile testing)
+  allowedDevOrigins: ['localhost', '127.0.0.1', '192.168.1.80'],
 
   // Headers para performance y seguridad
   async headers() {
-    return [
+    const rules = [
       {
         source: '/(.*)',
         headers: [
@@ -74,8 +59,22 @@ const nextConfig = {
             value: 'public, max-age=31536000, immutable'
           }
         ],
-      },
-      {
+      }
+    ];
+
+    // Evitar chunks stale en desarrollo (causa hydration mismatches)
+    if (!isProd) {
+      rules.push({
+        source: '/_next/static/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0'
+          }
+        ],
+      });
+    } else {
+      rules.push({
         source: '/_next/static/(.*)',
         headers: [
           {
@@ -83,8 +82,10 @@ const nextConfig = {
             value: 'public, max-age=31536000, immutable'
           }
         ],
-      }
-    ]
+      });
+    }
+
+    return rules;
   },
 
   // Configuración de PoweredByHeader

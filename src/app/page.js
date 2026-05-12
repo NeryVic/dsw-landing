@@ -1,6 +1,7 @@
 import HeroSection from "@/components/sections/HeroSection";
 import WhyChooseUsSection from "@/components/sections/WhyChooseUsSection";
 import TestimonialsSection from "@/components/sections/TestimonialsSection";
+import TrustAndProcessSection from "@/components/sections/TrustAndProcessSection";
 
 export const metadata = {
   title: "Software y Sistemas a Medida para Empresas",
@@ -14,6 +15,7 @@ export default function Home() {
       <HeroSection />
       <WhyChooseUsSection />
       <TestimonialsSection />
+      <TrustAndProcessSection />
     </div>
   );
 }

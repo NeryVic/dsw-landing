@@ -19,6 +19,7 @@ export default function Header() {
 
   // Detectar si el usuario hizo scroll para cambiar la transparencia del header
   useEffect(() => {
+    if (typeof window === 'undefined') return
     const onScroll = () => {
       setIsScrolled(window.scrollY > 20)
     }

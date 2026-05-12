@@ -18,7 +18,7 @@ export const NAVIGATION_ITEMS = [
   { name: 'Inicio', href: '/', nameEn: 'Home' },
   { name: 'Servicios', href: '/servicios', nameEn: 'Services' },
   { name: 'Sistemas a Medida', href: '/sistemas-a-medida', nameEn: 'Custom Systems' },
-  { name: 'Soporte Técnico', href: '/soporte-tecnico', nameEn: 'Technical Support' },
+  { name: 'Soporte Técnico', href: '/soporte', nameEn: 'Technical Support' },
   { name: 'FAQs', href: '/faqs', nameEn: 'FAQs' },
   { name: 'Contacto', href: '/contacto', nameEn: 'Contact' }
 ]

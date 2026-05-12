@@ -5,6 +5,7 @@ export function useScroll() {
   const [scrollDirection, setScrollDirection] = useState('up')
 
   useEffect(() => {
+    if (typeof window === 'undefined') return
     let lastScrollY = window.scrollY
 
     const updateScrollDirection = () => {

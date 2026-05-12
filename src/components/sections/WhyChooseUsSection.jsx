@@ -90,7 +90,7 @@ export default function WhyChooseUsSection() {
           {WhyChooseUsData.map((item) => (
             <div
               key={item.id}
-              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-7 transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 dark:hover:border-slate-700 why-item"
+              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 border-t-2 border-t-blue-500 dark:border-t-blue-400 border-l-2 border-l-blue-500 dark:border-l-blue-400 rounded-xl p-7 transition-all duration-300 hover:-translate-y-1 hover:border-t-blue-600 dark:hover:border-t-blue-300 hover:shadow-sm why-item"
             >
               <div className="w-11 h-11 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center mb-5 border border-blue-100 dark:border-blue-900/40">
                 <i className={`${item.icon} text-xl text-blue-600 dark:text-blue-400`}></i>

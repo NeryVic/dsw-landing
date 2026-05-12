@@ -36,7 +36,7 @@ export const WhyChooseUsData = [
     titleEn: 'Proven Experience',
     description: 'Nuestro equipo cuenta con años de experiencia en desarrollo web aplicando las mejores prácticas y estándares de la industria.',
     descriptionEn: 'Our team has years of experience in web development applying the best practices and industry standards.',
-    icon: 'ri-target-line'
+    icon: 'ri-award-line'
   },
   {
     id: 2,
