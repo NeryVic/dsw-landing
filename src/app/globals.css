@@ -2,7 +2,7 @@
 @import "remixicon/fonts/remixicon.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
-/* Variables CSS para tema claro y oscuro */
+/* Variables CSS para tema claro y oscuro no tocar*/
 :root {
   --background: #ffffff;
   --foreground: #171717;

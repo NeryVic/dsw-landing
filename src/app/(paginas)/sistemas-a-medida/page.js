@@ -45,11 +45,15 @@ export default function SistemasPage() {
   return (
     <section className="min-h-screen pt-28 pb-16 bg-white dark:bg-slate-950">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-5">
+
+        <div className="max-w-4xl mb-14">
+          <span className="inline-block px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-xs font-semibold tracking-widest uppercase mb-5 border border-blue-100 dark:border-blue-900/40">
+            {t('systems_badge', 'Sistemas a Medida', 'Custom Systems')}
+          </span>
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-5">
             {t('systems_page_title', 'Sistemas a Medida para Resolver Problemas Reales', 'Custom Systems to Solve Real Problems')}
           </h1>
-          <p className="text-lg text-slate-700 dark:text-slate-300 mb-6">
+          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
             {t(
               'systems_page_intro',
               'Diseñamos software en función de tus procesos, no al revés. El objetivo es reducir errores, ahorrar tiempo y mejorar control operativo.',
@@ -58,41 +62,55 @@ export default function SistemasPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-          <article className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6">
-            <h2 className="text-2xl font-semibold text-slate-900 dark:text-white mb-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
+          <article className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-7">
+            <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
               {t('systems_page_for_title', '¿Para quién es ideal?', 'Who is this ideal for?')}
             </h2>
-            <ul className="space-y-3 text-slate-700 dark:text-slate-300">
-              <li>• {t('systems_page_for_1', 'Empresas con tareas manuales repetitivas.', 'Companies with repetitive manual tasks.')}</li>
-              <li>• {t('systems_page_for_2', 'Equipos con errores frecuentes de carga y seguimiento.', 'Teams with frequent data-entry and tracking errors.')}</li>
-              <li>• {t('systems_page_for_3', 'Negocios que crecieron y necesitan ordenar su operación.', 'Businesses that grew and need to organize operations.')}</li>
+            <ul className="space-y-3">
+              {[
+                t('systems_page_for_1', 'Empresas con tareas manuales repetitivas.', 'Companies with repetitive manual tasks.'),
+                t('systems_page_for_2', 'Equipos con errores frecuentes de carga y seguimiento.', 'Teams with frequent data-entry and tracking errors.'),
+                t('systems_page_for_3', 'Negocios que crecieron y necesitan ordenar su operación.', 'Businesses that grew and need to organize operations.')
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
+                  <span className="text-blue-600 dark:text-blue-300 mt-0.5 shrink-0">•</span>
+                  <span>{item}</span>
+                </li>
+              ))}
             </ul>
           </article>
 
-          <article className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6">
-            <h2 className="text-2xl font-semibold text-slate-900 dark:text-white mb-4">
+          <article className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-7">
+            <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
               {t('systems_page_impact_title', 'Impacto esperado', 'Expected impact')}
             </h2>
-            <ul className="space-y-3 text-slate-700 dark:text-slate-300">
-              <li>• {t('systems_page_impact_1', 'Menos retrabajos y menos errores de operación.', 'Less rework and fewer operational errors.')}</li>
-              <li>• {t('systems_page_impact_2', 'Visibilidad en tiempo real de indicadores clave.', 'Real-time visibility into key indicators.')}</li>
-              <li>• {t('systems_page_impact_3', 'Procesos escalables con mejor trazabilidad.', 'Scalable processes with better traceability.')}</li>
+            <ul className="space-y-3">
+              {[
+                t('systems_page_impact_1', 'Menos retrabajos y menos errores de operación.', 'Less rework and fewer operational errors.'),
+                t('systems_page_impact_2', 'Visibilidad en tiempo real de indicadores clave.', 'Real-time visibility into key indicators.'),
+                t('systems_page_impact_3', 'Procesos escalables con mejor trazabilidad.', 'Scalable processes with better traceability.')
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
+                  <span className="text-blue-600 dark:text-blue-300 mt-0.5 shrink-0">•</span>
+                  <span>{item}</span>
+                </li>
+              ))}
             </ul>
           </article>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 sm:p-8">
-          <h2 className="text-2xl font-semibold text-slate-900 dark:text-white mb-5">
+        <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-7 sm:p-8">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-6">
             {t('systems_page_process_title', 'Cómo trabajamos', 'How we work')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {PROCESS.map((step) => (
-              <div key={step.titleEs} className="p-4 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-                <h3 className="font-semibold text-slate-900 dark:text-white mb-2">
+              <div key={step.titleEs} className="p-5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-2 text-sm">
                   {language === 'es' ? step.titleEs : step.titleEn}
                 </h3>
-                <p className="text-slate-700 dark:text-slate-300 text-sm">
+                <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
                   {language === 'es' ? step.descEs : step.descEn}
                 </p>
               </div>
@@ -104,6 +122,7 @@ export default function SistemasPage() {
             </Button>
           </div>
         </div>
+
       </div>
     </section>
   )

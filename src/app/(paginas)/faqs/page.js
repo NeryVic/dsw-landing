@@ -53,11 +53,15 @@ export default function FaqsPage() {
     <section className="min-h-screen pt-28 pb-16 bg-white dark:bg-slate-950">
       <JsonLd schema={faqSchema(faqs)} />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-5">
+
+        <div className="max-w-4xl mb-14">
+          <span className="inline-block px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-xs font-semibold tracking-widest uppercase mb-5 border border-blue-100 dark:border-blue-900/40">
+            {t('faq_badge', 'Preguntas Frecuentes', 'FAQ')}
+          </span>
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-5">
             {t('faq_page_title', 'Preguntas Frecuentes', 'Frequently Asked Questions')}
           </h1>
-          <p className="text-lg text-slate-700 dark:text-slate-300">
+          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
             {t(
               'faq_page_intro',
               'Respuestas claras sobre tiempos, costos, alcance y soporte para que puedas decidir con información real.',
@@ -66,14 +70,15 @@ export default function FaqsPage() {
           </p>
         </div>
 
-        <div className="space-y-4 max-w-4xl">
+        <div className="space-y-3 max-w-4xl">
           {faqs.map((faq) => (
-            <article key={faq.question} className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6">
-              <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">{faq.question}</h2>
-              <p className="text-slate-700 dark:text-slate-300">{faq.answer}</p>
+            <article key={faq.question} className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-7 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-700">
+              <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-2">{faq.question}</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{faq.answer}</p>
             </article>
           ))}
         </div>
+
       </div>
     </section>
   )

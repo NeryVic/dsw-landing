@@ -8,16 +8,12 @@ export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState('light')
 
   useEffect(() => {
-    // Solo ejecutar en el cliente
     if (typeof window !== 'undefined') {
-      // Cargar tema guardado o detectar preferencia del sistema
       const savedTheme = localStorage.getItem('theme')
-      if (savedTheme) {
-        setTheme(savedTheme)
-      } else {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-        setTheme(prefersDark ? 'dark' : 'light')
+      if (savedTheme === 'dark') {
+        setTheme('dark')
       }
+      // Si no hay nada guardado, se mantiene 'light' (default)
     }
   }, [])
 

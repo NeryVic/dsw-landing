@@ -6,6 +6,7 @@ import { useWssp } from '@/hooks/wssp'
 
 const SERVICES = [
   {
+    icon: 'ri-global-line',
     titleEs: 'Desarrollo Web Profesional',
     titleEn: 'Professional Web Development',
     descEs: 'Sitios corporativos y landing pages orientadas a generar consultas reales y mejorar presencia digital.',
@@ -14,6 +15,7 @@ const SERVICES = [
     bulletsEn: ['Institutional websites', 'Conversion-focused landing pages', 'Technical SEO optimization']
   },
   {
+    icon: 'ri-code-s-slash-line',
     titleEs: 'Sistemas a Medida',
     titleEn: 'Custom Software Systems',
     descEs: 'Soluciones para automatizar operaciones, reducir errores y obtener control de procesos en tiempo real.',
@@ -22,6 +24,7 @@ const SERVICES = [
     bulletsEn: ['Admin dashboards', 'Custom internal workflows', 'Integrations with existing tools']
   },
   {
+    icon: 'ri-computer-line',
     titleEs: 'Soporte Técnico de PCs',
     titleEn: 'PC Technical Support',
     descEs: 'Soporte para empresas y equipos de trabajo: armado, mantenimiento preventivo y resolución de fallas.',
@@ -43,13 +46,17 @@ export default function ServiciosPage() {
   }
 
   return (
-    <section className="min-h-screen pt-28 pb-16 bg-slate-100 dark:bg-slate-950">
+    <section className="min-h-screen pt-28 pb-16 bg-slate-50 dark:bg-slate-950">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-5">
+
+        <div className="max-w-4xl mb-14">
+          <span className="inline-block px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-xs font-semibold tracking-widest uppercase mb-5 border border-blue-100 dark:border-blue-900/40">
+            {t('services_badge', 'Servicios', 'Services')}
+          </span>
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-5">
             {t('services_page_title', 'Servicios para Empresas que Necesitan Resultados', 'Services for Companies That Need Results')}
           </h1>
-          <p className="text-lg text-slate-700 dark:text-slate-300">
+          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
             {t(
               'services_page_subtitle',
               'Combinamos desarrollo web, sistemas a medida y soporte técnico para resolver problemas operativos concretos.',
@@ -58,22 +65,25 @@ export default function ServiciosPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {SERVICES.map((service) => (
             <article
               key={service.titleEs}
-              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm"
+              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-7 flex flex-col transition-all duration-300 hover:-translate-y-1 hover:border-slate-300 dark:hover:border-slate-700"
             >
-              <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-3">
+              <div className="w-11 h-11 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center mb-5 border border-blue-100 dark:border-blue-900/40 shrink-0">
+                <i className={`${service.icon} text-xl text-blue-600 dark:text-blue-400`}></i>
+              </div>
+              <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-2">
                 {language === 'es' ? service.titleEs : service.titleEn}
               </h2>
-              <p className="text-slate-700 dark:text-slate-300 mb-4">
+              <p className="text-sm text-slate-600 dark:text-slate-400 mb-5 leading-relaxed flex-1">
                 {language === 'es' ? service.descEs : service.descEn}
               </p>
-              <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+              <ul className="space-y-2">
                 {(language === 'es' ? service.bulletsEs : service.bulletsEn).map((bullet) => (
-                  <li key={bullet} className="flex items-start gap-2">
-                    <span className="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
+                  <li key={bullet} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
+                    <span className="text-blue-600 dark:text-blue-300 mt-0.5 shrink-0">•</span>
                     <span>{bullet}</span>
                   </li>
                 ))}
@@ -82,11 +92,11 @@ export default function ServiciosPage() {
           ))}
         </div>
 
-        <div className="mt-10 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8">
-          <h3 className="text-2xl font-semibold text-slate-900 dark:text-white mb-3">
+        <div className="mt-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8">
+          <h3 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-3">
             {t('services_page_cta_title', '¿No sabés por dónde empezar?', "Not sure where to start?")}
           </h3>
-          <p className="text-slate-700 dark:text-slate-300 mb-6">
+          <p className="text-slate-600 dark:text-slate-400 mb-6">
             {t(
               'services_page_cta_desc',
               'Te ayudamos a definir qué servicio te conviene según tu situación actual y presupuesto.',
@@ -97,6 +107,7 @@ export default function ServiciosPage() {
             {t('services_page_cta_btn', 'Solicitar diagnóstico', 'Request diagnostic call')}
           </Button>
         </div>
+
       </div>
     </section>
   )

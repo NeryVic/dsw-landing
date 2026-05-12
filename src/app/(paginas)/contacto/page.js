@@ -17,13 +17,17 @@ export default function ContactoPage() {
   }
 
   return (
-    <section className="min-h-screen pt-28 pb-16 bg-slate-100 dark:bg-slate-950">
+    <section className="min-h-screen pt-28 pb-16 bg-slate-50 dark:bg-slate-950">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-5">
-            {t('contact_page_title', 'Contacto', 'Contact')}
+
+        <div className="max-w-4xl mb-14">
+          <span className="inline-block px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-xs font-semibold tracking-widest uppercase mb-5 border border-blue-100 dark:border-blue-900/40">
+            {t('contact_badge', 'Contacto', 'Contact')}
+          </span>
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-5">
+            {t('contact_page_title', 'Hablemos de tu Proyecto', 'Let\'s Talk About Your Project')}
           </h1>
-          <p className="text-lg text-slate-700 dark:text-slate-300">
+          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
             {t(
               'contact_page_intro',
               'Contanos tu situación actual y te proponemos una solución concreta según tus objetivos y presupuesto.',
@@ -32,23 +36,38 @@ export default function ContactoPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <article className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8">
-            <h2 className="text-2xl font-semibold text-slate-900 dark:text-white mb-4">
+            <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-5">
               {t('contact_page_data_title', 'Canales directos', 'Direct channels')}
             </h2>
-            <ul className="space-y-3 text-slate-700 dark:text-slate-300">
-              <li><strong>Email:</strong> {CONTACT_INFO.email}</li>
-              <li><strong>Teléfono:</strong> {CONTACT_INFO.phone}</li>
-              <li><strong>Ubicación:</strong> {CONTACT_INFO.address}</li>
+            <ul className="space-y-4">
+              <li className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center border border-blue-100 dark:border-blue-900/40 shrink-0">
+                  <i className="ri-mail-line text-base text-blue-600 dark:text-blue-400"></i>
+                </div>
+                <span className="text-sm text-slate-600 dark:text-slate-400">{CONTACT_INFO.email}</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center border border-blue-100 dark:border-blue-900/40 shrink-0">
+                  <i className="ri-phone-line text-base text-blue-600 dark:text-blue-400"></i>
+                </div>
+                <span className="text-sm text-slate-600 dark:text-slate-400">{CONTACT_INFO.phone}</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center border border-blue-100 dark:border-blue-900/40 shrink-0">
+                  <i className="ri-map-pin-line text-base text-blue-600 dark:text-blue-400"></i>
+                </div>
+                <span className="text-sm text-slate-600 dark:text-slate-400">{CONTACT_INFO.address}</span>
+              </li>
             </ul>
           </article>
 
           <article className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8">
-            <h2 className="text-2xl font-semibold text-slate-900 dark:text-white mb-4">
+            <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">
               {t('contact_page_cta_title', 'Agendemos una charla breve', 'Let us schedule a short call')}
             </h2>
-            <p className="text-slate-700 dark:text-slate-300 mb-6">
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">
               {t(
                 'contact_page_cta_desc',
                 'En una primera conversación podemos definir prioridades, alcance inicial y próximos pasos.',
@@ -60,6 +79,7 @@ export default function ContactoPage() {
             </Button>
           </article>
         </div>
+
       </div>
     </section>
   )

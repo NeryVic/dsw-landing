@@ -66,18 +66,19 @@ export default function WhyChooseUsSection() {
   }, [pathname])
 
     return (
-      <section id="why-choose-us" className="py-20 bg-slate-50 dark:bg-slate-900">
+      <section id="why-choose-us" className="py-24 bg-slate-50 dark:bg-slate-950">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+
         {/* Header */}
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-2 bg-green-100 dark:bg-green-950/50 text-green-600 dark:text-green-400 rounded-full text-sm font-medium mb-4">
-            {t('why_badge', '¿Por qué elegir Digital Solutions Web?', 'Why choose Digital Solutions Web?')}
+          <span className="inline-block px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-xs font-semibold tracking-widest uppercase mb-5 border border-blue-100 dark:border-blue-900/40">
+            {t('why_badge', '¿Por qué elegirnos?', 'Why choose us?')}
           </span>
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">
+          <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-5 max-w-3xl mx-auto">
             {t('why_title', 'Tu Proyecto Merece Tecnología y Dedicación Profesional', 'Your Project Deserves Professional Technology and Dedication')}
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            {t('why_description', 
+          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            {t('why_description',
               'Combinamos experiencia técnica sólida con atención personalizada para crear soluciones digitales que impulsan el crecimiento real de tu negocio.',
               'We combine solid technical experience with personalized attention to create digital solutions that drive real growth for your business.'
             )}
@@ -85,24 +86,25 @@ export default function WhyChooseUsSection() {
         </div>
 
         {/* Benefits Grid */}
-        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {WhyChooseUsData.map((item, index) => (
-            <div 
-              key={item.id} 
-              className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-8 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 why-item"
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {WhyChooseUsData.map((item) => (
+            <div
+              key={item.id}
+              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-7 transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 dark:hover:border-slate-700 why-item"
             >
-              <div className="text-4xl mb-4 text-blue-600 dark:text-blue-400">
-                <i className={`${item.icon} text-4xl`}></i>
+              <div className="w-11 h-11 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center mb-5 border border-blue-100 dark:border-blue-900/40">
+                <i className={`${item.icon} text-xl text-blue-600 dark:text-blue-400`}></i>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+              <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-2">
                 {language === 'es' ? item.title : item.titleEn}
               </h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                 {language === 'es' ? item.description : item.descriptionEn}
               </p>
             </div>
           ))}
         </div>
+
       </div>
     </section>
   )
