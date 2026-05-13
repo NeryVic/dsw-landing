@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Tab } from '@headlessui/react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import Button from '@/components/ui/Button'
@@ -273,6 +273,18 @@ export default function ServiciosPage() {
   const activePillarData = PILLARS.find((pillar) => pillar.id === activePillar) || PILLARS[0]
   const activeSolutions = SOLUTIONS[activePillar] || []
   const accents = PILLAR_ACCENT[activePillarData.accent]
+  const featureRows = useMemo(() => {
+    const all = activeSolutions.flatMap((solution) => (language === 'es' ? solution.includesEs : solution.includesEn))
+    return Array.from(new Set(all))
+  }, [activeSolutions, language])
+  const cumulativeFeatureSets = useMemo(() => {
+    const progressiveSet = new Set()
+    return activeSolutions.map((solution) => {
+      const includes = language === 'es' ? solution.includesEs : solution.includesEn
+      includes.forEach((item) => progressiveSet.add(item))
+      return new Set(progressiveSet)
+    })
+  }, [activeSolutions, language])
 
   const getText = (item, esKey, enKey) => (language === 'es' ? item[esKey] : item[enKey])
 
@@ -435,101 +447,97 @@ export default function ServiciosPage() {
           </Tab.Group>
 
           <div ref={mobileSolutionsRef} className="md:hidden -mx-4 px-4 pb-2 flex gap-4 overflow-x-auto snap-x snap-mandatory mb-12">
-          {activeSolutions.map((solution) => (
+          {activeSolutions.map((solution, index) => (
             <article
               key={solution.titleEs}
               data-solution-card
-              className="snap-start min-w-[88%] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6"
+              className="snap-start min-w-[88%] bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-3xl p-7"
             >
-              <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                {getText(solution, 'titleEs', 'titleEn')}
-              </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">{getText(solution, 'descEs', 'descEn')}</p>
-              <div className="mb-4">
-                <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">
-                  {t('services_for_who', 'Ideal para', 'Ideal for')}
-                </p>
-                <ul className="space-y-1.5">
-                  {(language === 'es' ? solution.audienceEs : solution.audienceEn).map((item) => (
-                    <li key={item} className="text-sm text-slate-600 dark:text-slate-400 flex gap-2">
-                      <span className={`${accents.dot}`}>•</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
+              <div className="mb-6 text-center">
+                <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
+                  {getText(solution, 'titleEs', 'titleEn')}
+                </h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{getText(solution, 'timelineEs', 'timelineEn')}</p>
               </div>
-              <div className="mb-4">
-                <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">
-                  {t('services_includes', 'Incluye', 'Includes')}
-                </p>
-                <ul className="space-y-1.5">
-                  {(language === 'es' ? solution.includesEs : solution.includesEn).map((item) => (
-                    <li key={item} className="text-sm text-slate-600 dark:text-slate-400 flex gap-2">
-                      <span className={`${accents.dot}`}>•</span>
-                      <span>{item}</span>
+              <p className="text-sm text-slate-600 dark:text-slate-400 mb-5 text-center">{getText(solution, 'descEs', 'descEn')}</p>
+
+              <ul className="space-y-3 mb-6">
+                {featureRows.map((feature) => {
+                  const includes = cumulativeFeatureSets[index]?.has(feature)
+                  return (
+                    <li key={`${solution.titleEs}-${feature}`} className={`flex items-start gap-3 text-sm ${includes ? 'text-slate-700 dark:text-slate-200' : 'text-slate-400 dark:text-slate-500'}`}>
+                      <i className={`${includes ? 'ri-check-line' : 'ri-close-line'} mt-0.5`}></i>
+                      <span>{feature}</span>
                     </li>
-                  ))}
-                </ul>
-              </div>
-              <p className="text-sm text-slate-700 dark:text-slate-300 mb-1">
+                  )
+                })}
+              </ul>
+
+              <p className="text-sm text-slate-700 dark:text-slate-300 mb-5 text-center">
                 <span className="font-semibold">{t('services_outcome', 'Resultado', 'Outcome')}:</span> {getText(solution, 'outcomeEs', 'outcomeEn')}
               </p>
-              <p className="text-sm text-slate-700 dark:text-slate-300 mb-4">
-                <span className="font-semibold">{t('services_timeline', 'Tiempo estimado', 'Estimated timeline')}:</span> {getText(solution, 'timelineEs', 'timelineEn')}
-              </p>
-              <Button onClick={() => handleCardCta(getText(solution, 'titleEs', 'titleEn'))} className="w-full">
+              <Button onClick={() => handleCardCta(getText(solution, 'titleEs', 'titleEn'))} className="w-full rounded-full">
+                {getText(solution, 'titleEs', 'titleEn')}
                 {getText(solution, 'ctaEs', 'ctaEn')}
               </Button>
             </article>
           ))}
           </div>
 
-          <div ref={desktopSolutionsRef} className="hidden md:grid md:grid-cols-3 gap-5 mb-12">
-          {activeSolutions.map((solution) => (
+          <div ref={desktopSolutionsRef} className="hidden md:flex md:flex-col lg:flex-row md:items-stretch md:justify-center gap-5 lg:gap-0 mb-12">
+          {activeSolutions.map((solution, index) => (
             <article
               key={solution.titleEs}
               data-solution-card
-              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 flex flex-col"
+              className={`w-full max-w-sm border-2 rounded-3xl p-8 flex flex-col bg-white dark:bg-slate-900 ${
+                index === 1
+                  ? 'border-dashed border-slate-300 dark:border-slate-700 lg:py-12 lg:z-10'
+                  : 'border-slate-200 dark:border-slate-800'
+              } ${index === 0 ? 'lg:-mr-4' : ''} ${index === 2 ? 'lg:-ml-4' : ''}`}
             >
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                {getText(solution, 'titleEs', 'titleEn')}
-              </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">{getText(solution, 'descEs', 'descEn')}</p>
-              <div className="mb-4">
-                <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">
-                  {t('services_for_who', 'Ideal para', 'Ideal for')}
+              <div className="mb-8 text-center">
+                {index === 1 ? (
+                  <p className="inline-block text-xs font-semibold uppercase tracking-[0.18em] text-emerald-500 mb-2">
+                    {t('services_recommended', 'Recomendada', 'Recommended')}
+                  </p>
+                ) : null}
+                <h3 className={`font-semibold mb-3 ${index === 0 ? 'text-amber-500' : index === 1 ? 'text-emerald-500' : 'text-blue-500'} text-2xl`}>
+                  {getText(solution, 'titleEs', 'titleEn')}
+                </h3>
+                <p className="text-5xl font-extrabold text-slate-900 dark:text-slate-100 leading-none mb-3">
+                  {index === 0 ? '01' : index === 1 ? '02' : '03'}
                 </p>
-                <ul className="space-y-1.5">
-                  {(language === 'es' ? solution.audienceEs : solution.audienceEn).map((item) => (
-                    <li key={item} className="text-sm text-slate-600 dark:text-slate-400 flex gap-2">
-                      <span className={`${accents.dot}`}>•</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{getText(solution, 'timelineEs', 'timelineEn')}</p>
               </div>
-              <div className="mb-4">
-                <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">
-                  {t('services_includes', 'Incluye', 'Includes')}
-                </p>
-                <ul className="space-y-1.5">
-                  {(language === 'es' ? solution.includesEs : solution.includesEn).map((item) => (
-                    <li key={item} className="text-sm text-slate-600 dark:text-slate-400 flex gap-2">
-                      <span className={`${accents.dot}`}>•</span>
-                      <span>{item}</span>
+
+              <ul className="space-y-4 mb-8 min-h-[290px]">
+                {featureRows.map((feature) => {
+                  const includes = cumulativeFeatureSets[index]?.has(feature)
+                  return (
+                    <li key={`${solution.titleEs}-${feature}`} className={`flex items-start gap-3 text-base ${includes ? 'text-slate-700 dark:text-slate-200' : 'text-slate-400 dark:text-slate-500'}`}>
+                      <i className={`${includes ? 'ri-check-line' : 'ri-close-line'} mt-0.5`}></i>
+                      <span>{feature}</span>
                     </li>
-                  ))}
-                </ul>
-              </div>
-              <p className="text-sm text-slate-700 dark:text-slate-300 mb-1">
+                  )
+                })}
+              </ul>
+
+              <p className="text-sm text-slate-700 dark:text-slate-300 mb-6 text-center">
                 <span className="font-semibold">{t('services_outcome', 'Resultado', 'Outcome')}:</span> {getText(solution, 'outcomeEs', 'outcomeEn')}
               </p>
-              <p className="text-sm text-slate-700 dark:text-slate-300 mb-5">
-                <span className="font-semibold">{t('services_timeline', 'Tiempo estimado', 'Estimated timeline')}:</span> {getText(solution, 'timelineEs', 'timelineEn')}
-              </p>
-              <Button onClick={() => handleCardCta(getText(solution, 'titleEs', 'titleEn'))} className="mt-auto">
+
+              <Button
+                onClick={() => handleCardCta(getText(solution, 'titleEs', 'titleEn'))}
+                className={`mt-auto rounded-full ${index === 1 ? 'bg-emerald-500 hover:bg-emerald-600 border-emerald-500 text-white' : ''}`}
+                variant={index === 1 ? 'default' : 'outline'}
+              >
                 {getText(solution, 'ctaEs', 'ctaEn')}
               </Button>
+              <p className="text-xs text-slate-500 dark:text-slate-400 text-center mt-4">
+                {index === 1
+                  ? t('services_plan_note_mid', 'Ideal para equipos que necesitan avanzar rapido.', 'Best for teams that need to move fast.')
+                  : t('services_plan_note_side', 'Disenado para objetivos concretos y medibles.', 'Designed for concrete and measurable goals.')}
+              </p>
             </article>
           ))}
           </div>
