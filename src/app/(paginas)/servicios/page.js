@@ -189,58 +189,78 @@ const SOLUTIONS = {
   ],
 }
 
-const COMPARISON = [
-  { solutionEs: 'Landing de Conversion', solutionEn: 'Conversion Landing', objectiveEs: 'Captar leads', objectiveEn: 'Lead generation', complexityEs: 'Baja/Media', complexityEn: 'Low/Medium', timeEs: '1-2 semanas', timeEn: '1-2 weeks' },
-  { solutionEs: 'Web Institucional', solutionEn: 'Corporate Website', objectiveEs: 'Reputacion y contacto', objectiveEn: 'Trust and contact', complexityEs: 'Media', complexityEn: 'Medium', timeEs: '2-4 semanas', timeEn: '2-4 weeks' },
-  { solutionEs: 'Ecommerce', solutionEn: 'Ecommerce', objectiveEs: 'Venta online', objectiveEn: 'Online sales', complexityEs: 'Media/Alta', complexityEn: 'Medium/High', timeEs: '3-6 semanas', timeEn: '3-6 weeks' },
-  { solutionEs: 'Sistema POS', solutionEn: 'POS System', objectiveEs: 'Control de ventas', objectiveEn: 'Sales control', complexityEs: 'Media/Alta', complexityEn: 'Medium/High', timeEs: '4-8 semanas', timeEn: '4-8 weeks' },
-  { solutionEs: 'LMS Prestamos', solutionEn: 'Loan LMS', objectiveEs: 'Gestion financiera', objectiveEn: 'Financial management', complexityEs: 'Alta', complexityEn: 'High', timeEs: '6-10 semanas', timeEn: '6-10 weeks' },
-  { solutionEs: 'Citas Clinicas', solutionEn: 'Clinic Appointments', objectiveEs: 'Orden de agenda', objectiveEn: 'Schedule organization', complexityEs: 'Media/Alta', complexityEn: 'Medium/High', timeEs: '4-8 semanas', timeEn: '4-8 weeks' },
-  { solutionEs: 'Soporte IT', solutionEn: 'IT Support', objectiveEs: 'Continuidad operativa', objectiveEn: 'Operational continuity', complexityEs: 'Variable', complexityEn: 'Variable', timeEs: 'Mensual', timeEn: 'Monthly' },
-]
-
 const USE_CASES = [
   {
-    titleEs: 'Comercio minorista',
-    titleEn: 'Retail store',
-    problemEs: 'Ventas en mostrador sin trazabilidad y sin canal digital.',
-    problemEn: 'In-store sales without traceability and no digital channel.',
-    solutionEs: 'POS + Ecommerce 24/7.',
-    solutionEn: 'POS + 24/7 ecommerce.',
-    resultEs: 'Mas control diario y nuevas ventas fuera de horario.',
-    resultEn: 'More daily control and sales beyond store hours.',
+    titleEs: 'Mas ventas en tu tienda',
+    titleEn: 'More sales in your store',
+    problemEs: 'Clientes que no pueden comprar online y ventas sin control.',
+    problemEn: 'Customers cannot buy online and sales are hard to control.',
+    solutionEs: 'POS integrado + Ecommerce abierto 24/7.',
+    solutionEn: 'Integrated POS + Ecommerce open 24/7.',
+    resultEs: 'Ventas extra incluso fuera de horario y control total de tu negocio.',
+    resultEn: 'Extra sales beyond business hours and full control of your business.',
+    testimonialEs: '"Con POS + tienda online empezamos a vender fuera del horario del local."',
+    testimonialEn: '"With POS + ecommerce we started selling even after store hours."',
+    icon: 'ri-shopping-cart-2-line',
+    accent: 'blue',
   },
   {
-    titleEs: 'Financiera',
-    titleEn: 'Finance business',
-    problemEs: 'Seguimiento manual de cuotas y mora.',
-    problemEn: 'Manual installment and arrears tracking.',
-    solutionEs: 'LMS + reportes de cartera.',
-    solutionEn: 'LMS + portfolio reports.',
-    resultEs: 'Menos retrabajo y mejor visibilidad de riesgo.',
-    resultEn: 'Less rework and better risk visibility.',
+    titleEs: 'Finanzas sin estres',
+    titleEn: 'Stress-free financial management',
+    problemEs: 'Horas perdidas revisando planillas y cuotas atrasadas.',
+    problemEn: 'Hours wasted reviewing spreadsheets and overdue installments.',
+    solutionEs: 'LMS automatizado + reportes claros de cartera.',
+    solutionEn: 'Automated LMS + clear portfolio reports.',
+    resultEs: 'Menos mora, menos retrabajo y visibilidad completa del riesgo.',
+    resultEn: 'Lower arrears, less rework, and full risk visibility.',
+    testimonialEs: '"Ahora vemos mora y cobranza en minutos, no en horas."',
+    testimonialEn: '"Now we track arrears and collections in minutes, not hours."',
+    icon: 'ri-line-chart-line',
+    accent: 'teal',
   },
   {
-    titleEs: 'Clinica de salud',
-    titleEn: 'Healthcare clinic',
-    problemEs: 'Agenda desordenada y ausencias frecuentes.',
-    problemEn: 'Disorganized schedules and frequent no-shows.',
-    solutionEs: 'Sistema de citas + recordatorios.',
-    solutionEn: 'Appointments system + reminders.',
-    resultEs: 'Agenda estable y mejor experiencia para pacientes.',
-    resultEn: 'Stable schedule and better patient experience.',
+    titleEs: 'Agenda medica ordenada',
+    titleEn: 'Organized medical schedule',
+    problemEs: 'Turnos desorganizados y pacientes que no se presentan.',
+    problemEn: 'Disorganized appointments and patients who do not show up.',
+    solutionEs: 'Sistema de citas online + recordatorios inteligentes.',
+    solutionEn: 'Online appointment system + smart reminders.',
+    resultEs: 'Pacientes puntuales, agenda estable y mejor experiencia de atencion.',
+    resultEn: 'Punctual patients, stable schedule, and better care experience.',
+    testimonialEs: '"Desde que usamos el sistema de citas, bajaron las ausencias un 40%."',
+    testimonialEn: '"Since we implemented the appointment system, no-shows dropped by 40%."',
+    icon: 'ri-calendar-check-line',
+    accent: 'amber',
   },
   {
-    titleEs: 'Pyme de servicios',
-    titleEn: 'Service SMB',
-    problemEs: 'Baja presencia digital y fallas tecnicas recurrentes.',
-    problemEn: 'Weak online presence and recurring technical issues.',
-    solutionEs: 'Web institucional + soporte mensual.',
-    solutionEn: 'Corporate website + monthly support.',
-    resultEs: 'Mas confianza comercial y continuidad operativa.',
-    resultEn: 'More commercial trust and operational continuity.',
+    titleEs: 'Confianza digital para tu Pyme',
+    titleEn: 'Digital trust for your SMB',
+    problemEs: 'Baja presencia online y fallas tecnicas que frenan tu operacion.',
+    problemEn: 'Weak online presence and technical issues slowing your operation.',
+    solutionEs: 'Web institucional moderna + soporte mensual garantizado.',
+    solutionEn: 'Modern corporate website + guaranteed monthly support.',
+    resultEs: 'Reputacion solida, continuidad operativa y mas confianza comercial.',
+    resultEn: 'Solid reputation, operational continuity, and stronger commercial trust.',
+    testimonialEs: '"Pasamos de apagar incendios a trabajar con estabilidad todo el mes."',
+    testimonialEn: '"We went from firefighting to stable operations all month long."',
+    icon: 'ri-settings-3-line',
+    accent: 'slate',
   },
 ]
+
+const USE_CASE_ACCENT = {
+  blue: 'border-blue-200 bg-blue-50/60 dark:border-blue-900/50 dark:bg-blue-950/20',
+  teal: 'border-teal-200 bg-teal-50/60 dark:border-teal-900/50 dark:bg-teal-950/20',
+  amber: 'border-amber-200 bg-amber-50/60 dark:border-amber-900/50 dark:bg-amber-950/20',
+  slate: 'border-slate-300 bg-slate-100/70 dark:border-slate-700 dark:bg-slate-900/40',
+}
+
+const USE_CASE_ICON_ACCENT = {
+  blue: 'text-blue-600 bg-blue-100 border-blue-200 dark:text-blue-300 dark:bg-blue-950/40 dark:border-blue-900/50',
+  teal: 'text-teal-600 bg-teal-100 border-teal-200 dark:text-teal-300 dark:bg-teal-950/40 dark:border-teal-900/50',
+  amber: 'text-amber-600 bg-amber-100 border-amber-200 dark:text-amber-300 dark:bg-amber-950/40 dark:border-amber-900/50',
+  slate: 'text-slate-700 bg-slate-200 border-slate-300 dark:text-slate-300 dark:bg-slate-800 dark:border-slate-700',
+}
 
 const PILLAR_ACCENT = {
   blue: {
@@ -268,6 +288,8 @@ export default function ServiciosPage() {
   const motionScopeRef = useRef(null)
   const mobileSolutionsRef = useRef(null)
   const desktopSolutionsRef = useRef(null)
+  const useCasesRef = useRef(null)
+  const finalCtaRef = useRef(null)
 
   const activePillarIndex = Math.max(PILLARS.findIndex((pillar) => pillar.id === activePillar), 0)
   const activePillarData = PILLARS.find((pillar) => pillar.id === activePillar) || PILLARS[0]
@@ -303,6 +325,13 @@ export default function ServiciosPage() {
     const message = language === 'es'
       ? `Hola, me interesa ${cardTitle}. Quiero una recomendacion para mi negocio.`
       : `Hi, I'm interested in ${cardTitle}. I want the best recommendation for my business.`
+    openWhatsApp(undefined, message)
+  }
+
+  const handleUseCaseCta = (useCaseTitle) => {
+    const message = language === 'es'
+      ? `Hola, quiero esta solucion: ${useCaseTitle}. ¿Podemos hablar?`
+      : `Hi, I want this solution: ${useCaseTitle}. Can we talk?`
     openWhatsApp(undefined, message)
   }
 
@@ -355,6 +384,78 @@ export default function ServiciosPage() {
       try { ctx?.revert() } catch (e) {}
     }
   }, [activePillar, language])
+
+  useEffect(() => {
+    let ctx = null
+    let cancelled = false
+
+    async function initScrollAnimations() {
+      try {
+        const mod = await import('gsap')
+        const gsapLib = mod.default ?? mod
+        const stMod = await import('gsap/dist/ScrollTrigger')
+        const ScrollTrigger = stMod.default ?? stMod
+        if (cancelled) return
+        gsapLib.registerPlugin(ScrollTrigger)
+
+        ctx = gsapLib.context(() => {
+          const useCaseCards = useCasesRef.current
+            ? Array.from(useCasesRef.current.querySelectorAll('[data-use-case-card]'))
+            : []
+
+          if (useCaseCards.length > 0) {
+            gsapLib.fromTo(
+              useCaseCards,
+              { autoAlpha: 0, y: 24, scale: 0.98 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.55,
+                stagger: 0.1,
+                ease: 'power2.out',
+                clearProps: 'opacity,visibility,transform',
+                scrollTrigger: {
+                  trigger: useCasesRef.current,
+                  start: 'top 82%',
+                  toggleActions: 'play none none reverse',
+                },
+              }
+            )
+          }
+
+          if (finalCtaRef.current) {
+            gsapLib.fromTo(
+              finalCtaRef.current,
+              { autoAlpha: 0, y: 26 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.7,
+                ease: 'power2.out',
+                clearProps: 'opacity,visibility,transform',
+                scrollTrigger: {
+                  trigger: finalCtaRef.current,
+                  start: 'top 86%',
+                  toggleActions: 'play none none reverse',
+                },
+              }
+            )
+          }
+        })
+
+        ScrollTrigger.refresh()
+      } catch (err) {}
+    }
+
+    const raf = requestAnimationFrame(() => initScrollAnimations())
+
+    return () => {
+      cancelled = true
+      cancelAnimationFrame(raf)
+      try { ctx?.revert() } catch (e) {}
+    }
+  }, [language])
 
   return (
     <section className="min-h-screen pt-28 pb-16 bg-slate-50 dark:bg-slate-950">
@@ -543,55 +644,51 @@ export default function ServiciosPage() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden mb-8">
-          <div className="px-6 py-5 border-b border-slate-200 dark:border-slate-800">
-            <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
-              {t('services_compare_title', 'Comparativa Rapida', 'Quick Comparison')}
-            </h3>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[780px]">
-              <thead>
-                <tr className="bg-slate-50 dark:bg-slate-800/60 text-left">
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">{t('services_table_solution', 'Solucion', 'Solution')}</th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">{t('services_table_objective', 'Objetivo', 'Objective')}</th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">{t('services_table_complexity', 'Complejidad', 'Complexity')}</th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">{t('services_table_time', 'Tiempo', 'Timeline')}</th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">{t('services_table_from', 'Desde', 'From')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {COMPARISON.map((row) => (
-                  <tr key={row.solutionEs} className="border-t border-slate-200 dark:border-slate-800">
-                    <td className="px-4 py-3 text-sm text-slate-700 dark:text-slate-200">{getText(row, 'solutionEs', 'solutionEn')}</td>
-                    <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{getText(row, 'objectiveEs', 'objectiveEn')}</td>
-                    <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{getText(row, 'complexityEs', 'complexityEn')}</td>
-                    <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{getText(row, 'timeEs', 'timeEn')}</td>
-                    <td className="px-4 py-3 text-sm text-slate-700 dark:text-slate-300 font-medium">{t('services_table_from_placeholder', 'Desde diagnostico', 'After diagnostic')}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div className="mb-8">
+        <div ref={useCasesRef} className="mb-8">
           <h3 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-            {t('services_use_cases_title', 'Casos de uso por rubro', 'Use Cases by Industry')}
+            {t('services_use_cases_title', 'Casos de uso por sector', 'Use Cases by Sector')}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {USE_CASES.map((item) => (
-              <article key={item.titleEs} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6">
-                <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">{getText(item, 'titleEs', 'titleEn')}</h4>
-                <p className="text-sm text-slate-700 dark:text-slate-300 mb-2"><span className="font-semibold">{t('services_case_problem', 'Problema', 'Problem')}:</span> {getText(item, 'problemEs', 'problemEn')}</p>
-                <p className="text-sm text-slate-700 dark:text-slate-300 mb-2"><span className="font-semibold">{t('services_case_solution', 'Solucion', 'Solution')}:</span> {getText(item, 'solutionEs', 'solutionEn')}</p>
-                <p className="text-sm text-slate-700 dark:text-slate-300"><span className="font-semibold">{t('services_case_result', 'Resultado esperado', 'Expected result')}:</span> {getText(item, 'resultEs', 'resultEn')}</p>
+              <article
+                key={item.titleEs}
+                data-use-case-card
+                className={`border rounded-2xl p-6 shadow-sm ${USE_CASE_ACCENT[item.accent] || USE_CASE_ACCENT.slate}`}
+              >
+                <div className="flex items-start gap-4 mb-4">
+                  <div className={`w-11 h-11 rounded-xl border flex items-center justify-center text-xl shrink-0 ${USE_CASE_ICON_ACCENT[item.accent] || USE_CASE_ICON_ACCENT.slate}`}>
+                    <i className={item.icon}></i>
+                  </div>
+                  <h4 className="text-xl font-semibold leading-tight text-slate-900 dark:text-slate-100">{getText(item, 'titleEs', 'titleEn')}</h4>
+                </div>
+
+                <p className="text-sm text-slate-700 dark:text-slate-300 mb-2">
+                  <span className="font-semibold">{t('services_case_problem', 'Problema', 'Problem')}:</span> {getText(item, 'problemEs', 'problemEn')}
+                </p>
+                <p className="text-sm text-slate-700 dark:text-slate-300 mb-2">
+                  <span className="font-semibold">{t('services_case_solution', 'Solucion', 'Solution')}:</span> {getText(item, 'solutionEs', 'solutionEn')}
+                </p>
+                <p className="text-sm text-slate-700 dark:text-slate-300 mb-4">
+                  <span className="font-semibold">{t('services_case_result', 'Resultado esperado', 'Expected result')}:</span> {getText(item, 'resultEs', 'resultEn')}
+                </p>
+
+                <p className="text-xs italic text-slate-600 dark:text-slate-400 border-l-2 border-slate-300 dark:border-slate-700 pl-3 mb-4">
+                  {getText(item, 'testimonialEs', 'testimonialEn')}
+                </p>
+
+                <Button
+                  size="sm"
+                  onClick={() => handleUseCaseCta(getText(item, 'titleEs', 'titleEn'))}
+                  className="rounded-full"
+                >
+                  {t('services_case_cta', 'Quiero esta solucion', 'I want this solution')}
+                </Button>
               </article>
             ))}
           </div>
         </div>
 
-        <div className="mt-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8">
+        <div ref={finalCtaRef} className="mt-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8">
           <h3 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-3">
             {t('services_page_cta_title', 'No estas seguro de que solucion te conviene?', 'Not sure what solution fits best?')}
           </h3>

@@ -55,18 +55,18 @@ src/
 
 2. **Instalar dependencias**
    ```bash
-   npm install
+   pnpm install
    ```
 
 3. **Ejecutar en desarrollo**
    ```bash
-   npm run dev
+   pnpm dev
    ```
 
 4. **Construir para producción**
    ```bash
-   npm run build
-   npm start
+   pnpm build
+   pnpm start
    ```
 
 ## 🎨 Personalización
