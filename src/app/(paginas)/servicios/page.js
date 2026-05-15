@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
+import Image from 'next/image'
 import { Tab } from '@headlessui/react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import Button from '@/components/ui/Button'
@@ -290,6 +291,9 @@ export default function ServiciosPage() {
   const desktopSolutionsRef = useRef(null)
   const useCasesRef = useRef(null)
   const finalCtaRef = useRef(null)
+  const switchTrackRef = useRef(null)
+  const switchIndicatorRef = useRef(null)
+  const prevPillarIndexRef = useRef(null)
 
   const activePillarIndex = Math.max(PILLARS.findIndex((pillar) => pillar.id === activePillar), 0)
   const activePillarData = PILLARS.find((pillar) => pillar.id === activePillar) || PILLARS[0]
@@ -346,6 +350,40 @@ export default function ServiciosPage() {
         if (cancelled || !motionScopeRef.current) return
 
         ctx = gsapLib.context(() => {
+          const indicatorEl = switchIndicatorRef.current
+          const trackEl = switchTrackRef.current
+          const targetTab = trackEl?.querySelector(`[data-pill-index="${activePillarIndex}"]`)
+
+          if (indicatorEl && trackEl && targetTab) {
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            const previousIndex = prevPillarIndexRef.current
+
+            const trackRect = trackEl.getBoundingClientRect()
+            const targetRect = targetTab.getBoundingClientRect()
+            const targetX = targetRect.left - trackRect.left
+            const targetWidth = targetRect.width
+
+            const currentX = Number(gsapLib.getProperty(indicatorEl, 'x')) || 0
+            const distance = Math.abs(targetX - currentX)
+            const stretch = Math.min(1.08, 1 + distance / 900)
+
+            if (reducedMotion || previousIndex === null || previousIndex === activePillarIndex) {
+              gsapLib.set(indicatorEl, { x: targetX, width: targetWidth, scaleX: 1 })
+            } else {
+              const direction = targetX > currentX ? 1 : -1
+              gsapLib.killTweensOf(indicatorEl)
+
+              gsapLib.timeline({ defaults: { overwrite: 'auto' } })
+                .set(indicatorEl, {
+                  transformOrigin: direction > 0 ? 'left center' : 'right center',
+                  force3D: true,
+                })
+                .to(indicatorEl, { scaleX: stretch, duration: 0.14, ease: 'sine.out' }, 0)
+                .to(indicatorEl, { x: targetX, width: targetWidth, duration: 0.5, ease: 'power2.inOut' }, 0)
+                .to(indicatorEl, { scaleX: 1, duration: 0.22, ease: 'power1.out' }, 0.16)
+            }
+          }
+
           const activeTab = motionScopeRef.current.querySelector('[role="tab"][aria-selected="true"]')
           const activePanel = motionScopeRef.current.querySelector('[role="tabpanel"]:not([hidden])')
           const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches
@@ -373,6 +411,8 @@ export default function ServiciosPage() {
             )
           }
         }, motionScopeRef.current)
+
+        prevPillarIndexRef.current = activePillarIndex
       } catch (err) {}
     }
 
@@ -460,27 +500,53 @@ export default function ServiciosPage() {
   return (
     <section className="min-h-screen pt-28 pb-16 bg-slate-50 dark:bg-slate-950">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mb-12">
-          <span className="inline-block px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-xs font-semibold tracking-widest uppercase mb-5 border border-blue-100 dark:border-blue-900/40">
-            {t('services_badge', 'Servicios', 'Services')}
-          </span>
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-5">
-            {t('services_page_title', 'Soluciones de Alto Impacto para Empresas', 'High-Impact Solutions for Companies')}
-          </h1>
-          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">
-            {t(
-              'services_page_subtitle',
-              'Elegi la solucion segun tu objetivo: captar mas clientes, ordenar procesos internos o mantener tu infraestructura estable.',
-              'Choose the solution based on your goal: get more clients, improve internal processes, or keep your infrastructure stable.'
-            )}
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button onClick={handleQuote} size="lg">
-              {t('services_hero_cta_primary', 'Solicitar diagnostico', 'Request diagnostic call')}
-            </Button>
-            <Button onClick={scrollToSolutions} size="lg" variant="outline" className="border-slate-300 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-900">
-              {t('services_hero_cta_secondary', 'Ver soluciones', 'View solutions')}
-            </Button>
+        <div className="mb-12 grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr] gap-8 lg:gap-10 items-center">
+          <div className="max-w-3xl">
+            
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-5">
+              {t('services_page_title', 'Soluciones de Alto Impacto para Empresas', 'High-Impact Solutions for Companies')}
+            </h1>
+            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">
+              {t(
+                'services_page_subtitle',
+                'Elegi la solucion segun tu objetivo: captar mas clientes, ordenar procesos internos o mantener tu infraestructura estable.',
+                'Choose the solution based on your goal: get more clients, improve internal processes, or keep your infrastructure stable.'
+              )}
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button onClick={handleQuote} size="lg">
+                {t('services_hero_cta_primary', 'Solicitar diagnostico', 'Request diagnostic call')}
+              </Button>
+              <Button onClick={scrollToSolutions} size="lg" variant="outline" className="border-slate-300 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-900">
+                {t('services_hero_cta_secondary', 'Ver soluciones', 'View solutions')}
+              </Button>
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+              <Image
+                src="/images/features/comotrab.webp"
+                alt={t(
+                  'services_hero_image_alt',
+                  'Equipo trabajando en planificacion y mejora de procesos',
+                  'Team working on planning and process improvement'
+                )}
+                width={1536}
+                height={1024}
+                className="w-full h-auto object-cover"
+              />
+            </div>
+
+            <div className="absolute -bottom-4 left-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/90 backdrop-blur px-4 py-3 shadow-lg">
+              <p className="text-[11px] uppercase tracking-wider font-semibold text-slate-500 dark:text-slate-400 mb-1">
+                {t('services_hero_visual_kicker', 'Metodo de trabajo', 'Work method')}
+              </p>
+              <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                {t('services_hero_visual_label', 'Diagnostico -> Implementacion -> Soporte', 'Diagnostic -> Implementation -> Support')}
+              </p>
+            </div>
+
           </div>
         </div>
 
@@ -489,40 +555,37 @@ export default function ServiciosPage() {
             selectedIndex={activePillarIndex}
             onChange={(index) => setActivePillar(PILLARS[index]?.id || PILLARS[0].id)}
           >
-            <Tab.List className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8" ref={cardsRef}>
-              {PILLARS.map((pillar) => {
-                const pillarAccent = PILLAR_ACCENT[pillar.accent]
+            <div className="mb-3 text-center">
+              <span className="inline-flex items-center gap-2 rounded-full border border-blue-200 dark:border-blue-900/50 bg-blue-50/80 dark:bg-blue-950/25 px-4 py-1.5 text-xs font-semibold tracking-wide text-blue-700 dark:text-blue-300">
+                <i className="ri-cursor-line"></i>
+                {t('services_switch_hint', 'Selecciona una solución', 'Select a solution')}
+              </span>
+            </div>
 
-                return (
-                  <Tab
-                    key={pillar.id}
-                    className={({ selected }) =>
-                      `text-left rounded-xl border p-5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 ${selected ? `${pillarAccent.tab} -translate-y-0.5` : 'border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/60 hover:border-slate-300 dark:hover:border-slate-700 opacity-85 hover:opacity-100'}`
-                    }
-                  >
-                    {({ selected }) => (
-                      <>
-                        {selected ? (
-                          <span className="inline-flex items-center rounded-full border border-white/60 dark:border-white/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider mb-3 bg-white/50 dark:bg-slate-950/40">
-                            {t('services_tab_active', 'Activo', 'Active')}
-                          </span>
-                        ) : null}
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className={`w-10 h-10 rounded-lg border flex items-center justify-center transition-all duration-200 ${selected ? `${pillarAccent.soft} scale-105` : 'bg-slate-50 border-slate-200 dark:bg-slate-800 dark:border-slate-700'}`}>
-                            <i className={`${pillar.icon} text-lg`}></i>
-                          </div>
-                          <span className={`text-sm font-semibold ${selected ? 'text-slate-950 dark:text-slate-50' : 'text-slate-900 dark:text-slate-100'}`}>
-                            {getText(pillar, 'labelEs', 'labelEn')}
-                          </span>
-                        </div>
-                        <p className={`text-sm ${selected ? 'text-slate-700 dark:text-slate-200' : 'text-slate-600 dark:text-slate-400'}`}>
-                          {getText(pillar, 'focusEs', 'focusEn')}
-                        </p>
-                      </>
-                    )}
-                  </Tab>
-                )
-              })}
+            <Tab.List className="mb-8" ref={cardsRef}>
+              <div className="max-w-3xl mx-auto rounded-full border border-slate-200 dark:border-slate-800 bg-white/85 dark:bg-slate-900/80 p-1 shadow-sm">
+                <div ref={switchTrackRef} className="relative grid grid-cols-3 gap-1">
+                  <span
+                    aria-hidden="true"
+                    ref={switchIndicatorRef}
+                    className="absolute top-0 bottom-0 left-0 rounded-full bg-blue-600 dark:bg-blue-500 shadow-lg shadow-blue-900/25"
+                    style={{ width: `${100 / PILLARS.length}%` }}
+                  />
+
+                  {PILLARS.map((pillar, index) => (
+                    <Tab
+                      key={pillar.id}
+                      data-pill-index={index}
+                      className={({ selected }) =>
+                        `relative z-10 flex items-center justify-center gap-2 rounded-full px-3 py-3 text-xs sm:text-sm font-semibold transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 ${selected ? 'text-white' : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'}`
+                      }
+                    >
+                      <i className={`${pillar.icon} text-base`}></i>
+                      <span className="truncate">{getText(pillar, 'labelEs', 'labelEn')}</span>
+                    </Tab>
+                  ))}
+                </div>
+              </div>
             </Tab.List>
 
             <Tab.Panels className="mb-12">

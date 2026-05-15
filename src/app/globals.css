@@ -18,7 +18,7 @@
 }
 
 .dark {
-  --background: #0f172a;
+  --background: #05070d;
   --foreground: #f8fafc;
   --muted: #1e293b;
   --muted-foreground: #94a3b8;
@@ -44,6 +44,15 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* Unifica fondos oscuros de secciones al negro de marca */
+.dark .dark\:bg-slate-950,
+.dark .dark\:bg-slate-900,
+.dark .dark\:bg-gray-900 {
+  background-color: #05070d;
 }
 
 /* Animaciones suaves para transiciones de tema */

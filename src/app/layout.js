@@ -104,7 +104,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-[#05070d] text-gray-900 dark:text-white transition-colors duration-300`}
         suppressHydrationWarning
       >
         <ClientWrapper>

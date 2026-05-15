@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { useLanguage } from '@/contexts/LanguageContext'
-import Button from '@/components/ui/Button'
+import FeatureWaveCard from '@/components/ui/FeatureWaveCard'
 import { useWssp } from '@/hooks/wssp'
 
 const FEATURE_CARDS = [
@@ -196,48 +196,20 @@ export default function SistemasPage() {
             const style = CARD_STYLES[card.tone] || CARD_STYLES.blue
 
             return (
-              <article
+              <FeatureWaveCard
                 key={card.id}
-                className={`${style.wrap} systems-card will-change-transform`}
-              >
-                <div className="relative z-10">
-                  <div className={`inline-flex items-center gap-2 rounded-xl border px-3 py-2 mb-4 ${style.badge}`}>
-                    <span className={`w-8 h-8 rounded-lg border flex items-center justify-center text-base ${style.icon}`}>
-                      <i className={card.icon}></i>
-                    </span>
-                    <span className="text-sm font-semibold">
-                      {t('systems_card_badge', 'Sistemas DSW', 'DSW Systems')}
-                    </span>
-                  </div>
-
-                  <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-4 max-w-[18ch]">
-                    {language === 'es' ? card.titleEs : card.titleEn}
-                  </h2>
-
-                  <p className="text-lg leading-relaxed text-slate-600 dark:text-slate-400 mb-6 max-w-[36ch]">
-                    {language === 'es' ? card.textEs : card.textEn}
-                  </p>
-
-                  <Button
-                    onClick={handleContact}
-                    variant="primary"
-                    size="sm"
-                    className={style.cta}
-                  >
-                    <span className="inline-flex items-center gap-2">
-                      {language === 'es' ? card.ctaEs : card.ctaEn}
-                      <i className="ri-arrow-right-line"></i>
-                    </span>
-                  </Button>
-                </div>
-
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-14 overflow-hidden text-[11px] leading-3 font-mono text-blue-700/20 dark:text-blue-400/35 select-none systems-wave">
-                  <p className="whitespace-pre px-6 systems-wave-row"># + * :   # x + :   # + * :   # x + :   # + * :   # x + :</p>
-                  <p className="whitespace-pre px-6 systems-wave-row">x # : +   * # : +   x # : +   * # : +   x # : +   * # : +</p>
-                  <p className="whitespace-pre px-6 systems-wave-row">+ : # *   + x : #   + : # *   + x : #   + : # *   + x : #</p>
-                  <p className="whitespace-pre px-6 systems-wave-row">: * + #   : * + x   : * + #   : * + x   : * + #   : * + x</p>
-                </div>
-              </article>
+                animationNamespace="systems"
+                className={style.wrap}
+                badgeClassName={style.badge}
+                iconClassName={style.icon}
+                buttonClassName={style.cta}
+                badgeText={t('systems_card_badge', 'Sistemas DSW', 'DSW Systems')}
+                icon={card.icon}
+                title={language === 'es' ? card.titleEs : card.titleEn}
+                description={language === 'es' ? card.textEs : card.textEn}
+                ctaLabel={language === 'es' ? card.ctaEs : card.ctaEn}
+                onCtaClick={handleContact}
+              />
             )
           })}
         </div>
