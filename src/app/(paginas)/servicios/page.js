@@ -156,22 +156,6 @@ const SOLUTIONS = {
       ctaEn: 'I need maintenance',
     },
     {
-      titleEs: 'Administracion de Redes y WiFi',
-      titleEn: 'Network and WiFi Administration',
-      descEs: 'Diseno y estabilizacion de red para continuidad operativa.',
-      descEn: 'Network design and stabilization for operational continuity.',
-      audienceEs: ['Oficinas con cortes', 'Locales con mala cobertura', 'Pymes en crecimiento'],
-      audienceEn: ['Offices with outages', 'Venues with poor coverage', 'Growing SMBs'],
-      includesEs: ['Revision de topologia de red', 'Segmentacion y seguridad basica', 'Mejora de cobertura WiFi', 'Monitoreo y ajustes'],
-      includesEn: ['Network topology review', 'Segmentation and baseline security', 'WiFi coverage improvements', 'Monitoring and tuning'],
-      outcomeEs: 'Conectividad mas estable y segura.',
-      outcomeEn: 'More stable and secure connectivity.',
-      timelineEs: 'Implementacion + mantenimiento',
-      timelineEn: 'Implementation + maintenance',
-      ctaEs: 'Quiero mejorar mi red',
-      ctaEn: 'I want to improve my network',
-    },
-    {
       titleEs: 'Plan de Soporte Mensual IT',
       titleEn: 'Monthly IT Support Plan',
       descEs: 'Acompanamiento tecnico continuo con prioridades y seguimiento.',
@@ -186,6 +170,22 @@ const SOLUTIONS = {
       timelineEn: 'Monthly subscription',
       ctaEs: 'Quiero soporte mensual',
       ctaEn: 'I want monthly support',
+    },
+    {
+      titleEs: 'Administracion de Redes y WiFi',
+      titleEn: 'Network and WiFi Administration',
+      descEs: 'Diseno y estabilizacion de red para continuidad operativa.',
+      descEn: 'Network design and stabilization for operational continuity.',
+      audienceEs: ['Oficinas con cortes', 'Locales con mala cobertura', 'Pymes en crecimiento'],
+      audienceEn: ['Offices with outages', 'Venues with poor coverage', 'Growing SMBs'],
+      includesEs: ['Revision de topologia de red', 'Segmentacion y seguridad basica', 'Mejora de cobertura WiFi', 'Monitoreo y ajustes'],
+      includesEn: ['Network topology review', 'Segmentation and baseline security', 'WiFi coverage improvements', 'Monitoring and tuning'],
+      outcomeEs: 'Conectividad mas estable y segura.',
+      outcomeEn: 'More stable and secure connectivity.',
+      timelineEs: 'Implementacion + mantenimiento',
+      timelineEn: 'Implementation + maintenance',
+      ctaEs: 'Quiero mejorar mi red',
+      ctaEn: 'I want to improve my network',
     },
   ],
 }
@@ -354,6 +354,8 @@ export default function ServiciosPage() {
           const trackEl = switchTrackRef.current
           const targetTab = trackEl?.querySelector(`[data-pill-index="${activePillarIndex}"]`)
 
+          let direction = 1
+
           if (indicatorEl && trackEl && targetTab) {
             const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
             const previousIndex = prevPillarIndexRef.current
@@ -365,12 +367,12 @@ export default function ServiciosPage() {
 
             const currentX = Number(gsapLib.getProperty(indicatorEl, 'x')) || 0
             const distance = Math.abs(targetX - currentX)
-            const stretch = Math.min(1.08, 1 + distance / 900)
+            const stretch = Math.min(1.16, 1 + distance / 580)
+            direction = targetX > currentX ? 1 : -1
 
             if (reducedMotion || previousIndex === null || previousIndex === activePillarIndex) {
               gsapLib.set(indicatorEl, { x: targetX, width: targetWidth, scaleX: 1 })
             } else {
-              const direction = targetX > currentX ? 1 : -1
               gsapLib.killTweensOf(indicatorEl)
 
               gsapLib.timeline({ defaults: { overwrite: 'auto' } })
@@ -378,9 +380,25 @@ export default function ServiciosPage() {
                   transformOrigin: direction > 0 ? 'left center' : 'right center',
                   force3D: true,
                 })
-                .to(indicatorEl, { scaleX: stretch, duration: 0.14, ease: 'sine.out' }, 0)
-                .to(indicatorEl, { x: targetX, width: targetWidth, duration: 0.5, ease: 'power2.inOut' }, 0)
-                .to(indicatorEl, { scaleX: 1, duration: 0.22, ease: 'power1.out' }, 0.16)
+                .to(indicatorEl, { scaleX: stretch, duration: 0.11, ease: 'sine.out' }, 0)
+                .to(indicatorEl, { x: targetX, width: targetWidth, duration: 0.46, ease: 'power3.inOut' }, 0)
+                .to(indicatorEl, { scaleX: 1, duration: 0.2, ease: 'back.out(1.8)' }, 0.13)
+            }
+
+            if (!reducedMotion && previousIndex !== null && previousIndex !== activePillarIndex) {
+              const newTabIcon = targetTab.querySelector('i')
+              if (newTabIcon) {
+                gsapLib.fromTo(
+                  newTabIcon,
+                  { scale: 0.55, rotate: direction * -20 },
+                  { scale: 1, rotate: 0, duration: 0.46, ease: 'back.out(2.4)' }
+                )
+              }
+              gsapLib.fromTo(
+                targetTab,
+                { scale: 0.88 },
+                { scale: 1, duration: 0.4, ease: 'back.out(2.8)', clearProps: 'scale' }
+              )
             }
           }
 
@@ -399,15 +417,20 @@ export default function ServiciosPage() {
           }
 
           if (activePanel) {
-            tl.fromTo(activePanel, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.38 }, 0.05)
+            tl.fromTo(
+              activePanel,
+              { autoAlpha: 0, x: direction * 24, y: 8 },
+              { autoAlpha: 1, x: 0, y: 0, duration: 0.4, ease: 'power3.out', clearProps: 'transform' },
+              0.05
+            )
           }
 
           if (visibleCards.length > 0) {
             tl.fromTo(
               visibleCards,
-              { autoAlpha: 0, y: 18 },
-              { autoAlpha: 1, y: 0, duration: 0.4, stagger: 0.06, clearProps: 'opacity,visibility,transform' },
-              0.1
+              { autoAlpha: 0, x: direction * 16, y: 18 },
+              { autoAlpha: 1, x: 0, y: 0, duration: 0.42, stagger: 0.07, ease: 'power2.out', clearProps: 'opacity,visibility,transform' },
+              0.08
             )
           }
         }, motionScopeRef.current)
@@ -555,9 +578,9 @@ export default function ServiciosPage() {
             selectedIndex={activePillarIndex}
             onChange={(index) => setActivePillar(PILLARS[index]?.id || PILLARS[0].id)}
           >
-            <div className="mb-3 text-center">
-              <span className="inline-flex items-center gap-2 rounded-full border border-blue-200 dark:border-blue-900/50 bg-blue-50/80 dark:bg-blue-950/25 px-4 py-1.5 text-xs font-semibold tracking-wide text-blue-700 dark:text-blue-300">
-                <i className="ri-cursor-line"></i>
+            <div className="mb-2 text-center">
+              <span className="inline-flex items-center gap-1 rounded-full border border-slate-200/80 dark:border-slate-700/80 bg-slate-100/70 dark:bg-slate-900/60 px-3 py-1 text-[11px] font-medium tracking-normal text-slate-600 dark:text-slate-400">
+                <i className="ri-cursor-line text-[11px] opacity-70"></i>
                 {t('services_switch_hint', 'Selecciona una solución', 'Select a solution')}
               </span>
             </div>
@@ -692,8 +715,10 @@ export default function ServiciosPage() {
 
               <Button
                 onClick={() => handleCardCta(getText(solution, 'titleEs', 'titleEn'))}
-                className={`mt-auto rounded-full ${index === 1 ? 'bg-emerald-500 hover:bg-emerald-600 border-emerald-500 text-white' : ''}`}
-                variant={index === 1 ? 'default' : 'outline'}
+                className={`mt-auto rounded-full ${index === 1
+                  ? 'bg-emerald-500 hover:bg-emerald-600 border-emerald-500 text-white'
+                  : 'border-slate-400 text-slate-900  hover:bg-blue-300 hover:border-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-blue-900'}`}
+                variant={index === 1 ? 'primary' : 'outline'}
               >
                 {getText(solution, 'ctaEs', 'ctaEn')}
               </Button>

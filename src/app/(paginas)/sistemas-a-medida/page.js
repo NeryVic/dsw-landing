@@ -55,28 +55,28 @@ const FEATURE_CARDS = [
 
 const CARD_STYLES = {
   blue: {
-    wrap: 'relative overflow-hidden rounded-3xl border border-slate-200 bg-white px-6 pt-5 pb-16 shadow-[0_24px_60px_-28px_rgba(15,23,42,0.22)] dark:border-slate-800 dark:bg-[#05070d] dark:shadow-[0_24px_60px_-28px_rgba(0,0,0,0.9)]',
+    wrap: 'group relative overflow-hidden rounded-3xl border border-slate-200 bg-white px-6 pt-5 pb-16 shadow-[0_24px_60px_-28px_rgba(15,23,42,0.22)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_70px_-30px_rgba(15,23,42,0.35)] hover:border-slate-300 dark:border-slate-800 dark:bg-[#05070d] dark:shadow-[0_24px_60px_-28px_rgba(0,0,0,0.9)] dark:hover:border-slate-700',
     badge: 'bg-amber-50 border-amber-200 text-amber-900 dark:bg-[#1b1308] dark:border-[#3b2410] dark:text-amber-200',
-    icon: 'text-amber-700 bg-amber-100 border-amber-300 dark:text-amber-400 dark:bg-[#271608] dark:border-[#4a2b0f]',
-    cta: 'rounded-full px-6 py-2.5 font-semibold',
+    icon: 'text-amber-700 bg-amber-100 border-amber-300 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3 dark:text-amber-400 dark:bg-[#271608] dark:border-[#4a2b0f]',
+    cta: 'rounded-full px-6 py-2.5 font-semibold transition-transform duration-300 group-hover:-translate-y-0.5',
   },
   emerald: {
-    wrap: 'relative overflow-hidden rounded-3xl border border-slate-200 bg-white px-6 pt-5 pb-16 shadow-[0_24px_60px_-28px_rgba(15,23,42,0.22)] dark:border-slate-800 dark:bg-[#05070d] dark:shadow-[0_24px_60px_-28px_rgba(0,0,0,0.9)]',
+    wrap: 'group relative overflow-hidden rounded-3xl border border-slate-200 bg-white px-6 pt-5 pb-16 shadow-[0_24px_60px_-28px_rgba(15,23,42,0.22)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_70px_-30px_rgba(15,23,42,0.35)] hover:border-slate-300 dark:border-slate-800 dark:bg-[#05070d] dark:shadow-[0_24px_60px_-28px_rgba(0,0,0,0.9)] dark:hover:border-slate-700',
     badge: 'bg-amber-50 border-amber-200 text-amber-900 dark:bg-[#1b1308] dark:border-[#3b2410] dark:text-amber-200',
-    icon: 'text-amber-700 bg-amber-100 border-amber-300 dark:text-amber-400 dark:bg-[#271608] dark:border-[#4a2b0f]',
-    cta: 'rounded-full px-6 py-2.5 font-semibold',
+    icon: 'text-amber-700 bg-amber-100 border-amber-300 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3 dark:text-amber-400 dark:bg-[#271608] dark:border-[#4a2b0f]',
+    cta: 'rounded-full px-6 py-2.5 font-semibold transition-transform duration-300 group-hover:-translate-y-0.5',
   },
   amber: {
-    wrap: 'relative overflow-hidden rounded-3xl border border-slate-200 bg-white px-6 pt-5 pb-16 shadow-[0_24px_60px_-28px_rgba(15,23,42,0.22)] dark:border-slate-800 dark:bg-[#05070d] dark:shadow-[0_24px_60px_-28px_rgba(0,0,0,0.9)]',
+    wrap: 'group relative overflow-hidden rounded-3xl border border-slate-200 bg-white px-6 pt-5 pb-16 shadow-[0_24px_60px_-28px_rgba(15,23,42,0.22)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_70px_-30px_rgba(15,23,42,0.35)] hover:border-slate-300 dark:border-slate-800 dark:bg-[#05070d] dark:shadow-[0_24px_60px_-28px_rgba(0,0,0,0.9)] dark:hover:border-slate-700',
     badge: 'bg-amber-50 border-amber-200 text-amber-900 dark:bg-[#1b1308] dark:border-[#3b2410] dark:text-amber-200',
-    icon: 'text-amber-700 bg-amber-100 border-amber-300 dark:text-amber-400 dark:bg-[#271608] dark:border-[#4a2b0f]',
-    cta: 'rounded-full px-6 py-2.5 font-semibold',
+    icon: 'text-amber-700 bg-amber-100 border-amber-300 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3 dark:text-amber-400 dark:bg-[#271608] dark:border-[#4a2b0f]',
+    cta: 'rounded-full px-6 py-2.5 font-semibold transition-transform duration-300 group-hover:-translate-y-0.5',
   },
   violet: {
-    wrap: 'relative overflow-hidden rounded-3xl border border-slate-200 bg-white px-6 pt-5 pb-16 shadow-[0_24px_60px_-28px_rgba(15,23,42,0.22)] dark:border-slate-800 dark:bg-[#05070d] dark:shadow-[0_24px_60px_-28px_rgba(0,0,0,0.9)]',
+    wrap: 'group relative overflow-hidden rounded-3xl border border-slate-200 bg-white px-6 pt-5 pb-16 shadow-[0_24px_60px_-28px_rgba(15,23,42,0.22)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_70px_-30px_rgba(15,23,42,0.35)] hover:border-slate-300 dark:border-slate-800 dark:bg-[#05070d] dark:shadow-[0_24px_60px_-28px_rgba(0,0,0,0.9)] dark:hover:border-slate-700',
     badge: 'bg-amber-50 border-amber-200 text-amber-900 dark:bg-[#1b1308] dark:border-[#3b2410] dark:text-amber-200',
-    icon: 'text-amber-700 bg-amber-100 border-amber-300 dark:text-amber-400 dark:bg-[#271608] dark:border-[#4a2b0f]',
-    cta: 'rounded-full px-6 py-2.5 font-semibold',
+    icon: 'text-amber-700 bg-amber-100 border-amber-300 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3 dark:text-amber-400 dark:bg-[#271608] dark:border-[#4a2b0f]',
+    cta: 'rounded-full px-6 py-2.5 font-semibold transition-transform duration-300 group-hover:-translate-y-0.5',
   },
 }
 
@@ -160,17 +160,15 @@ export default function SistemasPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center mb-14">
           <div className="max-w-2xl">
-            <span className="inline-block px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-xs font-semibold tracking-widest uppercase mb-5 border border-blue-100 dark:border-blue-900/40">
-              {t('systems_badge', 'Sistemas a Medida', 'Custom Systems')}
-            </span>
+            
             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-5">
               {t('systems_page_title', 'Software a tu medida, sin errores ni retrabajos', 'Tailored software, without errors or rework')}
             </h1>
             <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
               {t(
                 'systems_page_intro',
-                'Diseñamos software en función de tus procesos, no al revés. El objetivo es reducir errores, ahorrar tiempo y mejorar control operativo.',
-                'We design software around your processes, not the other way around. The goal is to reduce errors, save time, and improve operational control.'
+                'Diseñamos software en función de tus procesos, no al revés. Cuando la operación depende de Excel para tareas críticas, suelen aparecer demoras, riesgos de seguridad y menor trazabilidad. El objetivo es reducir errores, ahorrar tiempo y mejorar el control operativo.',
+                'We design software around your processes, not the other way around. When critical operations rely on Excel, delays, security risks, and limited traceability often appear. The goal is to reduce errors, save time, and improve operational control.'
               )}
             </p>
           </div>
@@ -203,7 +201,6 @@ export default function SistemasPage() {
                 badgeClassName={style.badge}
                 iconClassName={style.icon}
                 buttonClassName={style.cta}
-                badgeText={t('systems_card_badge', 'Sistemas DSW', 'DSW Systems')}
                 icon={card.icon}
                 title={language === 'es' ? card.titleEs : card.titleEn}
                 description={language === 'es' ? card.textEs : card.textEn}

@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { usePathname } from 'next/navigation'
 import { NAVIGATION_ITEMS } from '@/lib/constants'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -16,6 +16,35 @@ export default function Header() {
   const { openWhatsApp } = useWssp()
   const pathname = usePathname() || '/'
   const [isScrolled, setIsScrolled] = useState(false)
+  const navRef = useRef(null)
+  const indicatorRef = useRef(null)
+
+  const moveIndicator = useCallback(async (el) => {
+    if (!el || !indicatorRef.current) return
+    const { default: gsap } = await import('gsap')
+    gsap.to(indicatorRef.current, {
+      left: el.offsetLeft,
+      width: el.offsetWidth,
+      opacity: 1,
+      duration: 0.32,
+      ease: 'power3.out',
+    })
+  }, [])
+
+  useEffect(() => {
+    if (!navRef.current || !indicatorRef.current) return
+    const activeEl = navRef.current.querySelector('[data-nav-active="true"]')
+    if (!activeEl) return
+    async function initIndicator() {
+      const { default: gsap } = await import('gsap')
+      gsap.fromTo(
+        indicatorRef.current,
+        { left: activeEl.offsetLeft, width: 0, opacity: 0 },
+        { width: activeEl.offsetWidth, opacity: 1, duration: 0.45, ease: 'power3.out' }
+      )
+    }
+    initIndicator()
+  }, [pathname])
 
   // Detectar si el usuario hizo scroll para cambiar la transparencia del header
   useEffect(() => {
@@ -72,15 +101,26 @@ export default function Header() {
           </div>
 
           {/* Navigation */}
-          <nav className="hidden md:flex space-x-8">
+          <nav ref={navRef} className="hidden md:flex space-x-8 relative pb-px">
+            <span
+              ref={indicatorRef}
+              className="absolute bottom-0 h-0.5 rounded-full bg-blue-600 dark:bg-blue-400 pointer-events-none opacity-0"
+              style={{ left: 0, width: 0 }}
+            />
             {NAVIGATION_ITEMS.map((item) => {
               const isActive = pathname === item.href
               return (
                 <Link
                   key={item.name}
                   href={item.href}
+                  data-nav-active={isActive}
                   suppressHydrationWarning
-                  className={`group relative px-1 py-2 -my-2 inline-flex items-center transition-colors duration-200
+                  onMouseEnter={(e) => moveIndicator(e.currentTarget)}
+                  onMouseLeave={() => {
+                    const activeEl = navRef.current?.querySelector('[data-nav-active="true"]')
+                    if (activeEl) moveIndicator(activeEl)
+                  }}
+                  className={`relative px-1 py-2 -my-2 inline-flex items-center transition-colors duration-200
                     ${isActive
                       ? (hasSolidBg
                         ? 'text-blue-600 dark:text-blue-400 font-semibold'
@@ -92,11 +132,7 @@ export default function Header() {
                   `}
                   aria-current={isActive ? 'page' : undefined}
                 >
-                  <span className="relative z-10">
-                    {language === 'es' ? item.name : item.nameEn}
-                  </span>
-                  <span className={`absolute left-0 bottom-0 h-0.5 rounded-full bg-blue-600 dark:bg-blue-400 pointer-events-none transform origin-left transition-all duration-300 ${isActive ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-75 group-hover:opacity-100 group-hover:scale-x-100'}`} style={{width: '100%'}}>
-                  </span>
+                  {language === 'es' ? item.name : item.nameEn}
                 </Link>
               )
             })}
