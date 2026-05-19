@@ -149,26 +149,32 @@ export default function PcBuildsModal({ open, onClose, openWhatsApp }) {
             return (
               <div
                 key={build.id}
-                className={`relative rounded-xl bg-slate-900 border ${neon.border} p-6 flex flex-col`}
+                className={`relative rounded-xl bg-zinc-950/85 border ${neon.border} p-6 flex flex-col`}
                 style={neon.glow}
               >
+                <div
+                  className="pointer-events-none absolute inset-0 rounded-xl bg-cover bg-center bg-no-repeat opacity-20"
+                  style={{ backgroundImage: "url('/images/soporte/fondo-lineas-poligonales.png')" }}
+                  aria-hidden="true"
+                />
+
                 {build.popular && (
                   <span
-                    className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-slate-900 border border-purple-400 text-purple-300 text-xs font-bold px-3 py-0.5 rounded-full whitespace-nowrap"
+                    className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-zinc-950/85 border border-purple-400 text-purple-300 text-xs font-bold px-3 py-0.5 rounded-full whitespace-nowrap"
                     style={{ boxShadow: '0 0 10px rgba(192,132,252,0.5)' }}
                   >
                     ★ Más elegida
                   </span>
                 )}
 
-                <p className={`text-[10px] font-bold uppercase tracking-widest mb-1 ${neon.badge}`}>{build.tag}</p>
-                <h3 className="text-xl font-bold text-white mb-4">{build.name}</h3>
+                <p className={`relative z-10 text-[10px] font-bold uppercase tracking-widest mb-1 ${neon.badge}`}>{build.tag}</p>
+                <h3 className="relative z-10 text-xl font-bold text-white mb-4">{build.name}</h3>
 
-                <p className={`text-4xl font-bold tabular-nums mb-0.5 ${neon.price}`}>{build.price}</p>
-                <p className="text-xs text-slate-500 mb-1">{build.priceNote}</p>
-                <p className="text-xs text-slate-600 mb-6">(depósito o transferencia)</p>
+                <p className={`relative z-10 text-4xl font-bold tabular-nums mb-0.5 ${neon.price}`}>{build.price}</p>
+                <p className="relative z-10 text-xs text-slate-500 mb-1">{build.priceNote}</p>
+                <p className="relative z-10 text-xs text-slate-600 mb-6">(depósito o transferencia)</p>
 
-                <ul className="space-y-2.5 mb-8 flex-1">
+                <ul className="relative z-10 space-y-2.5 mb-8 flex-1">
                   {build.components.map((comp) => (
                     <li key={comp.label} className="flex items-center gap-3 text-sm text-slate-300">
                       <span className="w-8 h-8 rounded border border-slate-700 bg-slate-800 flex items-center justify-center shrink-0">
@@ -181,7 +187,7 @@ export default function PcBuildsModal({ open, onClose, openWhatsApp }) {
 
                 <button
                   onClick={() => openWhatsApp(undefined, build.msg)}
-                  className={`w-full rounded-lg py-2.5 text-sm font-semibold transition-colors ${neon.btn}`}
+                  className={`relative z-10 w-full rounded-lg py-2.5 text-sm font-semibold transition-colors ${neon.btn}`}
                 >
                   {build.cta}
                 </button>

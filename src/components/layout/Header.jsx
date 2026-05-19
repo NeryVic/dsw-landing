@@ -82,7 +82,9 @@ export default function Header() {
   }
 
   const isInternalPage = pathname !== '/'
-  const hasSolidBg = isScrolled || isMobileMenuOpen || isInternalPage
+  const DARK_HERO_PATHS = ['/', '/soporte']
+  const hasDarkHero = DARK_HERO_PATHS.includes(pathname)
+  const hasSolidBg = isScrolled || isMobileMenuOpen || !hasDarkHero
   const headerBgClass = hasSolidBg
     ? 'bg-white/90 dark:bg-black/90 border-b border-gray-200 dark:border-gray-800 backdrop-blur-sm'
     : 'bg-transparent border-transparent'
@@ -94,7 +96,7 @@ export default function Header() {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center">
-              <span className={`text-xl font-bold ${(isScrolled || isMobileMenuOpen) ? 'text-gray-900 dark:text-white' : 'text-white dark:text-white'}`}>
+              <span className={`text-xl font-bold ${hasSolidBg ? 'text-gray-900 dark:text-white' : 'text-white dark:text-white'}`}>
                 Digital Solutions Web
               </span>
             </Link>
@@ -143,7 +145,7 @@ export default function Header() {
             {/* Language Toggle */}
             <button
               onClick={toggleLanguage}
-              className={`p-2 ${isMobileMenuOpen ? 'text-black dark:text-white' : (isScrolled ? 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-white hover:text-white/80')} transition-colors`}
+              className={`p-2 ${isMobileMenuOpen ? 'text-black dark:text-white' : (hasSolidBg ? 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-white hover:text-white/80')} transition-colors`}
               aria-label="Toggle language"
             >
               <span className="text-sm font-medium">
@@ -154,7 +156,7 @@ export default function Header() {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className={`p-2 ${isMobileMenuOpen ? 'text-black dark:text-white' : (isScrolled ? 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-white hover:text-white/80')} transition-colors`}
+              className={`p-2 ${isMobileMenuOpen ? 'text-black dark:text-white' : (hasSolidBg ? 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-white hover:text-white/80')} transition-colors`}
               aria-label="Toggle theme"
             >
               {theme === 'light' ? (
@@ -173,7 +175,7 @@ export default function Header() {
 
             {/* Mobile menu button */}
             <button 
-              className={`md:hidden p-2 mr-2 ${isMobileMenuOpen ? 'text-black dark:text-white' : (isScrolled ? 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-white hover:text-white/80')}`}
+              className={`md:hidden p-2 mr-2 ${isMobileMenuOpen ? 'text-black dark:text-white' : (hasSolidBg ? 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-white hover:text-white/80')}`}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Abrir menú"
             >
