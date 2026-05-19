@@ -56,14 +56,14 @@ const FEATURE_CARDS = [
 const CARD_STYLES = {
   blue: {
     wrap: 'group relative overflow-hidden rounded-3xl border border-slate-200 bg-white px-6 pt-5 pb-16 shadow-[0_24px_60px_-28px_rgba(15,23,42,0.22)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_70px_-30px_rgba(15,23,42,0.35)] hover:border-slate-300 dark:border-slate-800 dark:bg-[#05070d] dark:shadow-[0_24px_60px_-28px_rgba(0,0,0,0.9)] dark:hover:border-slate-700',
-    badge: 'bg-amber-50 border-amber-200 text-amber-900 dark:bg-[#1b1308] dark:border-[#3b2410] dark:text-amber-200',
-    icon: 'text-amber-700 bg-amber-100 border-amber-300 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3 dark:text-amber-400 dark:bg-[#271608] dark:border-[#4a2b0f]',
+    badge: 'bg-blue-50 border-blue-200 text-blue-900 dark:bg-[#080f1f] dark:border-[#0d2044] dark:text-blue-200',
+    icon: 'text-blue-700 bg-blue-100 border-blue-300 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3 dark:text-blue-400 dark:bg-[#060d1f] dark:border-[#0e2a52]',
     cta: 'rounded-full px-6 py-2.5 font-semibold transition-transform duration-300 group-hover:-translate-y-0.5',
   },
   emerald: {
     wrap: 'group relative overflow-hidden rounded-3xl border border-slate-200 bg-white px-6 pt-5 pb-16 shadow-[0_24px_60px_-28px_rgba(15,23,42,0.22)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_70px_-30px_rgba(15,23,42,0.35)] hover:border-slate-300 dark:border-slate-800 dark:bg-[#05070d] dark:shadow-[0_24px_60px_-28px_rgba(0,0,0,0.9)] dark:hover:border-slate-700',
-    badge: 'bg-amber-50 border-amber-200 text-amber-900 dark:bg-[#1b1308] dark:border-[#3b2410] dark:text-amber-200',
-    icon: 'text-amber-700 bg-amber-100 border-amber-300 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3 dark:text-amber-400 dark:bg-[#271608] dark:border-[#4a2b0f]',
+    badge: 'bg-emerald-50 border-emerald-200 text-emerald-900 dark:bg-[#061410] dark:border-[#0e3023] dark:text-emerald-200',
+    icon: 'text-emerald-700 bg-emerald-100 border-emerald-300 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3 dark:text-emerald-400 dark:bg-[#05120e] dark:border-[#0c2d1c]',
     cta: 'rounded-full px-6 py-2.5 font-semibold transition-transform duration-300 group-hover:-translate-y-0.5',
   },
   amber: {
@@ -74,8 +74,8 @@ const CARD_STYLES = {
   },
   violet: {
     wrap: 'group relative overflow-hidden rounded-3xl border border-slate-200 bg-white px-6 pt-5 pb-16 shadow-[0_24px_60px_-28px_rgba(15,23,42,0.22)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_70px_-30px_rgba(15,23,42,0.35)] hover:border-slate-300 dark:border-slate-800 dark:bg-[#05070d] dark:shadow-[0_24px_60px_-28px_rgba(0,0,0,0.9)] dark:hover:border-slate-700',
-    badge: 'bg-amber-50 border-amber-200 text-amber-900 dark:bg-[#1b1308] dark:border-[#3b2410] dark:text-amber-200',
-    icon: 'text-amber-700 bg-amber-100 border-amber-300 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3 dark:text-amber-400 dark:bg-[#271608] dark:border-[#4a2b0f]',
+    badge: 'bg-violet-50 border-violet-200 text-violet-900 dark:bg-[#100a1f] dark:border-[#2a1550] dark:text-violet-200',
+    icon: 'text-violet-700 bg-violet-100 border-violet-300 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3 dark:text-violet-400 dark:bg-[#0e0820] dark:border-[#261248]',
     cta: 'rounded-full px-6 py-2.5 font-semibold transition-transform duration-300 group-hover:-translate-y-0.5',
   },
 }

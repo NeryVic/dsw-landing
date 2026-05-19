@@ -4,12 +4,14 @@ import React, { useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { WhyChooseUsData } from '@/data/features'
+import { useWssp } from '@/hooks/wssp'
 
 
 
 export default function WhyChooseUsSection() {
   const { language, t } = useLanguage()
   const pathname = usePathname()
+  const { openWhatsApp } = useWssp()
   const gridRef = useRef(null)
   const stRef = useRef(null)
   const gsapRef = useRef(null)
@@ -103,6 +105,24 @@ export default function WhyChooseUsSection() {
               </p>
             </div>
           ))}
+        </div>
+
+        {/* CTA */}
+        <div className="text-center mt-14">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+            {t('why_cta_label', '¿Te identificás con alguno de estos puntos?', 'Do any of these resonate with you?')}
+          </p>
+          <button
+            onClick={() => {
+              const msg = language === 'es'
+                ? 'Hola, me interesa entender cómo pueden ayudarme a mejorar mi operación.'
+                : 'Hi, I am interested in understanding how you can help improve my operations.'
+              openWhatsApp(undefined, msg)
+            }}
+            className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold text-sm hover:underline transition-colors"
+          >
+            {t('why_cta_btn', 'Hablemos de tu caso →', "Let's talk about your case →")}
+          </button>
         </div>
 
       </div>

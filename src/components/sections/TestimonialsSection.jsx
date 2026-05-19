@@ -4,10 +4,12 @@ import React, { useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { testimonialsData } from '@/data/testimonials'
+import { useWssp } from '@/hooks/wssp'
 
 export default function TestimonialsSection() {
   const { language, t } = useLanguage()
   const pathname = usePathname()
+  const { openWhatsApp } = useWssp()
   const testimonialsRef = useRef(null)
   const stRef = useRef(null)
   const gsapRef = useRef(null)
@@ -139,6 +141,24 @@ export default function TestimonialsSection() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* CTA */}
+        <div className="text-center mt-14">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+            {t('testimonials_cta_label', '¿Querés resultados similares para tu negocio?', 'Want similar results for your business?')}
+          </p>
+          <button
+            onClick={() => {
+              const msg = language === 'es'
+                ? 'Hola, leí los testimonios en su web y me gustaría hablar sobre cómo pueden ayudar a mi negocio.'
+                : 'Hi, I read the testimonials on your website and would like to talk about how you can help my business.'
+              openWhatsApp(undefined, msg)
+            }}
+            className="inline-flex items-center gap-2 text-amber-600 dark:text-amber-400 font-semibold text-sm hover:underline transition-colors"
+          >
+            {t('testimonials_cta_btn', 'Hablemos de tu proyecto →', "Let's talk about your project →")}
+          </button>
         </div>
 
       </div>

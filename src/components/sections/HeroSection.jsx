@@ -60,7 +60,13 @@ export default function HeroSection() {
             )}
           </p>
 
-          {/* Description — oculto en móvil para no saturar */}
+          {/* Description — versión completa en sm+, reducida en mobile */}
+          <p className="text-base lg:text-lg text-gray-300 mb-10 sm:mb-12 max-w-2xl sm:hidden">
+            {t('hero_description_short',
+              'Analizamos tu flujo real, detectamos cuellos de botella y construimos el sistema que tu equipo necesita.',
+              'We analyze your real workflow and build the system your team actually needs.'
+            )}
+          </p>
           <p className="hidden sm:block text-base lg:text-lg text-gray-300 mb-10 sm:mb-12 max-w-2xl">
             {t('hero_description',
               'Analizamos cómo trabaja tu equipo, detectamos cuellos de botella y construimos un sistema que automatiza lo crítico sin romper tu operación actual.',
@@ -89,9 +95,9 @@ export default function HeroSection() {
               </div>
             </div>
             <div className="text-center sm:text-left">
-              <div className="text-2xl sm:text-4xl font-bold text-white mb-1 sm:mb-2">Sprints</div>
+              <div className="text-2xl sm:text-4xl font-bold text-white mb-1 sm:mb-2">Etapas</div>
               <div className="text-gray-300 text-xs sm:text-sm">
-                {t('hero_stat2', 'Implementacion por etapas', 'Phased implementation')}
+                {t('hero_stat2', 'Sin invertir todo de una', 'Invest phase by phase')}
               </div>
             </div>
             <div className="text-center sm:text-left">
