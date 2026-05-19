@@ -22,7 +22,7 @@ export const organizationSchema = {
       "@type": "ContactPoint",
       "telephone": CONTACT_INFO.phone,
       "contactType": "customer service",
-      "areaServed": ["AR", "US"],
+      "areaServed": ["Formosa, AR", "Chaco, AR", "Argentina"],
       "availableLanguage": ["Spanish", "English"],
       "hoursAvailable": {
         "@type": "OpeningHoursSpecification",
@@ -150,6 +150,38 @@ export const websiteSchema = {
       "url": `${SITE_CONFIG.url}/images/icons/logoo.png`
     }
   }
+}
+
+export const supportLocalBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "ComputerRepair",
+  "name": `${SITE_CONFIG.name} - Soporte Tecnico`,
+  "description": "Soporte tecnico de PC para empresas y profesionales. Cobertura presencial en Formosa y Chaco, y soporte remoto para otras provincias.",
+  "url": `${SITE_CONFIG.url}/soporte`,
+  "telephone": CONTACT_INFO.phone,
+  "email": CONTACT_INFO.email,
+  "image": `${SITE_CONFIG.url}/images/soporte/soport.jpg`,
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Formosa",
+    "addressRegion": "Formosa",
+    "addressCountry": "AR"
+  },
+  "areaServed": [
+    { "@type": "AdministrativeArea", "name": "Formosa" },
+    { "@type": "AdministrativeArea", "name": "Chaco" }
+  ],
+  "serviceType": [
+    "Soporte tecnico de PC",
+    "Mantenimiento preventivo",
+    "Soporte remoto y presencial"
+  ],
+  "availableLanguage": ["es", "en"],
+  "sameAs": [
+    SITE_CONFIG.links.whatsapp,
+    SITE_CONFIG.links.instagram,
+    SITE_CONFIG.links.linkedin1
+  ]
 }
 
 export const breadcrumbSchema = (items) => ({

@@ -1,10 +1,13 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { useLanguage } from '@/contexts/LanguageContext'
 import Button from '@/components/ui/Button'
 import { useWssp } from '@/hooks/wssp'
+import JsonLd from '@/components/JsonLd'
+import { supportLocalBusinessSchema } from '@/lib/schemas'
+import PcBuildsModal from '@/components/sections/PcBuildsModal'
 
 const SUPPORT_SERVICES = [
   {
@@ -12,7 +15,8 @@ const SUPPORT_SERVICES = [
     nameEs: 'Armado y actualización de PCs',
     nameEn: 'PC assembly and upgrades',
     detailEs: 'Si tu equipo trabaja con máquinas lentas o desbalanceadas, definimos la configuración correcta y armamos/actualizamos cada PC para mejorar rendimiento y vida útil.',
-    detailEn: 'If your team works with slow or unbalanced machines, we define the right setup and build/upgrade each PC to improve performance and lifespan.'
+    detailEn: 'If your team works with slow or unbalanced machines, we define the right setup and build/upgrade each PC to improve performance and lifespan.',
+    showBuilds: true,
   },
   {
     icon: 'ri-tools-line',
@@ -32,8 +36,8 @@ const SUPPORT_SERVICES = [
     icon: 'ri-customer-service-2-line',
     nameEs: 'Soporte remoto y presencial',
     nameEn: 'Remote and on-site support',
-    detailEs: 'No todas las urgencias requieren lo mismo: combinamos soporte remoto y visitas técnicas según criticidad para responder en el canal más efectivo.',
-    detailEn: 'Not every issue needs the same approach: we combine remote support and on-site visits by criticality to respond through the most effective channel.'
+    detailEs: 'Combinamos soporte remoto y visitas técnicas según criticidad. Cobertura presencial actual: Formosa y Chaco; remoto para otras zonas.',
+    detailEn: 'We combine remote support and on-site visits based on criticality. Current on-site coverage: Formosa and Chaco; remote support for other areas.'
   }
 ]
 
@@ -42,13 +46,13 @@ const HERO_POINTS = {
     'Diagnóstico profesional',
     'Mantenimiento preventivo',
     'Reparación de equipos',
-    'Soporte para empresas',
+    'Presencial en Formosa y Chaco',
   ],
   en: [
     'Professional diagnostics',
     'Preventive maintenance',
     'Equipment repair',
-    'Business support',
+    'On-site in Formosa and Chaco',
   ],
 }
 
@@ -68,6 +72,7 @@ const HERO_HIGHLIGHTS = {
 export default function SoporteTecnicoPage() {
   const { language, t } = useLanguage()
   const { openWhatsApp } = useWssp()
+  const [showPcModal, setShowPcModal] = useState(false)
   const heroRef = useRef(null)
   const heroBgRef = useRef(null)
   const servicesRef = useRef(null)
@@ -98,6 +103,32 @@ export default function SoporteTecnicoPage() {
                 duration: 0.85,
                 stagger: 0.1,
                 ease: 'power2.out',
+              }
+            )
+          }
+
+          const coverageEl = document.querySelector('.support-coverage-reveal')
+          if (coverageEl) {
+            gsap.fromTo(
+              coverageEl,
+              { autoAlpha: 0, x: -14, y: 6 },
+              { autoAlpha: 1, x: 0, y: 0, duration: 0.55, ease: 'power2.out', delay: 0.55 }
+            )
+          }
+
+          const listItems = gsap.utils.toArray('.support-hero-list-item')
+          if (listItems.length) {
+            gsap.fromTo(
+              listItems,
+              { autoAlpha: 0, x: -10, y: 8 },
+              {
+                autoAlpha: 1,
+                x: 0,
+                y: 0,
+                duration: 0.38,
+                stagger: 0.1,
+                ease: 'power2.out',
+                delay: 0.7,
               }
             )
           }
@@ -174,6 +205,7 @@ export default function SoporteTecnicoPage() {
 
   return (
     <section className="min-h-screen bg-slate-50 dark:bg-slate-950">
+      <JsonLd schema={supportLocalBusinessSchema} />
       <div ref={heroRef} className="relative min-h-[88vh] overflow-hidden pt-28 pb-8">
         <div ref={heroBgRef} className="absolute left-0 right-0 top-[-14%] bottom-[-14%] z-0 will-change-transform">
           <Image
@@ -207,9 +239,17 @@ export default function SoporteTecnicoPage() {
               )}
             </p>
 
-            <ul className="support-hero-reveal mt-7 space-y-2.5">
+            <p className="support-coverage-reveal mt-3 text-sm text-slate-300 max-w-xl opacity-0">
+              {t(
+                'support_page_coverage',
+                'Soporte técnico de PC en Formosa y Chaco con atención presencial. Para otras provincias, soporte remoto coordinado.',
+                'PC technical support in Formosa and Chaco with on-site service. For other provinces, coordinated remote support.'
+              )}
+            </p>
+
+            <ul className="mt-7 space-y-2.5">
               {(language === 'es' ? HERO_POINTS.es : HERO_POINTS.en).map((point) => (
-                <li key={point} className="flex items-center gap-3 text-slate-100">
+                <li key={point} className="support-hero-list-item flex items-center gap-3 text-slate-100 opacity-0">
                   <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-blue-300/60 bg-blue-500/15 text-blue-200">
                     <i className="ri-check-line text-xs" />
                   </span>
@@ -243,16 +283,26 @@ export default function SoporteTecnicoPage() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div ref={servicesRef} className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
           {SUPPORT_SERVICES.map((item) => (
-            <article key={item.nameEs} className="support-service-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-7 shadow-sm hover:shadow-lg dark:hover:shadow-[0_8px_30px_-12px_rgba(0,0,0,0.8)] hover:border-blue-200 dark:hover:border-blue-900/60 will-change-transform">
+            <article key={item.nameEs} className="support-service-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-7 shadow-sm hover:shadow-lg dark:hover:shadow-[0_8px_30px_-12px_rgba(0,0,0,0.8)] hover:border-blue-200 dark:hover:border-blue-900/60 will-change-transform flex flex-col">
               <div className="support-card-icon w-11 h-11 rounded-lg bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center mb-5 border border-blue-100 dark:border-blue-900/40">
                 <i className={`${item.icon} text-xl text-blue-600 dark:text-blue-400`}></i>
               </div>
               <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-2">
                 {language === 'es' ? item.nameEs : item.nameEn}
               </h2>
-              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed flex-1">
                 {language === 'es' ? item.detailEs : item.detailEn}
               </p>
+              {item.showBuilds && (
+                <button
+                  onClick={() => setShowPcModal(true)}
+                  className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 transition-colors self-start"
+                >
+                  <i className="ri-computer-line text-base" />
+                  {language === 'es' ? 'Ver configuraciones de referencia' : 'See reference builds'}
+                  <i className="ri-arrow-right-line text-sm" />
+                </button>
+              )}
             </article>
           ))}
         </div>
@@ -273,6 +323,11 @@ export default function SoporteTecnicoPage() {
           </Button>
         </div>
       </div>
+      <PcBuildsModal
+        open={showPcModal}
+        onClose={() => setShowPcModal(false)}
+        openWhatsApp={openWhatsApp}
+      />
     </section>
   )
 }

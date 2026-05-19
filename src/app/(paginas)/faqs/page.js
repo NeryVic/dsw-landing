@@ -1,12 +1,16 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useState, useRef, useEffect } from 'react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import JsonLd from '@/components/JsonLd'
 import { faqSchema } from '@/lib/schemas'
 
 export default function FaqsPage() {
   const { language, t } = useLanguage()
+  const [openIndex, setOpenIndex] = useState(null)
+  const openIndexRef = useRef(null)
+  const contentRefs = useRef([])
+  const iconRefs = useRef([])
 
   const faqs = useMemo(
     () => [
@@ -49,19 +53,91 @@ export default function FaqsPage() {
     [language]
   )
 
-  return (
-    <section className="min-h-screen pt-28 pb-16 bg-white dark:bg-slate-950">
-      <JsonLd schema={faqSchema(faqs)} />
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+  // Animación de entrada
+  useEffect(() => {
+    let ctx
+    async function enter() {
+      const { default: gsap } = await import('gsap')
+      ctx = gsap.context(() => {
+        gsap.fromTo(
+          '.faq-header-reveal',
+          { autoAlpha: 0, y: 20 },
+          { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.1, ease: 'power2.out' }
+        )
+        gsap.fromTo(
+          '.faq-item',
+          { autoAlpha: 0, y: 14 },
+          { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.07, ease: 'power2.out', delay: 0.35 }
+        )
+      })
+    }
+    enter()
+    return () => ctx?.revert()
+  }, [])
 
-        <div className="max-w-4xl mb-14">
-          <span className="inline-block px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-xs font-semibold tracking-widest uppercase mb-5 border border-blue-100 dark:border-blue-900/40">
+  // Cerrar todo al cambiar de idioma
+  useEffect(() => {
+    async function closeAll() {
+      const { default: gsap } = await import('gsap')
+      contentRefs.current.forEach(el => { if (el) gsap.set(el, { height: 0 }) })
+      iconRefs.current.forEach(el => { if (el) gsap.set(el, { rotation: 0 }) })
+    }
+    closeAll()
+    setOpenIndex(null)
+    openIndexRef.current = null
+  }, [language])
+
+  async function toggle(idx) {
+    const { default: gsap } = await import('gsap')
+    const prevIdx = openIndexRef.current
+
+    // Cerrar el item abierto anterior
+    if (prevIdx !== null) {
+      const prevContent = contentRefs.current[prevIdx]
+      const prevIcon = iconRefs.current[prevIdx]
+      if (prevContent) gsap.to(prevContent, { height: 0, duration: 0.32, ease: 'power2.inOut' })
+      if (prevIcon) gsap.to(prevIcon, { rotation: 0, duration: 0.26, ease: 'power2.inOut' })
+    }
+
+    const isOpening = prevIdx !== idx
+    if (isOpening) {
+      const content = contentRefs.current[idx]
+      const icon = iconRefs.current[idx]
+      if (content) {
+        gsap.fromTo(
+          content,
+          { height: 0 },
+          {
+            height: content.scrollHeight,
+            duration: 0.4,
+            ease: 'power2.out',
+            onComplete: () => { content.style.height = 'auto' },
+          }
+        )
+      }
+      if (icon) gsap.to(icon, { rotation: 45, duration: 0.28, ease: 'back.out(1.5)' })
+      setOpenIndex(idx)
+      openIndexRef.current = idx
+    } else {
+      setOpenIndex(null)
+      openIndexRef.current = null
+    }
+  }
+
+  return (
+    <section className="min-h-screen pt-28 pb-20 bg-white dark:bg-slate-950">
+      <JsonLd schema={faqSchema(faqs)} />
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
+
+        {/* Header */}
+        <div className="mb-14">
+          <p className="faq-header-reveal opacity-0 text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 mb-4">
             {t('faq_badge', 'Preguntas Frecuentes', 'FAQ')}
-          </span>
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-5">
+          </p>
+          <h1 className="faq-header-reveal opacity-0 text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-5">
             {t('faq_page_title', 'Preguntas Frecuentes', 'Frequently Asked Questions')}
           </h1>
-          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
+          <p className="faq-header-reveal opacity-0 text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
             {t(
               'faq_page_intro',
               'Respuestas claras sobre tiempos, costos, alcance y soporte para que puedas decidir con información real.',
@@ -70,12 +146,36 @@ export default function FaqsPage() {
           </p>
         </div>
 
-        <div className="space-y-3 max-w-4xl">
-          {faqs.map((faq) => (
-            <article key={faq.question} className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-7 transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-700">
-              <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-2">{faq.question}</h2>
-              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{faq.answer}</p>
-            </article>
+        {/* Accordion */}
+        <div className="divide-y divide-slate-200 dark:divide-slate-800">
+          {faqs.map((faq, i) => (
+            <div key={faq.question} className="faq-item opacity-0">
+              <button
+                onClick={() => toggle(i)}
+                className="w-full flex items-center justify-between py-5 text-left group"
+                aria-expanded={openIndex === i}
+              >
+                <span className="text-base font-semibold text-slate-900 dark:text-slate-100 pr-6 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-150">
+                  {faq.question}
+                </span>
+                <span
+                  ref={el => { iconRefs.current[i] = el }}
+                  className="shrink-0 w-6 h-6 flex items-center justify-center text-slate-400 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors duration-150"
+                  style={{ transformOrigin: 'center' }}
+                >
+                  <i className="ri-add-line text-xl leading-none" />
+                </span>
+              </button>
+              <div
+                ref={el => { contentRefs.current[i] = el }}
+                className="overflow-hidden"
+                style={{ height: 0 }}
+              >
+                <p className="pb-6 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  {faq.answer}
+                </p>
+              </div>
+            </div>
           ))}
         </div>
 
