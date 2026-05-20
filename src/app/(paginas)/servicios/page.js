@@ -7,7 +7,14 @@ import { useLanguage } from '@/contexts/LanguageContext'
 import Button from '@/components/ui/Button'
 import { useWssp } from '@/hooks/wssp'
 import { PILLARS, SOLUTIONS, USE_CASES } from '@/data/services'
+import pricingData from '@/data/pricing.json'
 
+
+const WEB_SOLUTION_PRICES = [
+  pricingData.services.landing.desde,
+  pricingData.services.web_institucional.desde,
+  pricingData.services.ecommerce.desde,
+]
 
 const USE_CASE_ACCENT = {
   blue: 'border-blue-200 bg-blue-50/60 dark:border-blue-900/50 dark:bg-blue-950/20',
@@ -59,6 +66,7 @@ export default function ServiciosPage() {
   const activePillarData = PILLARS.find((pillar) => pillar.id === activePillar) || PILLARS[0]
   const activeSolutions = SOLUTIONS[activePillar] || []
   const accents = PILLAR_ACCENT[activePillarData.accent]
+  const isWebPillar = activePillar === 'web'
   const featureRows = useMemo(() => {
     const all = activeSolutions.flatMap((solution) => (language === 'es' ? solution.includesEs : solution.includesEn))
     return Array.from(new Set(all))
@@ -394,102 +402,245 @@ export default function ServiciosPage() {
           </Tab.Group>
 
           <div ref={mobileSolutionsRef} className="md:hidden -mx-4 px-4 pb-2 flex gap-4 overflow-x-auto snap-x snap-mandatory mb-12">
-          {activeSolutions.map((solution, index) => (
-            <article
-              key={solution.titleEs}
-              data-solution-card
-              className="snap-start min-w-[88%] bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-3xl p-7"
-            >
-              <div className="mb-6 text-center">
-                <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                  {getText(solution, 'titleEs', 'titleEn')}
-                </h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400">{getText(solution, 'timelineEs', 'timelineEn')}</p>
-              </div>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-5 text-center">{getText(solution, 'descEs', 'descEn')}</p>
-
-              <ul className="space-y-3 mb-6">
-                {featureRows.map((feature) => {
-                  const includes = cumulativeFeatureSets[index]?.has(feature)
-                  return (
-                    <li key={`${solution.titleEs}-${feature}`} className={`flex items-start gap-3 text-sm ${includes ? 'text-slate-700 dark:text-slate-200' : 'text-slate-400 dark:text-slate-500'}`}>
-                      <i className={`${includes ? 'ri-check-line' : 'ri-close-line'} mt-0.5`}></i>
-                      <span>{feature}</span>
-                    </li>
-                  )
-                })}
-              </ul>
-
-              <p className="text-sm text-slate-700 dark:text-slate-300 mb-5 text-center">
-                <span className="font-semibold">{t('services_outcome', 'Resultado', 'Outcome')}:</span> {getText(solution, 'outcomeEs', 'outcomeEn')}
-              </p>
-              <Button onClick={() => handleCardCta(getText(solution, 'titleEs', 'titleEn'))} className="w-full rounded-full">
-                {getText(solution, 'titleEs', 'titleEn')}
-                {getText(solution, 'ctaEs', 'ctaEn')}
-              </Button>
-            </article>
-          ))}
-          </div>
-
-          <div ref={desktopSolutionsRef} className="hidden md:flex md:flex-col lg:flex-row md:items-stretch md:justify-center gap-5 lg:gap-0 mb-12">
-          {activeSolutions.map((solution, index) => (
-            <article
-              key={solution.titleEs}
-              data-solution-card
-              className={`w-full max-w-sm border-2 rounded-3xl p-8 flex flex-col bg-white dark:bg-slate-900 ${
-                index === 1
-                  ? 'border-dashed border-slate-300 dark:border-slate-700 lg:py-12 lg:z-10'
-                  : 'border-slate-200 dark:border-slate-800'
-              } ${index === 0 ? 'lg:-mr-4' : ''} ${index === 2 ? 'lg:-ml-4' : ''}`}
-            >
-              <div className="mb-8 text-center">
-                {index === 1 ? (
-                  <p className="inline-block text-xs font-semibold uppercase tracking-[0.18em] text-emerald-500 mb-2">
-                    {t('services_recommended', 'Recomendada', 'Recommended')}
+          {activeSolutions.map((solution, index) => {
+            if (isWebPillar) {
+              return (
+                <article
+                  key={solution.titleEs}
+                  data-solution-card
+                  className="snap-start min-w-[88%] bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-3xl p-7"
+                >
+                  <div className="mb-6 text-center">
+                    <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
+                      {getText(solution, 'titleEs', 'titleEn')}
+                    </h3>
+                    <p className="text-2xl font-bold mb-1">
+                      <span className="text-sm font-normal text-slate-500 dark:text-slate-400">{t('services_desde', 'desde', 'from')} </span>
+                      <span className={index === 0 ? 'text-amber-500' : index === 1 ? 'text-emerald-500' : 'text-blue-500'}>${WEB_SOLUTION_PRICES[index]}</span>
+                      <span className="text-sm font-normal text-slate-500 dark:text-slate-400"> USD</span>
+                    </p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">{getText(solution, 'timelineEs', 'timelineEn')}</p>
+                  </div>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-5 text-center">{getText(solution, 'descEs', 'descEn')}</p>
+                  <ul className="space-y-3 mb-6">
+                    {featureRows.map((feature) => {
+                      const included = cumulativeFeatureSets[index]?.has(feature)
+                      return (
+                        <li key={`${solution.titleEs}-${feature}`} className={`flex items-start gap-3 text-sm ${included ? 'text-slate-700 dark:text-slate-200' : 'text-slate-400 dark:text-slate-500'}`}>
+                          <i className={`${included ? 'ri-check-line' : 'ri-close-line'} mt-0.5`}></i>
+                          <span>{feature}</span>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                  <p className="text-sm text-slate-700 dark:text-slate-300 mb-5 text-center">
+                    <span className="font-semibold">{t('services_outcome', 'Resultado', 'Outcome')}:</span> {getText(solution, 'outcomeEs', 'outcomeEn')}
                   </p>
-                ) : null}
-                <h3 className={`font-semibold mb-3 ${index === 0 ? 'text-amber-500' : index === 1 ? 'text-emerald-500' : 'text-blue-500'} text-2xl`}>
-                  {getText(solution, 'titleEs', 'titleEn')}
-                </h3>
-                <p className="text-5xl font-extrabold text-slate-900 dark:text-slate-100 leading-none mb-3">
-                  {index === 0 ? '01' : index === 1 ? '02' : '03'}
-                </p>
-                <p className="text-sm text-slate-500 dark:text-slate-400">{getText(solution, 'timelineEs', 'timelineEn')}</p>
-              </div>
+                  <Button onClick={() => handleCardCta(getText(solution, 'titleEs', 'titleEn'))} className="w-full rounded-full">
+                    {getText(solution, 'ctaEs', 'ctaEn')}
+                  </Button>
+                </article>
+              )
+            }
 
-              <ul className="space-y-4 mb-8 min-h-[290px]">
-                {featureRows.map((feature) => {
-                  const includes = cumulativeFeatureSets[index]?.has(feature)
-                  return (
-                    <li key={`${solution.titleEs}-${feature}`} className={`flex items-start gap-3 text-base ${includes ? 'text-slate-700 dark:text-slate-200' : 'text-slate-400 dark:text-slate-500'}`}>
-                      <i className={`${includes ? 'ri-check-line' : 'ri-close-line'} mt-0.5`}></i>
+            const audience = language === 'es' ? solution.audienceEs : solution.audienceEn
+            const includes = language === 'es' ? solution.includesEs : solution.includesEn
+            return (
+              <article
+                key={solution.titleEs}
+                data-solution-card
+                className="snap-start min-w-[88%] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-7 flex flex-col"
+              >
+                <div className="flex items-start gap-4 mb-4">
+                  <div className={`w-12 h-12 rounded-2xl border flex items-center justify-center text-xl shrink-0 ${USE_CASE_ICON_ACCENT[activePillarData.accent] || USE_CASE_ICON_ACCENT.slate}`}>
+                    <i className={solution.icon || activePillarData.icon}></i>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 leading-tight">
+                      {getText(solution, 'titleEs', 'titleEn')}
+                    </h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{getText(solution, 'timelineEs', 'timelineEn')}</p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-1.5 mb-4">
+                  {audience.map((aud) => (
+                    <span key={aud} className="text-xs px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+                      {aud}
+                    </span>
+                  ))}
+                </div>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">{getText(solution, 'descEs', 'descEn')}</p>
+                <ul className="space-y-2.5 mb-5 flex-1">
+                  {includes.map((feature) => (
+                    <li key={feature} className="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-200">
+                      <i className={`ri-check-line mt-0.5 ${accents.dot}`}></i>
                       <span>{feature}</span>
                     </li>
-                  )
-                })}
-              </ul>
-
-              <p className="text-sm text-slate-700 dark:text-slate-300 mb-6 text-center">
-                <span className="font-semibold">{t('services_outcome', 'Resultado', 'Outcome')}:</span> {getText(solution, 'outcomeEs', 'outcomeEn')}
-              </p>
-
-              <Button
-                onClick={() => handleCardCta(getText(solution, 'titleEs', 'titleEn'))}
-                className={`mt-auto rounded-full ${index === 1
-                  ? 'bg-emerald-500 hover:bg-emerald-600 border-emerald-500 text-white'
-                  : 'border-slate-400 text-slate-900  hover:bg-blue-300 hover:border-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-blue-900'}`}
-                variant={index === 1 ? 'primary' : 'outline'}
-              >
-                {getText(solution, 'ctaEs', 'ctaEn')}
-              </Button>
-              <p className="text-xs text-slate-500 dark:text-slate-400 text-center mt-4">
-                {index === 1
-                  ? t('services_plan_note_mid', 'Ideal para equipos que necesitan avanzar rapido.', 'Best for teams that need to move fast.')
-                  : t('services_plan_note_side', 'Disenado para objetivos concretos y medibles.', 'Designed for concrete and measurable goals.')}
-              </p>
-            </article>
-          ))}
+                  ))}
+                </ul>
+                <p className="text-sm text-slate-700 dark:text-slate-300 mb-5">
+                  <span className="font-semibold">{t('services_outcome', 'Resultado', 'Outcome')}:</span> {getText(solution, 'outcomeEs', 'outcomeEn')}
+                </p>
+                <Button onClick={() => handleCardCta(getText(solution, 'titleEs', 'titleEn'))} className="w-full rounded-full">
+                  {getText(solution, 'ctaEs', 'ctaEn')}
+                </Button>
+              </article>
+            )
+          })}
           </div>
+
+          {activePillar === 'support' && (
+            <div className="hidden md:flex items-center gap-2 mb-5 px-4 py-3 rounded-xl bg-amber-50 border border-amber-200 dark:bg-amber-950/20 dark:border-amber-900/40 text-amber-800 dark:text-amber-300 text-sm">
+              <i className="ri-links-line text-base shrink-0"></i>
+              <span>{t('services_support_note', 'Estos servicios son complementarios — podés combinarlos según tus necesidades.', 'These services are complementary — you can combine them as needed.')}</span>
+            </div>
+          )}
+
+          <div ref={desktopSolutionsRef} className={`hidden mb-12 ${isWebPillar ? 'md:flex md:flex-col lg:flex-row md:items-stretch md:justify-center gap-5 lg:gap-0' : 'md:grid md:grid-cols-3 gap-5'}`}>
+          {activeSolutions.map((solution, index) => {
+            if (isWebPillar) {
+              return (
+                <article
+                  key={solution.titleEs}
+                  data-solution-card
+                  className={`w-full max-w-sm border-2 rounded-3xl p-8 flex flex-col bg-white dark:bg-slate-900 ${
+                    index === 1
+                      ? 'border-dashed border-slate-300 dark:border-slate-700 lg:py-12 lg:z-10'
+                      : 'border-slate-200 dark:border-slate-800'
+                  } ${index === 0 ? 'lg:-mr-4' : ''} ${index === 2 ? 'lg:-ml-4' : ''}`}
+                >
+                  <div className="mb-8 text-center">
+                    {index === 1 ? (
+                      <p className="inline-block text-xs font-semibold uppercase tracking-[0.18em] text-emerald-500 mb-2">
+                        {t('services_recommended', 'Recomendada', 'Recommended')}
+                      </p>
+                    ) : null}
+                    <h3 className={`font-semibold mb-3 ${index === 0 ? 'text-amber-500' : index === 1 ? 'text-emerald-500' : 'text-blue-500'} text-2xl`}>
+                      {getText(solution, 'titleEs', 'titleEn')}
+                    </h3>
+                    <p className="text-5xl font-extrabold text-slate-900 dark:text-slate-100 leading-none mb-2">
+                      {index === 0 ? '01' : index === 1 ? '02' : '03'}
+                    </p>
+                    <p className="text-xl font-bold mb-1">
+                      <span className="text-sm font-normal text-slate-500 dark:text-slate-400">{t('services_desde', 'desde', 'from')} </span>
+                      <span className={index === 0 ? 'text-amber-500' : index === 1 ? 'text-emerald-500' : 'text-blue-500'}>${WEB_SOLUTION_PRICES[index]}</span>
+                      <span className="text-sm font-normal text-slate-500 dark:text-slate-400"> USD</span>
+                    </p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">{getText(solution, 'timelineEs', 'timelineEn')}</p>
+                  </div>
+
+                  <ul className="space-y-4 mb-8 min-h-[290px]">
+                    {featureRows.map((feature) => {
+                      const included = cumulativeFeatureSets[index]?.has(feature)
+                      return (
+                        <li key={`${solution.titleEs}-${feature}`} className={`flex items-start gap-3 text-base ${included ? 'text-slate-700 dark:text-slate-200' : 'text-slate-400 dark:text-slate-500'}`}>
+                          <i className={`${included ? 'ri-check-line' : 'ri-close-line'} mt-0.5`}></i>
+                          <span>{feature}</span>
+                        </li>
+                      )
+                    })}
+                  </ul>
+
+                  <p className="text-sm text-slate-700 dark:text-slate-300 mb-6 text-center">
+                    <span className="font-semibold">{t('services_outcome', 'Resultado', 'Outcome')}:</span> {getText(solution, 'outcomeEs', 'outcomeEn')}
+                  </p>
+
+                  <Button
+                    onClick={() => handleCardCta(getText(solution, 'titleEs', 'titleEn'))}
+                    className={`mt-auto rounded-full ${index === 1
+                      ? 'bg-emerald-500 hover:bg-emerald-600 border-emerald-500 text-white'
+                      : 'border-slate-400 text-slate-900  hover:bg-blue-300 hover:border-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-blue-900'}`}
+                    variant={index === 1 ? 'primary' : 'outline'}
+                  >
+                    {getText(solution, 'ctaEs', 'ctaEn')}
+                  </Button>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 text-center mt-4">
+                    {index === 1
+                      ? t('services_plan_note_mid', 'Ideal para equipos que necesitan avanzar rapido.', 'Best for teams that need to move fast.')
+                      : t('services_plan_note_side', 'Disenado para objetivos concretos y medibles.', 'Designed for concrete and measurable goals.')}
+                  </p>
+                </article>
+              )
+            }
+
+            const audience = language === 'es' ? solution.audienceEs : solution.audienceEn
+            const includes = language === 'es' ? solution.includesEs : solution.includesEn
+            return (
+              <article
+                key={solution.titleEs}
+                data-solution-card
+                className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 flex flex-col"
+              >
+                <div className="flex items-start gap-4 mb-5">
+                  <div className={`w-12 h-12 rounded-2xl border flex items-center justify-center text-xl shrink-0 ${USE_CASE_ICON_ACCENT[activePillarData.accent] || USE_CASE_ICON_ACCENT.slate}`}>
+                    <i className={solution.icon || activePillarData.icon}></i>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 leading-tight">
+                      {getText(solution, 'titleEs', 'titleEn')}
+                    </h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{getText(solution, 'timelineEs', 'timelineEn')}</p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-1.5 mb-4">
+                  {audience.map((aud) => (
+                    <span key={aud} className="text-xs px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+                      {aud}
+                    </span>
+                  ))}
+                </div>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mb-5">{getText(solution, 'descEs', 'descEn')}</p>
+                <ul className="space-y-3 mb-6 flex-1">
+                  {includes.map((feature) => (
+                    <li key={feature} className="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-200">
+                      <i className={`ri-check-line mt-0.5 ${accents.dot}`}></i>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-sm text-slate-700 dark:text-slate-300 mb-6">
+                  <span className="font-semibold">{t('services_outcome', 'Resultado', 'Outcome')}:</span> {getText(solution, 'outcomeEs', 'outcomeEn')}
+                </p>
+                <Button
+                  onClick={() => handleCardCta(getText(solution, 'titleEs', 'titleEn'))}
+                  variant="outline"
+                  className="mt-auto rounded-full border-slate-300 dark:border-slate-700 dark:text-slate-200"
+                >
+                  {getText(solution, 'ctaEs', 'ctaEn')}
+                </Button>
+              </article>
+            )
+          })}
+          </div>
+
+          {activePillar === 'systems' && (
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-12 px-5 py-4 rounded-xl border border-teal-200 bg-teal-50/60 dark:border-teal-900/40 dark:bg-teal-950/20">
+              <div className="flex items-center gap-3 flex-1 min-w-0">
+                
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                    {t('services_custom_note_title', '¿Tu operacion no está en esta lista?', "Your operation isn't listed here?")}
+                  </p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    {t('services_custom_note_desc', 'Estos son los mas pedidos por nuestros clientes. Tambien desarrollamos sistemas a medida segun tu rubro, proceso o flujo de trabajo.', 'These are our most requested systems. We also build custom solutions tailored to your industry, process, or workflow.')}
+                  </p>
+                </div>
+              </div>
+              <Button
+                size="sm"
+                onClick={() => {
+                  const message = language === 'es'
+                    ? 'Hola, necesito un sistema a medida para mi negocio. ¿Podemos hablar?'
+                    : 'Hi, I need a custom system for my business. Can we talk?'
+                  openWhatsApp(undefined, message)
+                }}
+                variant="outline"
+                className="shrink-0 rounded-full border-teal-400 text-teal-700 hover:bg-teal-100 dark:border-teal-600 dark:text-teal-300 dark:hover:bg-teal-950/40"
+              >
+                {t('services_custom_note_cta', 'Contanos tu caso', 'Tell us your case')}
+              </Button>
+            </div>
+          )}
         </div>
 
         <div ref={useCasesRef} className="mb-8">

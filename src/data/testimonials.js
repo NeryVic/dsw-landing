@@ -2,7 +2,7 @@ export const testimonialsData = [
   {
     id: 1,
     name: 'Jorgelino Acosta',
-    role: 'Dueño, Ferretería El Tornillo',
+    role: 'Dueño, Ferretería Acosta',
     content: 'El sistema POS agilizó las ventas y el control de stock. Muy fácil de usar.',
     avatar: '/images/testimonials/jorge.jpg',
     rating: 5
