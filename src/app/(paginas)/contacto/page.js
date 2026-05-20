@@ -46,13 +46,13 @@ export default function ContactoPage() {
           cards.forEach(card => {
             const icons = card.querySelectorAll('.contact-icon')
             card.addEventListener('mouseenter', () => {
-              gsap.to(card, { y: -2, scale: 1.02, duration: 0.22, ease: 'power2.out' })
+              gsap.to(card, { y: -2, duration: 0.22, ease: 'power2.out', force3D: false })
               icons.forEach(icon =>
                 gsap.to(icon, { scale: 1.2, rotate: -5, duration: 0.22, ease: 'back.out(2)' })
               )
             })
             card.addEventListener('mouseleave', () => {
-              gsap.to(card, { y: 0, scale: 1, duration: 0.28, ease: 'power2.inOut' })
+              gsap.to(card, { y: 0, duration: 0.28, ease: 'power2.inOut', force3D: false })
               icons.forEach(icon =>
                 gsap.to(icon, { scale: 1, rotate: 0, duration: 0.24, ease: 'power2.inOut' })
               )
@@ -134,7 +134,7 @@ export default function ContactoPage() {
         </div>
 
         <div ref={cardsRef} className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
-          <article className="contact-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8 will-change-transform">
+          <article className="contact-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8">
             <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-5">
               {t('contact_page_data_title', 'Canales directos', 'Direct channels')}
             </h2>
@@ -160,7 +160,7 @@ export default function ContactoPage() {
             </ul>
           </article>
 
-          <article className="contact-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8 will-change-transform">
+          <article className="contact-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8">
             <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">
               {t('contact_page_cta_title', 'Agendemos una charla breve', 'Let us schedule a short call')}
             </h2>
@@ -178,7 +178,7 @@ export default function ContactoPage() {
         </div>
 
         {/* Contact Form */}
-        <article className="contact-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8 will-change-transform">
+        <article className="contact-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8">
           <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">
             {t('contact_form_title', 'Envianos un mensaje', 'Send us a message')}
           </h2>
@@ -287,7 +287,7 @@ export default function ContactoPage() {
               </div>
 
               <div className="sm:col-span-2 flex items-center gap-4">
-                <Button type="submit" size="lg">
+                <Button type="submit" size="lg" variant="whatsapp">
                   {t('contact_form_submit', 'Enviar por WhatsApp', 'Send via WhatsApp')}
                   <i className="ri-whatsapp-line ml-2 text-lg"></i>
                 </Button>

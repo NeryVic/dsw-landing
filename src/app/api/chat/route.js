@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import fs from 'fs/promises';
 import path from 'path';
+import { SOLUTIONS, USE_CASES, PILLARS, PC_BUILDS } from '@/data/services';
+import { testimonialsData } from '@/data/testimonials';
 
 async function loadPricing() {
   try {
@@ -13,6 +15,31 @@ async function loadPricing() {
   } catch (e) {
     return null;
   }
+}
+
+function buildKnowledgeBase() {
+  const servicesBlock = Object.entries(SOLUTIONS).map(([cat, items]) => {
+    const pillar = PILLARS.find(p => p.id === cat);
+    const catName = pillar?.labelEs || cat;
+    const itemsText = items.map(s =>
+      `  • ${s.titleEs}: ${s.descEs} | Incluye: ${s.includesEs.join(', ')}. | Resultado: ${s.outcomeEs} | Tiempo estimado: ${s.timelineEs}`
+    ).join('\n');
+    return `${catName}:\n${itemsText}`;
+  }).join('\n\n');
+
+  const useCasesBlock = USE_CASES.map(u =>
+    `  • ${u.titleEs}: Problema: ${u.problemEs} → Solución: ${u.solutionEs} → Resultado esperado: ${u.resultEs}`
+  ).join('\n');
+
+  const testimonialsBlock = testimonialsData.map(t =>
+    `  • "${t.content}" — ${t.name}, ${t.role}`
+  ).join('\n');
+
+  const pcBuildsBlock = PC_BUILDS.map(b =>
+    `  • ${b.name} (${b.price}): ${b.tag}. Componentes: ${b.components.join(', ')}.`
+  ).join('\n');
+
+  return `SERVICIOS DETALLADOS:\n${servicesBlock}\n\nCASOS DE USO POR SECTOR:\n${useCasesBlock}\n\nCONFIGURACIONES DE PC (precios en USD, pago en pesos al cambio del día):\n${pcBuildsBlock}\n\nTESTIMONIOS DE CLIENTES:\n${testimonialsBlock}`;
 }
 
 // Detecta si el JSON de precios contiene montos oficiales (en ARS/USD u otra moneda)
@@ -164,8 +191,20 @@ export async function POST(req) {
     // Construir mensajes: system + (datos oficiales si existen) + historial (cliente o servidor) + último mensaje
     const systemMessage = {
       role: 'system',
-      content:
-        'Eres un asistente virtual amigable para Digital Solutions Web (DSW), una empresa de desarrollo web ubicada en Formosa, Argentina. Solo puedes responder preguntas relacionadas con los servicios, precios, contacto, ubicación o información relevante de Digital Solutions Web. Si te hacen una pregunta que no está relacionada con Digital Solutions Web, responde amablemente que solo puedes ayudar con dudas sobre la empresa, sus servicios o su web. Política de precios: Solo puedes mencionar precios si aparecen en los "Datos oficiales de precios" provistos por el sistema. Si no encuentras el precio solicitado en esos datos, no inventes cifras y ofrece una cotización personalizada pidiendo que nos contacten por WhatsApp o por email a digitalsolutionsweb3.0@gmail.com. Nunca uses otras fuentes para precios.',
+      content: `Eres un asistente virtual amigable para Digital Solutions Web (DSW), empresa tecnológica ubicada en Formosa, Argentina que trabaja de forma remota con clientes de toda Latinoamérica.
+
+${buildKnowledgeBase()}
+
+CONTACTO:
+   - WhatsApp: botón verde flotante en la web.
+   - Formulario de contacto en la sección /contacto.
+   - Email: digitalsolutionsweb3.0@gmail.com
+
+INSTRUCCIONES:
+- Solo respondé preguntas sobre DSW, sus servicios, precios, contacto o información de la empresa.
+- Si preguntan algo ajeno a DSW, responde de manera neutral y educada.
+- Política de precios: solo mencioná precios si están en este contexto o en los "Datos oficiales de precios" del sistema. No inventes cifras. Si no tenés el dato exacto, ofrecé cotización personalizada por WhatsApp o email.
+- Sé conciso y amigable. Respuestas breves y directas.`,
     };
     const pricingSystemMessage = pricingData
       ? {

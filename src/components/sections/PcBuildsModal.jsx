@@ -1,66 +1,51 @@
 'use client'
 
 import { useEffect } from 'react'
+import { PC_BUILDS as PC_BUILDS_DATA } from '@/data/services'
 
-const PC_BUILDS = [
-  {
-    id: 'oficina',
-    name: 'Oficina',
-    tag: 'Gestión y trabajo diario',
-    price: 'USD 470',
-    priceNote: 'Pagás en pesos al cambio del día',
+const PC_VISUAL = {
+  oficina: {
     neon: 'cyan',
-    components: [
-      { icon: 'ri-cpu-line', label: 'CPU: Ryzen 3 4100 + Disipador' },
-      { icon: 'ri-database-2-line', label: 'RAM: 8 GB DDR4' },
-      { icon: 'ri-hard-drive-2-line', label: 'SSD: 512 GB' },
-      { icon: 'ri-circuit-board-line', label: 'MOBO: A520M' },
-      { icon: 'ri-plug-line', label: 'Fuente: 500W' },
-      { icon: 'ri-server-line', label: 'Gabinete básico' },
-    ],
     cta: 'Consultar disponibilidad',
     msg: 'Hola, me interesa la PC Oficina (USD 470). ¿Podemos coordinar?',
-  },
-  {
-    id: 'profesional',
-    name: 'Profesional',
-    tag: 'Multitarea y sistemas',
-    price: 'USD 680',
-    priceNote: 'Pagás en pesos al cambio del día',
-    popular: true,
-    neon: 'purple',
     components: [
-      { icon: 'ri-cpu-line', label: 'CPU: Ryzen 5 8600G + Disipador' },
-      { icon: 'ri-database-2-line', label: 'RAM: 16 GB DDR5' },
-      { icon: 'ri-hard-drive-2-line', label: 'SSD: 1 TB' },
-      { icon: 'ri-circuit-board-line', label: 'MOBO: B840' },
-      { icon: 'ri-tv-2-line', label: 'GPU: Radeon 760M (iGPU)' },
-      { icon: 'ri-plug-line', label: 'Fuente: 650W' },
-      { icon: 'ri-server-line', label: 'Gabinete con ventilación' },
+      'ri-cpu-line', 'ri-database-2-line', 'ri-hard-drive-2-line',
+      'ri-dashboard-2-line', 'ri-plug-line', 'ri-server-line',
     ],
+  },
+  profesional: {
+    neon: 'purple',
     cta: 'La quiero - coordinar compra',
     msg: 'Hola, me interesa la PC Profesional (USD 680, Ryzen 5 8600G). ¿Podemos coordinar la compra?',
-  },
-  {
-    id: 'alto-rendimiento',
-    name: 'Gamer',
-    tag: 'Gaming, diseño y trabajo pesado',
-    price: 'USD 1.050',
-    priceNote: 'Pagás en pesos al cambio del día',
-    neon: 'green',
     components: [
-      { icon: 'ri-cpu-line', label: 'CPU: Ryzen 7 8700G + Disipador' },
-      { icon: 'ri-database-2-line', label: 'RAM: 32 GB DDR5' },
-      { icon: 'ri-hard-drive-2-line', label: 'SSD: 2 TB' },
-      { icon: 'ri-circuit-board-line', label: 'MOBO: B840 / X670' },
-      { icon: 'ri-tv-2-line', label: 'GPU: RX 7600 8GB (dedicada)' },
-      { icon: 'ri-plug-line', label: 'Fuente: 750W' },
-      { icon: 'ri-server-line', label: 'Gabinete c/ ventilación premium' },
+      'ri-cpu-line', 'ri-database-2-line', 'ri-hard-drive-2-line',
+      'ri-dashboard-2-line', 'ri-plug-line', 'ri-server-line',
     ],
+  },
+  gamer: {
+    neon: 'green',
     cta: 'Necesito asesoramiento',
     msg: 'Hola, me interesa la PC Gamer (USD 1.050, Ryzen 7 + RX 7600). ¿Podemos coordinar?',
+    components: [
+      'ri-cpu-line', 'ri-database-2-line', 'ri-hard-drive-2-line',
+      'ri-dashboard-2-line', 'ri-tv-2-line', 'ri-plug-line', 'ri-server-line',
+    ],
   },
-]
+}
+
+const PC_BUILDS = PC_BUILDS_DATA.map((build) => {
+  const visual = PC_VISUAL[build.id] || {}
+  return {
+    ...build,
+    neon: visual.neon || 'cyan',
+    cta: visual.cta || 'Consultar',
+    msg: visual.msg || `Hola, me interesa la PC ${build.name} (${build.price}).`,
+    components: build.components.map((label, i) => ({
+      icon: visual.components?.[i] || 'ri-checkbox-blank-circle-line',
+      label,
+    })),
+  }
+})
 
 const neonStyles = {
   cyan: {

@@ -9,7 +9,7 @@ export const testimonialsData = [
   },
   {
     id: 2,
-    name: 'Desiré Benítez',
+    name: 'Desiré Müller',
     role: 'Gerente, Soluciones CRM',
     content: 'La app web CRM nos ayudó a organizar clientes y tareas. ¡Excelente herramienta!',
     avatar: '/images/testimonials/desire.jpg',

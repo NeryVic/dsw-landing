@@ -11,7 +11,7 @@ import { useWssp } from '@/hooks/wssp'
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { language, toggleLanguage, t } = useLanguage()
+  const { t } = useLanguage()
   const { theme, toggleTheme } = useTheme()
   const { openWhatsApp } = useWssp()
   const pathname = usePathname() || '/'
@@ -58,9 +58,7 @@ export default function Header() {
   }, [])
 
   const handleStartProject = () => {
-    const message = language === 'es'
-      ? '¡Hola! Quiero empezar mi proyecto con Digital Solutions Web. Me gustaría recibir más información sobre sus servicios.'
-      : 'Hello! I want to start my project with Digital Solutions Web. I would like to receive more information about your services.'
+    const message = '¡Hola! Quiero empezar mi proyecto con Digital Solutions Web. Me gustaría recibir más información sobre sus servicios.'
     openWhatsApp(undefined, message)
   }
 
@@ -134,7 +132,7 @@ export default function Header() {
                   `}
                   aria-current={isActive ? 'page' : undefined}
                 >
-                  {language === 'es' ? item.name : item.nameEn}
+                  {item.name}
                 </Link>
               )
             })}
@@ -142,17 +140,6 @@ export default function Header() {
 
           {/* Controls */}
           <div className="flex items-center space-x-2 pr-4 md:pr-0">
-            {/* Language Toggle */}
-            <button
-              onClick={toggleLanguage}
-              className={`p-2 ${isMobileMenuOpen ? 'text-black dark:text-white' : (hasSolidBg ? 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-white hover:text-white/80')} transition-colors`}
-              aria-label="Toggle language"
-            >
-              <span className="text-sm font-medium">
-                {language === 'es' ? 'EN' : 'ES'}
-              </span>
-            </button>
-
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
@@ -202,7 +189,7 @@ export default function Header() {
                     aria-current={isActive ? 'page' : undefined}
                   >
                     <span className="block relative">
-                      {language === 'es' ? item.name : item.nameEn}
+                      {item.name}
                       <span className={`absolute left-0 bottom-0 h-0.5 rounded-full bg-blue-600 dark:bg-blue-400 pointer-events-none transform origin-left transition-all duration-300 ${isActive ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-75 group-hover:opacity-100 group-hover:scale-x-100'}`} style={{width: '100%'}}>
                       </span>
                     </span>

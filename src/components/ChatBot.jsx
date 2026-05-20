@@ -6,39 +6,53 @@ const CHAT_MESSAGES = {
   inicio: {
     text: "¡Hola! 👋 Soy el asistente virtual de DSW. ¿En qué puedo ayudarte?",
     options: [
-      { label: " ¿Qué servicios ofrecen?", value: "servicios" },
-      { label: " ¿Cómo los contacto?", value: "contacto" },
-      { label: " ¿Dónde están ubicados?", value: "ubicacion" },
-      { label: " ¿Cuánto cuestan sus servicios?", value: "precios" },
+      { label: "🌐 Servicios web", value: "servicios-web" },
+      { label: "⚙️ Sistemas a medida", value: "sistemas" },
+      { label: "🛠️ Soporte técnico", value: "soporte" },
+      { label: "📍 Contacto y ubicación", value: "contacto" },
       { label: "🤖 Pregunta con IA", value: "ai-mode" },
     ],
   },
-  servicios: {
-    text: "Ofrecemos desarrollo web, diseño UI/UX, consultoría digital, y soluciones personalizadas para tu negocio. ¿Te gustaría saber más sobre algún servicio específico?",
+  "servicios-web": {
+    text: "Desarrollamos webs orientadas a resultados: landing pages de conversión, sitios institucionales y tiendas ecommerce. Diseño profesional, SEO técnico y enfoque en captar clientes.",
     options: [
-      { label: "Sí, tengo otra pregunta", value: "inicio" },
-      { label: "No, gracias", value: "fin" },
+      { label: "Quiero cotizar mi web", value: "cotizar" },
+      { label: "Tengo otra pregunta", value: "inicio" },
+    ],
+  },
+  sistemas: {
+    text: "Creamos sistemas a medida para automatizar tareas repetitivas, centralizar información y escalar tu operación: CRMs, sistemas de gestión, integraciones y más. Siempre adaptado a tu proceso real.",
+    options: [
+      { label: "Solicitar diagnóstico gratuito", value: "cotizar" },
+      { label: "Tengo otra pregunta", value: "inicio" },
+    ],
+  },
+  soporte: {
+    text: "Ofrecemos soporte técnico para pymes: mantenimiento preventivo, soporte correctivo, armado y actualización de PCs. Atención presencial en Formosa y Chaco; remoto para otras zonas.",
+    options: [
+      { label: "💻 ¿Qué PCs arman?", value: "pcs" },
+      { label: "Tengo otra pregunta", value: "inicio" },
+    ],
+  },
+  pcs: {
+    text: "Armamos 3 configuraciones de referencia:\n• Oficina – USD 470 (Ryzen 3 4100, 8 GB DDR4, SSD 512 GB)\n• Profesional – USD 680 (Ryzen 5 8600G, 16 GB DDR5, SSD 1 TB)\n• Gamer – USD 1.050 (Ryzen 7 8700G, 32 GB DDR5, RX 7600 8 GB)\nPrecios en pesos al cambio del día. Podés personalizar componentes al confirmar.",
+    options: [
+      { label: "Coordinar armado de PC", value: "cotizar" },
+      { label: "Tengo otra pregunta", value: "inicio" },
     ],
   },
   contacto: {
-    text: "Puedes contactarnos a través del formulario en esta página, por WhatsApp haciendo clic en el botón flotante, o enviando un email a digitalsolutionsweb3.0@gmail.com",
+    text: "Podés contactarnos por WhatsApp (botón verde en la web), completando el formulario de contacto, o por email a digitalsolutionsweb3.0@gmail.com. Trabajamos de forma remota con clientes de toda Latinoamérica. 🌎",
     options: [
-      { label: "Sí, tengo otra pregunta", value: "inicio" },
+      { label: "Tengo otra pregunta", value: "inicio" },
       { label: "No, gracias", value: "fin" },
     ],
   },
-  ubicacion: {
-    text: "Estamos ubicados en Formosa, Argentina, pero trabajamos de forma remota con clientes de toda Latinoamérica. 🌎",
+  cotizar: {
+    text: "Para cotizar, contactanos por WhatsApp (botón verde en la web) o completá el formulario de contacto. Te respondemos rápido y sin compromiso. 😊",
     options: [
-      { label: "Sí, tengo otra pregunta", value: "inicio" },
-      { label: "No, gracias", value: "fin" },
-    ],
-  },
-  precios: {
-    text: "Nuestros precios varían según la complejidad del proyecto. Te recomendamos contactarnos para obtener una cotización personalizada y sin compromiso.",
-    options: [
-      { label: "Sí, tengo otra pregunta", value: "inicio" },
-      { label: "No, gracias", value: "fin" },
+      { label: "Tengo otra pregunta", value: "inicio" },
+      { label: "Cerrar", value: "fin" },
     ],
   },
   fin: {
@@ -46,7 +60,7 @@ const CHAT_MESSAGES = {
     options: [],
   },
   "ai-mode": {
-    text: "¡Perfecto! Ahora puedes hacerme cualquier pregunta y te responderé usando IA. 🤖",
+    text: "¡Perfecto! Ahora podés hacerme cualquier pregunta sobre DSW y te responderé con IA. 🤖",
     options: [],
     enableInput: true,
   },
@@ -212,45 +226,66 @@ export default function LandingChatBot() {
 
   return (
     <>
-      {/* Botón flotante */}
+      {/* Botón flotante cerrado */}
       {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-22 right-9 z-0 md:right-20 w-[60px] h-[60px] rounded-full bg-blue-600 hover:bg-blue-700 text-white text-2xl shadow-lg hover:scale-110 transition-transform z-[999] flex items-center justify-center"
-        >
-          💬
-        </button>
+        <div className="fixed bottom-24 right-9 md:right-20 z-[999] flex flex-col items-end gap-2.5">
+          {/* Bubble tooltip */}
+          
+          <button
+            onClick={() => setIsOpen(true)}
+            className="relative w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-500 text-white shadow-xl shadow-blue-600/30 hover:scale-105 transition-all duration-200 flex items-center justify-center"
+          >
+            <i className="ri-message-3-fill text-2xl" />
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white dark:border-slate-950 flex items-center justify-center text-[9px] font-bold text-white">1</span>
+          </button>
+        </div>
       )}
 
       {/* Ventana del chat */}
       {isOpen && (
-        <div className="fixed bottom-5 right-5 w-[calc(100%-2.5rem)] h-[70vh] max-w-[350px] max-h-[500px] md:bottom-[100px] md:right-6 bg-white dark:bg-gray-800 rounded-lg shadow-2xl z-[1000] flex flex-col overflow-hidden">
+        <div className="fixed bottom-5 right-5 w-[calc(100%-2.5rem)] max-w-[360px] h-[75vh] max-h-[560px] md:bottom-6 md:right-6 rounded-2xl shadow-2xl shadow-black/40 z-[1000] flex flex-col overflow-hidden border border-slate-700/50">
+
           {/* Header */}
-          <div className="bg-blue-600 text-white p-4 flex items-center justify-between">
-            <h3 className="font-semibold">Asistente 💬</h3>
+          <div className="bg-slate-900 px-4 py-3 flex items-center gap-3 border-b border-slate-700/60 shrink-0">
+            <div className="relative shrink-0">
+              <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white shadow">
+                <i className="ri-robot-2-line text-base" />
+              </div>
+              <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 border-slate-900" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-white leading-none">Asistente DSW</p>
+              <p className="text-[11px] text-emerald-400 mt-0.5">En línea</p>
+            </div>
             <button
               onClick={handleClose}
-              className="w-7 h-7 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center transition-colors"
+              className="w-7 h-7 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition-colors"
+              aria-label="Cerrar chat"
             >
-              x
+              <i className="ri-close-line text-base" />
             </button>
           </div>
 
           {/* Mensajes */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50 dark:bg-gray-900">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-950">
             {messages.map((msg, index) => (
               <div key={`${msg.timestamp}-${index}`}>
                 {msg.type === "bot" ? (
-                  <div className="flex justify-start">
-                    <div className="max-w-[80%] bg-white dark:bg-gray-700 rounded-lg p-3 shadow">
-                      <p className="text-sm text-gray-800 dark:text-gray-100">{msg.text}</p>
+                  <div className="flex items-start gap-2.5">
+                    <div className="shrink-0 w-7 h-7 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center mt-0.5">
+                      <i className="ri-robot-2-line text-xs text-blue-400" />
+                    </div>
+                    <div className="max-w-[82%]">
+                      <div className="bg-slate-800 border border-slate-700/60 rounded-2xl rounded-tl-sm px-3.5 py-2.5">
+                        <p className="text-sm text-slate-100 leading-relaxed">{msg.text}</p>
+                      </div>
                       {msg.options && msg.options.length > 0 && (
-                        <div className="mt-3 space-y-2">
+                        <div className="mt-2 space-y-1.5">
                           {msg.options.map((option, optIndex) => (
                             <button
                               key={`${msg.timestamp}-opt-${optIndex}`}
                               onClick={() => handleOptionClick(option)}
-                              className="w-full text-left px-3 py-2 bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 text-blue-800 dark:text-blue-100 rounded-lg text-sm transition-colors"
+                              className="w-full text-left px-3.5 py-2 bg-slate-800/60 hover:bg-blue-600/15 border border-slate-700 hover:border-blue-500/50 text-slate-300 hover:text-blue-300 rounded-xl text-sm transition-all duration-150"
                             >
                               {option.label}
                             </button>
@@ -261,17 +296,24 @@ export default function LandingChatBot() {
                   </div>
                 ) : (
                   <div className="flex justify-end">
-                    <div className="max-w-[80%] bg-blue-600 text-white rounded-lg p-3 shadow">
-                      <p className="text-sm">{msg.text}</p>
+                    <div className="max-w-[80%] bg-blue-600 rounded-2xl rounded-tr-sm px-3.5 py-2.5 shadow-sm shadow-blue-900/40">
+                      <p className="text-sm text-white leading-relaxed">{msg.text}</p>
                     </div>
                   </div>
                 )}
               </div>
             ))}
             {isLoading && (
-              <div className="flex justify-start">
-                <div className="max-w-[80%] bg-white dark:bg-gray-700 rounded-lg p-3 shadow">
-                  <p className="text-sm text-gray-800 dark:text-gray-100">Escribiendo...</p>
+              <div className="flex items-start gap-2.5">
+                <div className="shrink-0 w-7 h-7 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center mt-0.5">
+                  <i className="ri-robot-2-line text-xs text-blue-400" />
+                </div>
+                <div className="bg-slate-800 border border-slate-700/60 rounded-2xl rounded-tl-sm px-4 py-3">
+                  <div className="flex gap-1 items-center h-4">
+                    <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce [animation-delay:0ms]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce [animation-delay:150ms]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce [animation-delay:300ms]" />
+                  </div>
                 </div>
               </div>
             )}
@@ -280,7 +322,7 @@ export default function LandingChatBot() {
 
           {/* Input para modo IA */}
           {aiMode && (
-            <div className="p-3 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+            <div className="p-3 border-t border-slate-700/60 bg-slate-900 shrink-0">
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -289,14 +331,17 @@ export default function LandingChatBot() {
                   onKeyPress={(e) => e.key === "Enter" && handleAiQuestion()}
                   placeholder="Escribe tu pregunta..."
                   disabled={isLoading}
-                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white disabled:opacity-50"
+                  className="flex-1 px-3.5 py-2.5 bg-slate-800 border border-slate-700 hover:border-slate-600 focus:border-blue-500 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500/40 disabled:opacity-50 transition-colors"
                 />
                 <button
                   onClick={handleAiQuestion}
                   disabled={isLoading || !inputValue.trim()}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg text-sm transition-colors disabled:cursor-not-allowed"
+                  className="px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:bg-slate-700 disabled:text-slate-500 text-white rounded-xl text-sm transition-colors disabled:cursor-not-allowed flex items-center justify-center"
                 >
-                  {isLoading ? "..." : "→"}
+                  {isLoading
+                    ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    : <i className="ri-send-plane-fill text-base" />
+                  }
                 </button>
               </div>
             </div>
