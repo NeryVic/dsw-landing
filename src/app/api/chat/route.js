@@ -5,6 +5,9 @@ import path from 'path';
 import { SOLUTIONS, USE_CASES, PILLARS, PC_BUILDS, SUPPORT_PLANS } from '@/data/services';
 import { testimonialsData } from '@/data/testimonials';
 
+const MAX_BODY_SIZE = 50 * 1024; // 50 KB limit
+const MAX_RATE_ENTRIES = 10000; // Límite para evitar memory leak
+
 async function loadPricing() {
   try {
     const filePath = path.join(process.cwd(), 'src', 'data', 'pricing.json');
@@ -84,6 +87,15 @@ function containsPriceNumbers(obj) {
 
 export async function POST(req) {
   try {
+    // Limitar tamaño del body
+    const contentLength = req.headers.get('content-length');
+    if (contentLength && parseInt(contentLength) > MAX_BODY_SIZE) {
+      return NextResponse.json(
+        { error: 'Solicitud demasiado grande' },
+        { status: 413 }
+      );
+    }
+
     const { message, history } = await req.json();
 
     if (!message && (!history || history.length === 0)) {
@@ -117,7 +129,9 @@ export async function POST(req) {
     let sessionId = cookieStore.get('dsw_chat_sid')?.value;
     const isNewSession = !sessionId;
     if (!sessionId) {
-      sessionId = (globalThis.crypto?.randomUUID?.() || Math.random().toString(36).slice(2));
+      // Usar counter sequencial en lugar de UUID aleatorio para mejor rate limiting
+      globalThis.__DSW_CHAT_COUNTER__ = (globalThis.__DSW_CHAT_COUNTER__ || 0) + 1;
+      sessionId = `guest-${globalThis.__DSW_CHAT_COUNTER__}-${Date.now()}`;
     }
 
     // Obtener IP del cliente (mejor esfuerzo)
@@ -130,6 +144,18 @@ export async function POST(req) {
     const RATE_STORE_KEY = '__DSW_CHAT_RATE__';
     globalThis[RATE_STORE_KEY] = globalThis[RATE_STORE_KEY] || new Map();
     const rateStore = globalThis[RATE_STORE_KEY];
+
+    // Limpiar entradas expiradas del rate store
+    const now = Date.now();
+    for (const [key, rec] of rateStore.entries()) {
+      if (now > rec.resetAt + 60000) { // Limpiar 1 min después de expirar
+        rateStore.delete(key);
+      }
+    }
+    // Límite de emergencia si algo sale mal
+    if (rateStore.size > MAX_RATE_ENTRIES) {
+      rateStore.clear();
+    }
 
     function checkAndInc(key, max, windowMs) {
       const now = Date.now();
@@ -187,7 +213,17 @@ export async function POST(req) {
     const globalKey = '__DSW_CHAT_STORE__';
     globalThis[globalKey] = globalThis[globalKey] || new Map();
     const store = globalThis[globalKey];
-    const serverHistory = store.get(sessionId) || [];
+
+    // Limpiar sesiones antiguas (>4 horas)
+    const maxStoreSize = 1000;
+    if (store.size > maxStoreSize) {
+      const entriesToDelete = Array.from(store.entries())
+        .sort((a, b) => (a[1].lastAccess || 0) - (b[1].lastAccess || 0))
+        .slice(0, maxStoreSize * 0.2);
+      entriesToDelete.forEach(([key]) => store.delete(key));
+    }
+
+    const serverHistory = (store.get(sessionId)?.history || []);
 
     // Cargar datos oficiales de precios (si existen)
     const pricingData = await loadPricing();
@@ -288,13 +324,14 @@ INSTRUCCIONES:
 
     // Actualizar memoria del servidor con la nueva respuesta
   const updatedHistory = [...trimmedHistory, { role: 'assistant', content: answer }];
-    store.set(sessionId, updatedHistory);
+    store.set(sessionId, { history: updatedHistory, lastAccess: Date.now() });
 
     // Responder y fijar cookie de sesión si corresponde
     const res = NextResponse.json({ answer });
     if (isNewSession) {
       res.cookies.set('dsw_chat_sid', sessionId, {
-        httpOnly: false,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
         path: '/',
         maxAge: 60 * 60 * 2, // 2 horas
