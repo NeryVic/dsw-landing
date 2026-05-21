@@ -13,8 +13,8 @@ const FEATURE_CARDS = [
     tone: 'blue',
     titleEs: '¿Es para vos?',
     titleEn: 'Is this for you?',
-    textEs: 'Si tu equipo repite tareas manuales y pierde horas valiosas, este sistema es para vos.',
-    textEn: 'If your team repeats manual tasks and loses valuable hours, this system is for you.',
+    textEs: 'Si usás un SaaS que no termina de encajar, o gestionás procesos críticos en planillas, un sistema a medida puede ser el cambio que tu operación necesita.',
+    textEn: 'If you use a SaaS that does not quite fit, or manage critical processes in spreadsheets, a custom system may be the change your operation needs.',
     ctaEs: 'Descubrir si aplica a mi negocio',
     ctaEn: 'Discover if it fits my business',
   },
@@ -165,11 +165,7 @@ export default function SistemasPage() {
               {t('systems_page_title', 'Software a tu medida, sin errores ni retrabajos', 'Tailored software, without errors or rework')}
             </h1>
             <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
-              {t(
-                'systems_page_intro',
-                'Diseñamos software en función de tus procesos, no al revés. Cuando la operación depende de Excel para tareas críticas, suelen aparecer demoras, riesgos de seguridad y menor trazabilidad. El objetivo es reducir errores, ahorrar tiempo y mejorar el control operativo.',
-                'We design software around your processes, not the other way around. When critical operations rely on Excel, delays, security risks, and limited traceability often appear. The goal is to reduce errors, save time, and improve operational control.'
-              )}
+              La mayoría de los sistemas SaaS del mercado son soluciones genéricas: funcionan aceptablemente para miles de empresas distintas, pero no están pensadas al 100% para ninguna en particular. El resultado es que terminás adaptando tu operación a las limitaciones del software, y no al revés. Con un sistema a medida, partimos de cómo trabajás hoy y construimos exactamente lo que tu negocio necesita, sin funciones de relleno ni procesos engorrosos.
             </p>
           </div>
 
@@ -186,6 +182,46 @@ export default function SistemasPage() {
               className="w-full h-auto object-cover"
               priority
             />
+          </div>
+        </div>
+
+        {/* Comparación SaaS genérico vs sistema a medida */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 mb-14 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800">
+          <div className="bg-slate-50 dark:bg-slate-900 px-8 py-8">
+            <p className="font-semibold text-slate-400 dark:text-slate-500 text-xs uppercase tracking-widest mb-5">SaaS genérico</p>
+            <ul className="space-y-3">
+              {[
+                'Pagás funciones que nunca vas a usar',
+                'Adaptás tu operación al sistema, no al revés',
+                'Soporte estándar que no conoce tu negocio',
+                'Licencias que crecen con cada usuario o módulo extra',
+                'Personalizaciones limitadas o directamente imposibles',
+                'Tus datos en servidores de terceros, sin control real',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-2.5 text-slate-500 dark:text-slate-400 text-sm">
+                  <i className="ri-close-circle-line text-red-400 mt-0.5 shrink-0 text-base"></i>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="bg-white dark:bg-slate-950 px-8 py-8 border-t sm:border-t-0 sm:border-l border-slate-200 dark:border-slate-800">
+            <p className="font-semibold text-teal-600 dark:text-teal-400 text-xs uppercase tracking-widest mb-5">Sistema a medida</p>
+            <ul className="space-y-3">
+              {[
+                'Solo las funciones que tu operación realmente necesita',
+                'El sistema se construye sobre tu flujo de trabajo actual',
+                'Quienes lo desarrollaron conocen tu lógica de negocio',
+                'Inversión única, sin sorpresas en el costo mensual',
+                'Cualquier cambio, integración o módulo nuevo es posible',
+                'Elegís dónde y cómo se almacenan tus datos',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-2.5 text-slate-700 dark:text-slate-300 text-sm">
+                  <i className="ri-checkbox-circle-line text-teal-500 mt-0.5 shrink-0 text-base"></i>
+                  {item}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 

@@ -8,6 +8,34 @@ import { useWssp } from '@/hooks/wssp'
 import JsonLd from '@/components/JsonLd'
 import { supportLocalBusinessSchema } from '@/lib/schemas'
 import PcBuildsModal from '@/components/sections/PcBuildsModal'
+import { SUPPORT_PLANS } from '@/data/services'
+
+const PLAN_COLORS = {
+  blue: {
+    badge: 'text-blue-600 dark:text-blue-400',
+    price: 'text-blue-700 dark:text-blue-300',
+    border: 'border-blue-200 dark:border-blue-800/70',
+    iconBox: 'border-blue-100 bg-blue-50 dark:border-blue-900/50 dark:bg-blue-950/40',
+    iconText: 'text-blue-500 dark:text-blue-400',
+    btn: 'border-blue-500 text-blue-700 hover:bg-blue-50 dark:border-blue-500 dark:text-blue-300 dark:hover:bg-blue-950/40',
+  },
+  teal: {
+    badge: 'text-teal-600 dark:text-teal-400',
+    price: 'text-teal-700 dark:text-teal-300',
+    border: 'border-teal-200 dark:border-teal-800/70',
+    iconBox: 'border-teal-100 bg-teal-50 dark:border-teal-900/50 dark:bg-teal-950/40',
+    iconText: 'text-teal-500 dark:text-teal-400',
+    btn: 'border-teal-500 text-teal-700 hover:bg-teal-50 dark:border-teal-500 dark:text-teal-300 dark:hover:bg-teal-950/40',
+  },
+  indigo: {
+    badge: 'text-indigo-600 dark:text-indigo-400',
+    price: 'text-indigo-700 dark:text-indigo-300',
+    border: 'border-indigo-300 dark:border-indigo-600/70',
+    iconBox: 'border-indigo-100 bg-indigo-50 dark:border-indigo-900/50 dark:bg-indigo-950/40',
+    iconText: 'text-indigo-500 dark:text-indigo-400',
+    btn: 'bg-indigo-600 border-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:border-indigo-500 dark:hover:bg-indigo-600',
+  },
+}
 
 const SUPPORT_SERVICES = [
   {
@@ -40,6 +68,8 @@ const SUPPORT_SERVICES = [
     detailEn: 'We combine remote support and on-site visits based on criticality. Current on-site coverage: Formosa and Chaco; remote support for other areas.'
   }
 ]
+
+
 
 const HERO_POINTS = {
   es: [
@@ -76,6 +106,7 @@ export default function SoporteTecnicoPage() {
   const heroRef = useRef(null)
   const heroBgRef = useRef(null)
   const servicesRef = useRef(null)
+  const plansRef = useRef(null)
 
   useEffect(() => {
     let ctx = null
@@ -182,6 +213,54 @@ export default function SoporteTecnicoPage() {
             })
           }
 
+          const planHeader = document.querySelector('.support-plan-header')
+          const planCards = gsap.utils.toArray('.support-plan-card')
+
+          if (planHeader && plansRef.current) {
+            gsap.fromTo(
+              planHeader,
+              { autoAlpha: 0, y: 18 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.7,
+                ease: 'power2.out',
+                scrollTrigger: {
+                  trigger: plansRef.current,
+                  start: 'top 82%',
+                },
+              }
+            )
+          }
+
+          if (planCards.length && plansRef.current) {
+            gsap.fromTo(
+              planCards,
+              { autoAlpha: 0, y: 32, scale: 0.97 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.7,
+                stagger: 0.13,
+                ease: 'power2.out',
+                scrollTrigger: {
+                  trigger: plansRef.current,
+                  start: 'top 78%',
+                },
+              }
+            )
+
+            planCards.forEach((card) => {
+              card.addEventListener('mouseenter', () => {
+                gsap.to(card, { y: -6, scale: 1.02, duration: 0.22, ease: 'power2.out' })
+              })
+              card.addEventListener('mouseleave', () => {
+                gsap.to(card, { y: 0, scale: 1, duration: 0.28, ease: 'power2.inOut' })
+              })
+            })
+          }
+
           ScrollTrigger.refresh()
         })
       } catch (error) {
@@ -258,13 +337,22 @@ export default function SoporteTecnicoPage() {
               ))}
             </ul>
 
-            <div className="support-hero-reveal mt-8">
+            <div className="support-hero-reveal mt-8 flex flex-wrap gap-3">
               <Button
                 onClick={handleSupport}
                 size="lg"
                 className="bg-[#0f62fe] hover:bg-[#0b4fd1] border-0 text-white"
               >
                 {t('support_page_cta', 'Solicitar diagnóstico inicial', 'Request initial diagnostic')}
+              </Button>
+              <Button
+                onClick={() => document.getElementById('planes')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                size="lg"
+                variant="outline"
+                className="border-white/40 text-white hover:bg-white/10"
+              >
+                <i className="ri-price-tag-3-line mr-1.5" />
+                {t('support_hero_see_plans', 'Ver planes', 'View plans')}
               </Button>
             </div>
           </div>
@@ -305,6 +393,90 @@ export default function SoporteTecnicoPage() {
               )}
             </article>
           ))}
+        </div>
+
+        {/* Planes de soporte con precios */}
+        <div ref={plansRef} id="planes" className="mb-8 rounded-2xl bg-slate-100 border border-slate-200 dark:bg-zinc-950 dark:border-zinc-800 px-6 py-10 sm:px-8 sm:py-12">
+          <div className="support-plan-header mb-8">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-1">Planes de soporte</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Elegí tu plan</h2>
+            <p className="mt-2 text-slate-600 dark:text-slate-400 text-sm max-w-xl">
+              Precios de referencia · Al confirmar ajustamos la cantidad de equipos y el alcance exacto.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {SUPPORT_PLANS.map((plan) => {
+              const c = PLAN_COLORS[plan.color] || PLAN_COLORS.blue
+              return (
+              <div
+                key={plan.id}
+                className={`support-plan-card relative rounded-xl bg-white dark:bg-zinc-900/80 border p-6 flex flex-col will-change-transform ${c.border}`}
+              >
+                <div
+                  className="pointer-events-none absolute inset-0 rounded-xl bg-cover bg-center bg-no-repeat opacity-0 dark:opacity-[0.07]"
+                  style={{ backgroundImage: "url('/images/soporte/fondo-lineas-poligonales.png')" }}
+                  aria-hidden="true"
+                />
+
+                {plan.popular && (
+                  <span className={`absolute -top-3.5 left-1/2 -translate-x-1/2 bg-slate-100 dark:bg-zinc-950 border text-xs font-bold px-3 py-0.5 rounded-full whitespace-nowrap ${c.badge} border-current`}>
+                    ★ Más completo
+                  </span>
+                )}
+
+                <p className={`relative z-10 text-[10px] font-bold uppercase tracking-widest mb-1 ${c.badge}`}>{plan.badge}</p>
+                <h3 className="relative z-10 text-xl font-bold text-slate-900 dark:text-white mb-4">{plan.name}</h3>
+
+                <p className={`relative z-10 text-3xl font-bold tabular-nums mb-0.5 ${c.price}`}>{plan.price}</p>
+                <p className="relative z-10 text-xs text-slate-500 mb-0.5">{plan.priceNote}</p>
+                <p className="relative z-10 text-xs text-slate-500 dark:text-slate-600 mb-4">{plan.priceSub}</p>
+
+                <div className="relative z-10 flex flex-wrap gap-1.5 mb-4">
+                  {plan.audience.map((aud) => (
+                    <span key={aud} className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200 dark:bg-zinc-800 dark:text-slate-400 dark:border-zinc-700">
+                      {aud}
+                    </span>
+                  ))}
+                </div>
+
+                <p className="relative z-10 text-xs text-slate-500 dark:text-slate-400 mb-4 leading-relaxed">{plan.desc}</p>
+
+                <ul className="relative z-10 space-y-2.5 mb-6 flex-1">
+                  {plan.features.map((feat) => (
+                    <li key={feat.label} className="flex items-center gap-3 text-sm text-slate-700 dark:text-slate-300">
+                      <span className={`w-8 h-8 rounded border flex items-center justify-center shrink-0 ${c.iconBox}`}>
+                        <i className={`${feat.icon} text-base ${c.iconText}`} />
+                      </span>
+                      <span>{feat.label}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <p className="relative z-10 text-xs text-slate-500 mb-4">
+                  <span className="font-semibold text-slate-600 dark:text-slate-400">Resultado:</span> {plan.outcome}
+                </p>
+
+                <button
+                  onClick={() => openWhatsApp(undefined, plan.msg)}
+                  className={`relative z-10 w-full rounded-lg py-2.5 text-sm font-semibold transition-colors border ${c.btn}`}
+                >
+                  {plan.cta}
+                </button>
+              </div>
+              )
+            })}
+          </div>
+
+          <p className="mt-6 text-center text-sm text-slate-500 dark:text-slate-500">
+            ¿Tu operación tiene necesidades específicas?{' '}
+            <button
+              onClick={() => openWhatsApp(undefined, 'Hola, necesito un plan de soporte personalizado para mi empresa. ¿Podemos hablar?')}
+              className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 underline underline-offset-2 transition-colors"
+            >
+              Armamos un plan a medida.
+            </button>
+          </p>
         </div>
 
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8">

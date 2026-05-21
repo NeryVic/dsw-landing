@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Tab } from '@headlessui/react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import Button from '@/components/ui/Button'
@@ -484,6 +485,13 @@ export default function ServiciosPage() {
                 <Button onClick={() => handleCardCta(getText(solution, 'titleEs', 'titleEn'))} className="w-full rounded-full">
                   {getText(solution, 'ctaEs', 'ctaEn')}
                 </Button>
+                {solution.showPlans && (
+                  <Link href="/soporte#planes" className="mt-3 flex items-center justify-center gap-1.5 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">
+                    <i className="ri-price-tag-3-line text-sm" />
+                    {t('services_support_see_plans', 'Ver planes', 'View plans')}
+                    <i className="ri-arrow-right-line text-xs" />
+                  </Link>
+                )}
               </article>
             )
           })}
@@ -608,6 +616,13 @@ export default function ServiciosPage() {
                 >
                   {getText(solution, 'ctaEs', 'ctaEn')}
                 </Button>
+                {solution.showPlans && (
+                  <Link href="/soporte#planes" className="mt-3 flex items-center justify-center gap-1.5 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">
+                    <i className="ri-price-tag-3-line text-sm" />
+                    {t('services_support_see_plans', 'Ver planes', 'View plans')}
+                    <i className="ri-arrow-right-line text-xs" />
+                  </Link>
+                )}
               </article>
             )
           })}
