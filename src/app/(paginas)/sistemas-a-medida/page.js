@@ -80,10 +80,36 @@ const CARD_STYLES = {
   },
 }
 
+const SAAS_CONS = [
+  { title: 'Funciones innecesarias', desc: 'Pagás funciones que nunca vas a usar' },
+  { title: 'Tu operación se adapta al sistema', desc: 'Adaptás tu operación al sistema, no al revés' },
+  { title: 'Soporte genérico', desc: 'Soporte estándar que no conoce tu negocio' },
+  { title: 'Costos que escalan', desc: 'Licencias que crecen con cada usuario o módulo extra' },
+  { title: 'Personalización limitada', desc: 'Personalizaciones limitadas o directamente imposibles' },
+  { title: 'Sin control de tus datos', desc: 'Tus datos en servidores de terceros, sin control real' },
+]
+
+const MEDIDA_PROS = [
+  { title: 'Solo lo que necesitás', desc: 'Solo las funciones que tu operación realmente necesita' },
+  { title: 'El sistema se adapta a vos', desc: 'El sistema se construye sobre tu flujo de trabajo actual' },
+  { title: 'Conocemos tu negocio', desc: 'Quienes lo desarrollaron conocen tu lógica de negocio' },
+  { title: 'Inversión predecible', desc: 'Inversión única, sin sorpresas en el costo mensual' },
+  { title: 'Flexibilidad total', desc: 'Cualquier cambio, integración o módulo nuevo es posible' },
+  { title: 'Control total de tus datos', desc: 'Elegís dónde y cómo se almacenan tus datos' },
+]
+
+const COMPARE_STATS = [
+  { value: '100%', label: 'Personalizable' },
+  { value: '0', label: 'Licencias mensuales' },
+  { value: '∞', label: 'Integraciones posibles' },
+  { value: 'Tuyo', label: 'Control de datos' },
+]
+
 export default function SistemasPage() {
   const { language, t } = useLanguage()
   const { openWhatsApp } = useWssp()
   const cardsGridRef = useRef(null)
+  const compareRef = useRef(null)
 
   useEffect(() => {
     let ctx = null
@@ -147,6 +173,80 @@ export default function SistemasPage() {
     }
   }, [])
 
+  useEffect(() => {
+    let ctx = null
+
+    async function setupCompareAnimations() {
+      try {
+        const [modGsap, modST] = await Promise.all([import('gsap'), import('gsap/ScrollTrigger')])
+        const gsap = modGsap.default ?? modGsap
+        const { ScrollTrigger } = modST
+
+        gsap.registerPlugin(ScrollTrigger)
+
+        if (!compareRef.current) return
+
+        ctx = gsap.context(() => {
+          const header = compareRef.current.querySelector('.systems-compare-header')
+          const cards = gsap.utils.toArray('.systems-compare-card', compareRef.current)
+          const stats = gsap.utils.toArray('.systems-compare-stat', compareRef.current)
+
+          if (header) {
+            gsap.fromTo(
+              header,
+              { autoAlpha: 0, y: 22 },
+              {
+                autoAlpha: 1, y: 0, duration: 0.7, ease: 'power2.out',
+                scrollTrigger: { trigger: header, start: 'top 85%' },
+              }
+            )
+          }
+
+          if (cards.length) {
+            gsap.fromTo(
+              cards,
+              { autoAlpha: 0, y: 32, scale: 0.97 },
+              {
+                autoAlpha: 1, y: 0, scale: 1, duration: 0.75, stagger: 0.15, ease: 'power2.out',
+                scrollTrigger: { trigger: compareRef.current, start: 'top 80%' },
+              }
+            )
+
+            cards.forEach((card) => {
+              card.addEventListener('mouseenter', () =>
+                gsap.to(card, { y: -5, scale: 1.015, duration: 0.22, ease: 'power2.out' })
+              )
+              card.addEventListener('mouseleave', () =>
+                gsap.to(card, { y: 0, scale: 1, duration: 0.28, ease: 'power2.inOut' })
+              )
+            })
+          }
+
+          if (stats.length) {
+            gsap.fromTo(
+              stats,
+              { autoAlpha: 0, y: 16 },
+              {
+                autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out',
+                scrollTrigger: { trigger: stats[0], start: 'top 88%' },
+              }
+            )
+          }
+
+          ScrollTrigger.refresh()
+        }, compareRef.current)
+      } catch (error) {
+        console.error('Error animando comparativa sistemas-a-medida:', error)
+      }
+    }
+
+    setupCompareAnimations()
+
+    return () => {
+      if (ctx?.revert) ctx.revert()
+    }
+  }, [])
+
   const handleContact = () => {
     const message = language === 'es'
       ? 'Hola, quiero evaluar un sistema a medida para mi operación. ¿Podemos iniciar un diagnóstico?'
@@ -185,43 +285,74 @@ export default function SistemasPage() {
           </div>
         </div>
 
-        {/* Comparación SaaS genérico vs sistema a medida */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 mb-14 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800">
-          <div className="bg-slate-50 dark:bg-slate-900 px-8 py-8">
-            <p className="font-semibold text-slate-400 dark:text-slate-500 text-xs uppercase tracking-widest mb-5">SaaS genérico</p>
-            <ul className="space-y-3">
-              {[
-                'Pagás funciones que nunca vas a usar',
-                'Adaptás tu operación al sistema, no al revés',
-                'Soporte estándar que no conoce tu negocio',
-                'Licencias que crecen con cada usuario o módulo extra',
-                'Personalizaciones limitadas o directamente imposibles',
-                'Tus datos en servidores de terceros, sin control real',
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-2.5 text-slate-500 dark:text-slate-400 text-sm">
-                  <i className="ri-close-circle-line text-red-400 mt-0.5 shrink-0 text-base"></i>
-                  {item}
-                </li>
-              ))}
-            </ul>
+        {/* Comparación: ¿Por qué un sistema a medida? */}
+        <div ref={compareRef} className="mb-20">
+          <div className="systems-compare-header text-center mb-10">
+            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-3">
+              ¿Por qué un sistema a medida?
+            </h2>
+            <p className="text-slate-500 dark:text-slate-400 text-base max-w-xl mx-auto">
+              Descubrí las diferencias clave entre depender de un SaaS genérico o invertir en tecnología diseñada específicamente para tu operación.
+            </p>
           </div>
-          <div className="bg-white dark:bg-slate-950 px-8 py-8 border-t sm:border-t-0 sm:border-l border-slate-200 dark:border-slate-800">
-            <p className="font-semibold text-teal-600 dark:text-teal-400 text-xs uppercase tracking-widest mb-5">Sistema a medida</p>
-            <ul className="space-y-3">
-              {[
-                'Solo las funciones que tu operación realmente necesita',
-                'El sistema se construye sobre tu flujo de trabajo actual',
-                'Quienes lo desarrollaron conocen tu lógica de negocio',
-                'Inversión única, sin sorpresas en el costo mensual',
-                'Cualquier cambio, integración o módulo nuevo es posible',
-                'Elegís dónde y cómo se almacenan tus datos',
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-2.5 text-slate-700 dark:text-slate-300 text-sm">
-                  <i className="ri-checkbox-circle-line text-teal-500 mt-0.5 shrink-0 text-base"></i>
-                  {item}
-                </li>
-              ))}
-            </ul>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-6">
+            {/* SaaS Genérico */}
+            <div className="systems-compare-card will-change-transform rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-7">
+              <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-0.5">SaaS Genérico</p>
+              <p className="text-slate-400 dark:text-slate-500 text-sm mb-6">La solución que no fue pensada para vos</p>
+              <ul className="space-y-4">
+                {SAAS_CONS.map((item) => (
+                  <li key={item.title} className="flex gap-3">
+                    <span className="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 flex items-center justify-center">
+                      <i className="ri-close-line text-red-500 dark:text-red-400 text-xs"></i>
+                    </span>
+                    <div>
+                      <p className="font-semibold text-slate-600 dark:text-slate-300 text-sm leading-snug">{item.title}</p>
+                      <p className="text-slate-400 dark:text-slate-500 text-xs mt-0.5">{item.desc}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Sistema a Medida */}
+            <div className="systems-compare-card will-change-transform relative rounded-2xl border-2 border-teal-400/50 dark:border-teal-500/30 bg-white dark:bg-slate-950 px-7 py-7 shadow-md dark:shadow-none">
+              <span className="absolute -top-3 left-6 bg-teal-500 text-white text-xs font-semibold px-3 py-1 rounded-full tracking-wide">
+                Recomendado
+              </span>
+              <p className="text-xs font-semibold uppercase tracking-widest text-teal-600 dark:text-teal-400 mb-0.5">Sistema a Medida</p>
+              <p className="text-slate-400 dark:text-slate-500 text-sm mb-6">Tecnología diseñada para tu operación</p>
+              <ul className="space-y-4 mb-8">
+                {MEDIDA_PROS.map((item) => (
+                  <li key={item.title} className="flex gap-3">
+                    <span className="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800/60 flex items-center justify-center">
+                      <i className="ri-check-line text-teal-600 dark:text-teal-400 text-xs"></i>
+                    </span>
+                    <div>
+                      <p className="font-semibold text-slate-900 dark:text-slate-100 text-sm leading-snug">{item.title}</p>
+                      <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">{item.desc}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={handleContact}
+                className="w-full rounded-xl bg-teal-500 hover:bg-teal-600 text-white font-semibold text-sm py-3 transition-colors duration-200"
+              >
+                Hablemos de tu proyecto →
+              </button>
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {COMPARE_STATS.map((stat) => (
+              <div key={stat.value} className="systems-compare-stat rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-5 text-center">
+                <p className="text-3xl font-bold text-teal-600 dark:text-teal-400 mb-1">{stat.value}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{stat.label}</p>
+              </div>
+            ))}
           </div>
         </div>
 

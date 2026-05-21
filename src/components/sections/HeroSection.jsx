@@ -89,7 +89,7 @@ export default function HeroSection() {
           {/* Trust indicators */}
           <div className="grid grid-cols-3 gap-4 sm:gap-8 max-w-2xl mx-auto sm:mx-0">
             <div className="text-center sm:text-left">
-              <div className="text-2xl sm:text-4xl font-bold text-white mb-1 sm:mb-2">48h</div>
+              <div className="text-2xl sm:text-4xl font-bold text-white mb-1 sm:mb-2">24h</div>
               <div className="text-gray-300 text-xs sm:text-sm">
                 {t('hero_stat1', 'Diagnostico inicial', 'Initial diagnostic')}
               </div>

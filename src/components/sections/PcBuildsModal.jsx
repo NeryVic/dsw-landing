@@ -9,7 +9,7 @@ const PC_VISUAL = {
     cta: 'Consultar disponibilidad',
     msg: 'Hola, me interesa la PC Oficina (USD 470). ¿Podemos coordinar?',
     components: [
-      'ri-cpu-line', 'ri-database-2-line', 'ri-hard-drive-2-line',
+      'ri-cpu-line','ri-hard-drive-2-line', 'ri-database-2-line',
       'ri-dashboard-2-line', 'ri-plug-line', 'ri-server-line',
     ],
   },
@@ -18,16 +18,16 @@ const PC_VISUAL = {
     cta: 'La quiero - coordinar compra',
     msg: 'Hola, me interesa la PC Profesional (USD 680, Ryzen 5 8600G). ¿Podemos coordinar la compra?',
     components: [
-      'ri-cpu-line', 'ri-database-2-line', 'ri-hard-drive-2-line',
+      'ri-cpu-line','ri-hard-drive-2-line', 'ri-database-2-line',
       'ri-dashboard-2-line', 'ri-plug-line', 'ri-server-line',
     ],
   },
   gamer: {
     neon: 'green',
     cta: 'Necesito asesoramiento',
-    msg: 'Hola, me interesa la PC Gamer (USD 1.050, Ryzen 7 + RX 7600). ¿Podemos coordinar?',
+    msg: 'Hola, me interesa la PC Gamer (USD 1.950, Ryzen 7 9700X + RX 9060 XT). ¿Podemos coordinar?',
     components: [
-      'ri-cpu-line', 'ri-database-2-line', 'ri-hard-drive-2-line',
+      'ri-cpu-line', 'ri-hard-drive-2-line', 'ri-database-2-line',
       'ri-dashboard-2-line', 'ri-tv-2-line', 'ri-plug-line', 'ri-server-line',
     ],
   },
@@ -115,6 +115,12 @@ export default function PcBuildsModal({ open, onClose, openWhatsApp }) {
             </h2>
             <p className="mt-2 text-slate-400 text-sm">
               Precios de referencia · Al confirmar, elegís estética y componentes finales.
+            </p>
+            <p className="mt-3 inline-flex items-start gap-2 rounded-lg border border-slate-700/70 bg-slate-900/55 px-3 py-2 text-xs text-slate-400 max-w-2xl">
+              <i className="ri-information-line text-sm mt-0.5 text-slate-500" />
+              <span>
+                Nota de mercado: por variaciones de stock y demanda, algunos componentes (como memorias RAM) pueden ajustar su precio temporalmente.
+              </span>
             </p>
           </div>
           <button

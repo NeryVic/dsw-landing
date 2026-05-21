@@ -118,9 +118,7 @@ export default function ContactoPage() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="max-w-4xl mb-14">
-          <span className="contact-header-reveal opacity-0 inline-block px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-xs font-semibold tracking-widest uppercase mb-5 border border-blue-100 dark:border-blue-900/40">
-            {t('contact_badge', 'Contacto', 'Contact')}
-          </span>
+          
           <h1 className="contact-header-reveal opacity-0 text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-5">
             {t('contact_page_title', 'Hablemos de tu Proyecto', 'Let\'s Talk About Your Project')}
           </h1>

@@ -497,12 +497,7 @@ export default function ServiciosPage() {
           })}
           </div>
 
-          {activePillar === 'support' && (
-            <div className="hidden md:flex items-center gap-2 mb-5 px-4 py-3 rounded-xl bg-amber-50 border border-amber-200 dark:bg-amber-950/20 dark:border-amber-900/40 text-amber-800 dark:text-amber-300 text-sm">
-              <i className="ri-links-line text-base shrink-0"></i>
-              <span>{t('services_support_note', 'Estos servicios son complementarios — podés combinarlos según tus necesidades.', 'These services are complementary — you can combine them as needed.')}</span>
-            </div>
-          )}
+         
 
           <div ref={desktopSolutionsRef} className={`hidden mb-12 ${isWebPillar ? 'md:flex md:flex-col lg:flex-row md:items-stretch md:justify-center gap-5 lg:gap-0' : 'md:grid md:grid-cols-3 gap-5'}`}>
           {activeSolutions.map((solution, index) => {
@@ -612,7 +607,7 @@ export default function ServiciosPage() {
                 <Button
                   onClick={() => handleCardCta(getText(solution, 'titleEs', 'titleEn'))}
                   variant="outline"
-                  className="mt-auto rounded-full border-slate-300 dark:border-slate-700 dark:text-slate-200"
+                  className="mt-auto rounded-full border-slate-300 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
                 >
                   {getText(solution, 'ctaEs', 'ctaEn')}
                 </Button>

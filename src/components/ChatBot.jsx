@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 
 const CHAT_MESSAGES = {
   inicio: {
-    text: "¡Hola! 👋 Soy el asistente virtual de DSW. ¿En qué puedo ayudarte?",
+    text: "¡Hola! 👋 Soy Linguo, el asistente de DSW. ¿En qué puedo ayudarte?",
     options: [
       { label: "🌐 Servicios web", value: "servicios-web" },
       { label: "⚙️ Sistemas a medida", value: "sistemas" },
@@ -155,7 +155,6 @@ export default function LandingChatBot() {
       if (response.ok) {
         setTimeout(() => {
           addBotMessage(data.answer, [
-            { label: "Hacer otra pregunta", value: "ai-mode" },
             { label: "Volver al menú principal", value: "inicio" },
           ]);
           // Registrar respuesta del asistente en historial
@@ -167,7 +166,6 @@ export default function LandingChatBot() {
           addBotMessage(
             data.error || "Estás enviando muchas solicitudes seguidas. Espera unos segundos e intenta nuevamente.",
             [
-              { label: "Intentar de nuevo", value: "ai-mode" },
               { label: "Volver al menú principal", value: "inicio" },
             ]
           );
@@ -178,7 +176,6 @@ export default function LandingChatBot() {
           addBotMessage(
             data.error || "Tu mensaje es muy largo. Por favor, resume tu consulta.",
             [
-              { label: "Intentar de nuevo", value: "ai-mode" },
               { label: "Volver al menú principal", value: "inicio" },
             ]
           );
@@ -202,7 +199,6 @@ export default function LandingChatBot() {
         addBotMessage(
           "Lo siento, hubo un error al procesar tu pregunta. Por favor, intenta de nuevo.",
           [
-            { label: "Intentar de nuevo", value: "ai-mode" },
             { label: "Volver al menú principal", value: "inicio" },
           ]
         );
@@ -254,7 +250,7 @@ export default function LandingChatBot() {
               <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 border-slate-900" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-white leading-none">Asistente DSW</p>
+              <p className="text-sm font-semibold text-white leading-none">Linguo</p>
               <p className="text-[11px] text-emerald-400 mt-0.5">En línea</p>
             </div>
             <button

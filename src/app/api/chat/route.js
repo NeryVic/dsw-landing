@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import fs from 'fs/promises';
 import path from 'path';
-import { SOLUTIONS, USE_CASES, PILLARS, PC_BUILDS } from '@/data/services';
+import { SOLUTIONS, USE_CASES, PILLARS, PC_BUILDS, SUPPORT_PLANS } from '@/data/services';
 import { testimonialsData } from '@/data/testimonials';
 
 async function loadPricing() {
@@ -39,7 +39,11 @@ function buildKnowledgeBase() {
     `  • ${b.name} (${b.price}): ${b.tag}. Componentes: ${b.components.join(', ')}.`
   ).join('\n');
 
-  return `SERVICIOS DETALLADOS:\n${servicesBlock}\n\nCASOS DE USO POR SECTOR:\n${useCasesBlock}\n\nCONFIGURACIONES DE PC (precios en USD, pago en pesos al cambio del día):\n${pcBuildsBlock}\n\nTESTIMONIOS DE CLIENTES:\n${testimonialsBlock}`;
+  const supportPlansBlock = SUPPORT_PLANS.map(p =>
+    `  • ${p.name} (${p.badge}): ${p.price}${p.priceNote ? ' ' + p.priceNote : ''} — ${p.priceSub}. ${p.desc} Incluye: ${p.features.map(f => f.label).join(', ')}. Resultado: ${p.outcome}. CTA: "${p.cta}".`
+  ).join('\n')
+
+  return `SERVICIOS DETALLADOS:\n${servicesBlock}\n\nCASOS DE USO POR SECTOR:\n${useCasesBlock}\n\nCONFIGURACIONES DE PC (precios en USD, pago en pesos al cambio del día):\n${pcBuildsBlock}\n\nPLANES DE SOPORTE MENSUAL (precios en ARS):\n${supportPlansBlock}\n\nTESTIMONIOS DE CLIENTES:\n${testimonialsBlock}`;
 }
 
 // Detecta si el JSON de precios contiene montos oficiales (en ARS/USD u otra moneda)
@@ -191,7 +195,7 @@ export async function POST(req) {
     // Construir mensajes: system + (datos oficiales si existen) + historial (cliente o servidor) + último mensaje
     const systemMessage = {
       role: 'system',
-      content: `Eres un asistente virtual amigable para Digital Solutions Web (DSW), empresa tecnológica ubicada en Formosa, Argentina que trabaja de forma remota con clientes de toda Latinoamérica.
+      content: `Eres Linguo, el asistente virtual de Digital Solutions Web (DSW), empresa tecnológica ubicada en Formosa, Argentina que trabaja de forma remota con clientes de toda Latinoamérica.
 
 ${buildKnowledgeBase()}
 
@@ -204,7 +208,7 @@ INSTRUCCIONES:
 - Solo respondé preguntas sobre DSW, sus servicios, precios, contacto o información de la empresa.
 - Si preguntan algo ajeno a DSW, responde de manera neutral y educada.
 - Política de precios: solo mencioná precios si están en este contexto o en los "Datos oficiales de precios" del sistema. No inventes cifras. Si no tenés el dato exacto, ofrecé cotización personalizada por WhatsApp o email.
-- Sé conciso y amigable. Respuestas breves y directas.`,
+- Sé conciso y amigable con algo de humor simpson. Respuestas breves y directas.`,
     };
     const pricingSystemMessage = pricingData
       ? {

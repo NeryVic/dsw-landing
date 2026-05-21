@@ -259,6 +259,32 @@ export default function SoporteTecnicoPage() {
                 gsap.to(card, { y: 0, scale: 1, duration: 0.28, ease: 'power2.inOut' })
               })
             })
+
+            const priceCounters = gsap.utils.toArray('.support-price-counter', plansRef.current)
+            if (priceCounters.length) {
+              priceCounters.forEach((el, i) => {
+                const target = parseInt(el.dataset.value, 10)
+                const obj = { val: 0 }
+                ScrollTrigger.create({
+                  trigger: plansRef.current,
+                  start: 'top 78%',
+                  once: true,
+                  onEnter() {
+                    gsap.to(obj, {
+                      val: target,
+                      duration: 1.5,
+                      ease: 'power2.out',
+                      delay: 0.3 + i * 0.13,
+                      onUpdate() {
+                        el.textContent = Math.round(obj.val)
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+                      },
+                    })
+                  },
+                })
+              })
+            }
           }
 
           ScrollTrigger.refresh()
@@ -428,7 +454,9 @@ export default function SoporteTecnicoPage() {
                 <p className={`relative z-10 text-[10px] font-bold uppercase tracking-widest mb-1 ${c.badge}`}>{plan.badge}</p>
                 <h3 className="relative z-10 text-xl font-bold text-slate-900 dark:text-white mb-4">{plan.name}</h3>
 
-                <p className={`relative z-10 text-3xl font-bold tabular-nums mb-0.5 ${c.price}`}>{plan.price}</p>
+                <p className={`relative z-10 text-3xl font-bold tabular-nums mb-0.5 ${c.price}`}>
+                  desde $<span className="support-price-counter" data-value={plan.priceValue}>0</span>
+                </p>
                 <p className="relative z-10 text-xs text-slate-500 mb-0.5">{plan.priceNote}</p>
                 <p className="relative z-10 text-xs text-slate-500 dark:text-slate-600 mb-4">{plan.priceSub}</p>
 
