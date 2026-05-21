@@ -96,7 +96,7 @@ export async function POST(req) {
       );
     }
 
-    const { message, history } = await req.json();
+    const { message, history, page } = await req.json();
 
     if (!message && (!history || history.length === 0)) {
       return NextResponse.json(
@@ -285,10 +285,16 @@ INSTRUCCIONES:
         'Authorization': `Bearer ${OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini', // Versión optimizada para chat
+        model: 'gpt-4o-mini',
         messages: [systemMessage, ...(pricingSystemMessage ? [pricingSystemMessage] : []), ...trimmedHistory],
         max_tokens: 150,
         temperature: 0.7,
+        store: true,
+        metadata: {
+          source: 'web-chat',
+          app: 'digital-solutions-web',
+          ...(page ? { page } : {}),
+        },
       }),
     });
 

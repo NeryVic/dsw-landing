@@ -147,6 +147,7 @@ export default function LandingChatBot() {
         },
         body: JSON.stringify({
           history: outgoingHistory,
+          page: typeof window !== 'undefined' ? window.location.pathname : undefined,
         }),
       });
 
