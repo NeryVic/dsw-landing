@@ -12,20 +12,20 @@
   "dependencies": {
     "@headlessui/react": "^2.2.10",
     "clsx": "^2.1.1",
-    "critters": "^0.0.23",
+    "critters": "^0.0.25",
     "gsap": "^3.13.0",
-    "next": "15.5.4",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "next": "16.2.6",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
     "remixicon": "^4.6.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
-    "eslint": "^9",
-    "eslint-config-next": "15.5.4",
+    "@eslint/eslintrc": "^3.3.5",
+    "@tailwindcss/postcss": "^4.3.0",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "16.2.6",
     "tailwindcss": "^4"
   }
 }

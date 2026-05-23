@@ -98,6 +98,9 @@ export async function POST(req) {
 
     const { message, history, page } = await req.json();
 
+    // Validar parámetro page del cliente
+    const safePage = typeof page === 'string' ? page.slice(0, 100) : undefined;
+
     if (!message && (!history || history.length === 0)) {
       return NextResponse.json(
         { error: 'Mensaje es requerido' },
@@ -129,9 +132,7 @@ export async function POST(req) {
     let sessionId = cookieStore.get('dsw_chat_sid')?.value;
     const isNewSession = !sessionId;
     if (!sessionId) {
-      // Usar counter sequencial en lugar de UUID aleatorio para mejor rate limiting
-      globalThis.__DSW_CHAT_COUNTER__ = (globalThis.__DSW_CHAT_COUNTER__ || 0) + 1;
-      sessionId = `guest-${globalThis.__DSW_CHAT_COUNTER__}-${Date.now()}`;
+      sessionId = crypto.randomUUID();
     }
 
     // Obtener IP del cliente (mejor esfuerzo)
@@ -253,8 +254,8 @@ INSTRUCCIONES:
         }
       : null;
 
-  // Normalizar historial entrante (opcional). Si no llega, usar el del servidor
-    const baseHistory = Array.isArray(history) ? history : serverHistory;
+  // Usar siempre el historial del servidor para evitar history injection attacks
+    const baseHistory = serverHistory;
     const normalizedHistory = Array.isArray(baseHistory)
       ? baseHistory
           .filter(m => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
@@ -293,7 +294,7 @@ INSTRUCCIONES:
         metadata: {
           source: 'web-chat',
           app: 'digital-solutions-web',
-          ...(page ? { page } : {}),
+          ...(safePage ? { page: safePage } : {}),
         },
       }),
     });
