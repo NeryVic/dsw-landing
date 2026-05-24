@@ -8,7 +8,7 @@ export const SITE_CONFIG = {
   links: {
     whatsapp: 'https://wa.me/+5493704360388',
     instagram: 'https://instagram.com/dsw3.0',
-    linkedin1: 'https://www.linkedin.com/in/nerydev-2206-it/',
+    linkedin1: 'https://www.linkedin.com/in/nerydev-it/',
     linkedin2: 'https://www.linkedin.com/in/alejandro-pintos-44b0a62a6/',
     email: 'digitalsolutionsweb3.0@gmail.com'
   }
@@ -35,6 +35,17 @@ export const SOCIAL_LINKS = [
   { name: 'Instagram', url: SITE_CONFIG.links.instagram, icon: 'instagram' },
   { name: 'LinkedIn', url: SITE_CONFIG.links.linkedin1, icon: 'linkedin' },
   { name: 'LinkedIn2', url: SITE_CONFIG.links.linkedin2, icon: 'linkedin' },
+]
+
+export const FOUNDER_LINKS = [
+  {
+    name: 'Victor Duré',
+    url: SITE_CONFIG.links.linkedin1,
+  },
+  {
+    name: 'Alejandro Pintos',
+    url: SITE_CONFIG.links.linkedin2,
+  },
 ]
 
 export const SERVICES = [

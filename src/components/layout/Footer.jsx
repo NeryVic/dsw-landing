@@ -1,7 +1,9 @@
 import Link from 'next/link'
-import { SOCIAL_LINKS, NAVIGATION_ITEMS, CONTACT_INFO } from '@/lib/constants'
+import { SOCIAL_LINKS, NAVIGATION_ITEMS, CONTACT_INFO, FOUNDER_LINKS } from '@/lib/constants'
 
 export default function Footer() {
+  const brandSocialLinks = SOCIAL_LINKS.filter((social) => social.icon !== 'linkedin' && social.icon !== 'linkedin2')
+
   return (
     <footer className="bg-gray-100 dark:bg-black text-gray-900 dark:text-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -16,7 +18,7 @@ export default function Footer() {
               desarrollo web profesional y soporte técnico confiable.
             </p>
             <div className="flex space-x-4">
-              {SOCIAL_LINKS.map((social) => (
+              {brandSocialLinks.map((social) => (
                 <Link
                   key={social.name}
                   href={social.url}
@@ -27,10 +29,28 @@ export default function Footer() {
                   <span className="sr-only">{social.name}</span>
                   {social.icon === 'whatsapp' && <i className="ri-whatsapp-line text-xl"></i>}
                   {social.icon === 'instagram' && <i className="ri-instagram-line text-xl"></i>}
-                  {social.icon === 'linkedin' && <i className="ri-linkedin-line text-xl"></i>}
-                  {social.icon === 'linkedin2' && <i className="ri-linkedin-line text-xl"></i>}
                 </Link>
               ))}
+            </div>
+
+            <div className="mt-5 space-y-2">
+              <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">Dirigido por</p>
+              <ul className="space-y-1.5">
+                {FOUNDER_LINKS.map((founder) => (
+                  <li key={founder.name}>
+                    <Link
+                      href={founder.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
+                    >
+                      <i className="ri-linkedin-line text-base"></i>
+                      <span>{founder.name}</span>
+                      
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
 

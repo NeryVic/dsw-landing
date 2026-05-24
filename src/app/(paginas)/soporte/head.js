@@ -3,7 +3,7 @@ export default function Head() {
   const description =
     "Soporte tecnico para PyMEs con atencion remota y presencial en Formosa y Chaco. Mantenimiento preventivo, correctivo y optimizacion de equipos.";
   const url = "https://digitalsolutionsweb.com.ar/soporte";
-  const image = "https://digitalsolutionsweb.com.ar/images/og-digital-solutions.jpg";
+  const image = "https://digitalsolutionsweb.com.ar/images/og-digital-solutions.webp";
 
   return (
     <>
