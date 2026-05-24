@@ -207,3 +207,44 @@ export const faqSchema = (faqs) => ({
     }
   }))
 })
+
+export const testimonialsReviewSchema = (testimonials) => ({
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Software y Sistemas a Medida para PyMEs",
+  "serviceType": "Desarrollo de software a medida",
+  "provider": {
+    "@type": "Organization",
+    "name": SITE_CONFIG.name,
+    "url": SITE_CONFIG.url
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Argentina"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": Number((testimonials.reduce((acc, item) => acc + (item.rating || 0), 0) / Math.max(testimonials.length, 1)).toFixed(1)),
+    "reviewCount": testimonials.length,
+    "bestRating": 5,
+    "worstRating": 1
+  },
+  "review": testimonials.map((item) => ({
+    "@type": "Review",
+    "author": {
+      "@type": "Person",
+      "name": item.name
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": item.rating,
+      "bestRating": 5,
+      "worstRating": 1
+    },
+    "reviewBody": `${item.content} Resultado: ${item.quantifiedResult}`,
+    "itemReviewed": {
+      "@type": "Service",
+      "name": "Implementacion de software a medida"
+    }
+  }))
+})

@@ -117,6 +117,12 @@ export default function TestimonialsSection() {
                 "{testimonial.content}"
               </p>
 
+              {testimonial.quantifiedResult ? (
+                <p className="text-xs font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/40 rounded-md px-3 py-2 mb-5">
+                  Resultado: {testimonial.quantifiedResult}
+                </p>
+              ) : null}
+
               {/* Author */}
               <div className="flex items-center gap-3 pt-5 border-t border-slate-100 dark:border-slate-800">
                 {testimonial.avatar ? (

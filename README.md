@@ -69,6 +69,20 @@ src/
    pnpm start
    ```
 
+## 📩 Envio de Leads a Gmail
+
+Para que el formulario de diagnostico en home envie correos reales:
+
+1. Copia [.env.example](.env.example) a `.env.local`.
+2. Configura estas variables:
+   - `GMAIL_USER`: tu cuenta de Gmail.
+   - `GMAIL_APP_PASSWORD`: App Password de 16 caracteres (no es tu password normal).
+   - `LEADS_TO_EMAIL`: correo que recibe los leads.
+   - `LEADS_FROM_EMAIL`: remitente del correo.
+3. Reinicia el servidor de Next.js.
+
+Endpoint usado por el formulario: [src/app/api/leads/route.js](src/app/api/leads/route.js)
+
 ## 🎨 Personalización
 
 ### Colores y Branding

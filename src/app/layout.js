@@ -29,7 +29,7 @@ export const metadata = {
     apple: '/images/icons/logoo.png',
   },
   title: {
-    default: SITE_CONFIG.name,
+    default: 'Software a Medida en Argentina para PyMEs | Digital Solutions Web',
     template: `%s | ${SITE_CONFIG.name}`
   },
   description: SITE_CONFIG.description,

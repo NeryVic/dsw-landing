@@ -1,10 +1,10 @@
 export const SITE_CONFIG = {
   name: 'Digital Solutions Web',
   tagline: 'Desarrollo de software y sistemas a medida para empresas',
-  description: 'Desarrollamos software a medida y sistemas a medida para empresas que necesitan automatizar procesos, eliminar cuellos de botella y escalar su operacion con control real.',
+  description: 'Software a medida en Argentina para PyMEs que necesitan automatizar procesos, eliminar errores operativos y recuperar control real de su operacion.',
   url: 'https://digitalsolutionsweb.com.ar',
-  ogImage: '/images/og-digital-solutions.jpg',
-  keywords: 'software a medida, sistemas a medida, desarrollo de software a medida, sistema a medida para empresas, automatizacion de procesos, desarrollo web a medida, digital solutions web',
+  ogImage: '/images/og-digital-solutions.webp',
+  keywords: 'software a medida argentina, sistemas a medida para pymes, desarrollo de software para empresas, sistema pos para ferreteria, desarrollo de sistemas para pymes, automatizacion de procesos empresariales, digital solutions web',
   links: {
     whatsapp: 'https://wa.me/+5493704360388',
     instagram: 'https://instagram.com/dsw3.0',

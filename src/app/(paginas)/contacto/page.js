@@ -32,8 +32,9 @@ export default function ContactoPage() {
   const { language, t } = useLanguage()
   const { openWhatsApp } = useWssp()
   const cardsRef = useRef(null)
+  const formStartedAtRef = useRef(Date.now())
 
-  const [formData, setFormData] = useState({ name: '', company: '', email: '', type: '', message: '' })
+  const [formData, setFormData] = useState({ name: '', company: '', email: '', type: '', message: '', website: '' })
   const [formSent, setFormSent] = useState(false)
   const [formErrors, setFormErrors] = useState({})
   const [lastSubmitTime, setLastSubmitTime] = useState(0) // ✅ SEGURIDAD: Rate limiting
@@ -104,8 +105,15 @@ export default function ContactoPage() {
     openWhatsApp(undefined, message)
   }
 
+  const resetForm = () => {
+    setFormData({ name: '', company: '', email: '', type: '', message: '', website: '' })
+    setFormErrors({})
+    setFormSent(false)
+    formStartedAtRef.current = Date.now()
+  }
+
   // ✅ SEGURIDAD: Validación y sanitización completa
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault()
 
     // Rate limiting
@@ -125,12 +133,14 @@ export default function ContactoPage() {
       newErrors.name = `${language === 'es' ? 'Máximo' : 'Maximum'} ${MAX_NAME_LENGTH} ${language === 'es' ? 'caracteres' : 'characters'}`
     }
 
-    // ✅ Validar email (si se proporciona)
-    if (formData.email && !validateEmail(formData.email)) {
+    // ✅ Validar email
+    if (!formData.email || formData.email.trim().length === 0) {
+      newErrors.email = language === 'es' ? 'El email es requerido' : 'Email is required'
+    } else if (formData.email && !validateEmail(formData.email)) {
       newErrors.email = language === 'es' ? 'Email inválido' : 'Invalid email'
     }
 
-    // ✅ Validar empresa (longitud)
+    // ✅ Validar empresa (longitud, opcional)
     if (formData.company && formData.company.length > MAX_COMPANY_LENGTH) {
       newErrors.company = `${language === 'es' ? 'Máximo' : 'Maximum'} ${MAX_COMPANY_LENGTH} ${language === 'es' ? 'caracteres' : 'characters'}`
     }
@@ -154,48 +164,54 @@ export default function ContactoPage() {
       return
     }
 
-    // ✅ Sanitizar todos los datos DESPUÉS de validar
-    const typeLabel = {
-      sistema: 'Sistema a medida',
-      web: 'Sitio web / Landing',
-      soporte: 'Soporte técnico',
-      otro: 'Otro',
-    }
-    const typeLabelEn = {
-      sistema: 'Custom system',
-      web: 'Website / Landing',
-      soporte: 'Technical support',
-      otro: 'Other',
+    // ✅ Honeypot (cliente) para bots
+    if (formData.website && formData.website.trim().length > 0) {
+      setIsSubmitting(false)
+      setFormSent(true)
+      return
     }
 
     const sanitizedName = sanitizeInput(formData.name, MAX_NAME_LENGTH)
     const sanitizedCompany = sanitizeInput(formData.company, MAX_COMPANY_LENGTH)
     const sanitizedEmail = sanitizeInput(formData.email, MAX_EMAIL_LENGTH)
     const sanitizedMessage = sanitizeInput(formData.message, MAX_MESSAGE_LENGTH)
+    const sanitizedType = sanitizeInput(formData.type, 20)
 
-    const lines = language === 'es'
-      ? [
-          `Hola, me contacto desde el formulario web.`,
-          `*Nombre:* ${sanitizedName}`,
-          sanitizedCompany ? `*Empresa:* ${sanitizedCompany}` : '',
-          sanitizedEmail ? `*Email:* ${sanitizedEmail}` : '',
-          formData.type ? `*Consulta sobre:* ${typeLabel[formData.type] || formData.type}` : '',
-          sanitizedMessage ? `*Mensaje:* ${sanitizedMessage}` : '',
-        ]
-      : [
-          `Hi, I am writing from the contact form.`,
-          `*Name:* ${sanitizedName}`,
-          sanitizedCompany ? `*Company:* ${sanitizedCompany}` : '',
-          sanitizedEmail ? `*Email:* ${sanitizedEmail}` : '',
-          formData.type ? `*Regarding:* ${typeLabelEn[formData.type] || formData.type}` : '',
-          sanitizedMessage ? `*Message:* ${sanitizedMessage}` : '',
-        ]
-    const message = lines.filter(Boolean).join('\n')
+    try {
+      const response = await fetch('/api/leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: sanitizedName,
+          company: sanitizedCompany,
+          email: sanitizedEmail,
+          type: sanitizedType,
+          problem: sanitizedMessage,
+          source: 'contacto-page',
+          website: formData.website,
+          formStartedAt: formStartedAtRef.current,
+        }),
+      })
 
-    openWhatsApp(undefined, message)
-    setLastSubmitTime(now)
-    setFormSent(true)
-    setIsSubmitting(false)
+      const result = await response.json()
+      if (!response.ok) {
+        throw new Error(result?.error || (language === 'es' ? 'No pudimos enviar tu consulta.' : 'Could not send your inquiry.'))
+      }
+
+      setLastSubmitTime(now)
+      setFormSent(true)
+      setFormData({ name: '', company: '', email: '', type: '', message: '', website: '' })
+      setFormErrors({})
+      formStartedAtRef.current = Date.now()
+    } catch (error) {
+      setFormErrors({
+        general: error?.message || (language === 'es' ? 'No pudimos enviar tu consulta.' : 'Could not send your inquiry.'),
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const inputClass = 'w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-4 py-2.5 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition disabled:opacity-50 disabled:cursor-not-allowed'
@@ -271,8 +287,8 @@ export default function ContactoPage() {
           </h2>
           <p className="text-sm text-slate-500 dark:text-slate-400 mb-6 leading-relaxed">
             {t('contact_form_subtitle',
-              'Completá el formulario y te respondemos por WhatsApp o email en menos de 24 horas.',
-              'Fill out the form and we will respond via WhatsApp or email within 24 hours.'
+              'Completá el formulario y te respondemos por email en menos de 24 horas.',
+              'Fill out the form and we will reply by email within 24 hours.'
             )}
           </p>
 
@@ -286,12 +302,12 @@ export default function ContactoPage() {
               </p>
               <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm">
                 {t('contact_form_sent_desc',
-                  'Se abrió WhatsApp con tu consulta. Te respondemos a la brevedad.',
-                  'WhatsApp opened with your inquiry. We will get back to you shortly.'
+                  'Tu consulta fue enviada correctamente. Te respondemos a la brevedad por email.',
+                  'Your inquiry was sent successfully. We will reply soon by email.'
                 )}
               </p>
               <button
-                onClick={() => { setFormSent(false); setFormData({ name: '', company: '', email: '', type: '', message: '' }); setFormErrors({}); }}
+                onClick={resetForm}
                 className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
               >
                 {t('contact_form_send_another', 'Enviar otra consulta', 'Send another inquiry')}
@@ -299,6 +315,17 @@ export default function ContactoPage() {
             </div>
           ) : (
             <form onSubmit={handleFormSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <input
+                type="text"
+                name="website"
+                value={formData.website}
+                onChange={e => setFormData(p => ({ ...p, website: e.target.value }))}
+                tabIndex={-1}
+                autoComplete="off"
+                className="hidden"
+                aria-hidden="true"
+              />
+
               {/* ✅ SEGURIDAD: Error general (rate limiting) */}
               {formErrors.general && (
                 <div className="sm:col-span-2 p-3 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 rounded-lg">
@@ -349,10 +376,11 @@ export default function ContactoPage() {
 
               <div>
                 <label className={labelClass}>
-                  {t('contact_form_email', 'Email', 'Email')}
+                  {t('contact_form_email', 'Email *', 'Email *')}
                 </label>
                 <input
                   type="email"
+                  required
                   disabled={isSubmitting}
                   maxLength={MAX_EMAIL_LENGTH}
                   value={formData.email}
@@ -412,8 +440,14 @@ export default function ContactoPage() {
                 <p className="text-xs text-slate-400 mt-1">{formData.message.length}/{MAX_MESSAGE_LENGTH}</p>
               </div>
 
-              <div className="sm:col-span-2 flex items-center gap-4">
-                <Button type="submit" size="lg" variant="whatsapp" disabled={isSubmitting}>
+              <div className="sm:col-span-2 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+                <Button
+                  type="submit"
+                  size="md"
+                  variant="whatsapp"
+                  disabled={isSubmitting}
+                  className="w-full sm:w-auto"
+                >
                   {isSubmitting ? (
                     <>
                       <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></span>
@@ -421,12 +455,12 @@ export default function ContactoPage() {
                     </>
                   ) : (
                     <>
-                      {t('contact_form_submit', 'Enviar por WhatsApp', 'Send via WhatsApp')}
-                      <i className="ri-whatsapp-line ml-2 text-lg"></i>
+                      {t('contact_form_submit', 'Enviar consulta por email', 'Send inquiry by email')}
+                      <i className="ri-mail-send-line ml-2 text-lg"></i>
                     </>
                   )}
                 </Button>
-                <p className="text-xs text-slate-400 dark:text-slate-500">
+                <p className="text-xs text-slate-400 dark:text-slate-500 leading-relaxed sm:max-w-xs">
                   {t('contact_form_privacy',
                     'Tu información solo se usa para responderte. Sin spam.',
                     'Your info is only used to reply to you. No spam.'
