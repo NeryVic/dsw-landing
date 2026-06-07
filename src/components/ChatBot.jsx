@@ -75,6 +75,7 @@ export default function LandingChatBot() {
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const MAX_USER_INPUT_LENGTH = 700;
   // Historial para IA, formato [{ role: 'user'|'assistant', content: string }]
   const [aiHistory, setAiHistory] = useState([]);
 
@@ -131,6 +132,14 @@ export default function LandingChatBot() {
     if (!inputValue.trim() || isLoading) return;
 
     const question = inputValue.trim();
+    if (question.length > MAX_USER_INPUT_LENGTH) {
+      addBotMessage(
+        `Tu mensaje es demasiado largo. Máximo ${MAX_USER_INPUT_LENGTH} caracteres.`,
+        [{ label: "Volver al menú principal", value: "inicio" }]
+      );
+      return;
+    }
+
     setInputValue("");
     addUserMessage(question);
     setIsLoading(true);
@@ -146,7 +155,7 @@ export default function LandingChatBot() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          history: outgoingHistory,
+          message: question,
           page: typeof window !== 'undefined' ? window.location.pathname : undefined,
         }),
       });
@@ -324,6 +333,7 @@ export default function LandingChatBot() {
                 <input
                   type="text"
                   value={inputValue}
+                  maxLength={MAX_USER_INPUT_LENGTH}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={(e) => e.key === "Enter" && handleAiQuestion()}
                   placeholder="Escribe tu pregunta..."

@@ -7,6 +7,7 @@ import { testimonialsData } from '@/data/testimonials';
 
 const MAX_BODY_SIZE = 50 * 1024; // 50 KB limit
 const MAX_RATE_ENTRIES = 10000; // Límite para evitar memory leak
+const MAX_MESSAGE_LENGTH = 700; // Limitar texto de usuario para controlar tokens/costo
 
 async function loadPricing() {
   try {
@@ -96,15 +97,22 @@ export async function POST(req) {
       );
     }
 
-    const { message, history, page } = await req.json();
+    const { message, page } = await req.json();
 
     // Validar parámetro page del cliente
     const safePage = typeof page === 'string' ? page.slice(0, 100) : undefined;
 
-    if (!message && (!history || history.length === 0)) {
+    if (typeof message !== 'string' || !message.trim()) {
       return NextResponse.json(
         { error: 'Mensaje es requerido' },
         { status: 400 }
+      );
+    }
+
+    if (message.trim().length > MAX_MESSAGE_LENGTH) {
+      return NextResponse.json(
+        { error: `Mensaje demasiado largo. Máximo ${MAX_MESSAGE_LENGTH} caracteres.` },
+        { status: 413 }
       );
     }
 
