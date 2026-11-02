@@ -1,168 +1,130 @@
-# DSW Landing Page
+# DSW Landing — Sitio corporativo multi-página con chatbot IA
 
-Una landing page moderna y escalable construida con Next.js 15, React 19 y Tailwind CSS.
+Landing corporativa desarrollada para **Digital Solutions Web**, empresa de desarrollo de software y sistemas a medida. Seis páginas orientadas a conversión, un chatbot con IA que responde sobre servicios y precios, y captación de leads por email.
 
-## 🚀 Características
+> **Estado del proyecto: finalizado.** Digital Solutions Web se disolvió y el sitio ya no está online. Este repositorio conserva el código como muestra técnica del trabajo realizado.
 
-- ⚡ **Next.js 15** - El framework React más moderno
-- 🎨 **Tailwind CSS** - Diseño moderno y responsive
-- 🧩 **Componentes modulares** - Fácil mantenimiento y reutilización
-- 📱 **Responsive** - Optimizado para todos los dispositivos
-- 🎯 **SEO optimizado** - Meta tags y Open Graph configurados
-- 🔧 **TypeScript ready** - Preparado para migrar a TypeScript
-- 📊 **Performance** - Optimizado para velocidad y Core Web Vitals
+---
 
-## 📁 Estructura del Proyecto
+## Stack
+
+| Capa | Tecnología |
+|---|---|
+| Framework | Next.js 16 (App Router) |
+| UI | React 19 |
+| Lenguaje | JavaScript / JSX |
+| Estilos | Tailwind CSS 4 |
+| Animaciones | GSAP 3 + ScrollTrigger |
+| Componentes | Headless UI 2, Remixicon |
+| Fuentes | next/font (Geist) |
+| API serverless | Route Handlers de Next.js |
+| IA | API de OpenAI (gpt-4o-mini) |
+| Email | Nodemailer + Gmail SMTP |
+| Package manager | pnpm |
+
+---
+
+## Qué incluye
+
+### Sitio (seis páginas)
+- **Inicio**, **Servicios**, **Sistemas a medida**, **Soporte**, **FAQs** y **Contacto**
+- Diseño responsive con Tailwind CSS 4
+- Modo oscuro con `ThemeContext`
+- Header fijo, footer, botón flotante de WhatsApp y chatbot global
+- Componentes reutilizables de UI (Button, Card, Input)
+- Animaciones de entrada y scroll con GSAP y ScrollTrigger
+- Contenido orientado a conversión: servicios, precios, testimonios, planes de soporte y FAQs
+
+### Chatbot con IA
+- Flujo guiado de respuestas rápidas y modo de preguntas libres
+- Base de conocimiento construida desde servicios, casos de uso, precios, planes y testimonios
+- Historial de conversación manejado del lado del servidor (evita inyección de historial desde el cliente)
+- Límites: 700 caracteres por mensaje, 8 turnos de historial, 150 tokens de salida
+- Rate limiting por IP y por sesión con cooldown entre mensajes
+- Límite de tamaño del body y verificación opcional de origen
+- Post-procesamiento para evitar que el modelo invente precios sin datos oficiales
+- La API key de OpenAI vive solo en el servidor
+
+### Captación de leads
+- Formulario con validación de nombre, email, empresa, tipo de contacto y mensaje
+- Sanitización y escape de HTML antes del envío
+- Honeypot y tiempo mínimo de completado para bloquear bots
+- Límites por IP y por email, cooldown entre envíos y tope de tamaño del body
+- Envío transaccional con Nodemailer y Gmail SMTP
+
+### SEO técnico y performance
+- Metadata API por página: título, descripción, keywords, canonical, Open Graph y Twitter Cards
+- Datos estructurados JSON-LD: Organization, WebSite, OfferCatalog, FAQPage, LocalBusiness, Review y BreadcrumbList
+- `sitemap.xml`, `robots.txt` y verificación de Google
+- Imágenes en AVIF/WebP con tamaños configurados y caché de un año
+- `next/font` con `display: swap` y preload selectivo
+- Lazy rendering con IntersectionObserver y carga dinámica de GSAP
+- Optimización de CSS, compresión y `removeConsole` en producción
+- Headers de seguridad: CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy y Permissions-Policy
+
+---
+
+## Estructura
 
 ```
 src/
-├── app/                    # App Router de Next.js
-│   ├── layout.js          # Layout principal con Header/Footer
-│   ├── page.js            # Página principal
-│   └── globals.css        # Estilos globales
-├── components/            # Componentes reutilizables
-│   ├── ui/               # Componentes de UI básicos
-│   │   ├── Button.jsx    # Botón reutilizable
-│   │   ├── Card.jsx      # Tarjetas
-│   │   └── Input.jsx     # Inputs para formularios
-│   ├── layout/           # Componentes de layout
-│   │   ├── Header.jsx    # Navegación principal
-│   │   └── Footer.jsx    # Pie de página
-│   └── sections/         # Secciones de la landing
-│       ├── HeroSection.jsx      # Sección principal
-│       └── FeaturesSection.jsx  # Sección de características
-├── lib/                  # Utilidades y configuraciones
-│   ├── utils.js         # Funciones utilitarias
-│   ├── constants.js     # Constantes de la aplicación
-│   └── validations.js   # Esquemas de validación
-├── hooks/               # Custom hooks
-│   ├── useForm.js       # Hook para formularios
-│   ├── useScroll.js     # Hook para scroll tracking
-│   └── useIntersectionObserver.js  # Hook para animations
-└── data/               # Datos estáticos
-    ├── features.js     # Datos de características
-    ├── testimonials.js # Testimonios
-    └── pricing.js      # Planes de precios
+├── app/
+│   ├── layout.js              # Layout principal
+│   ├── page.js                # Página de inicio
+│   ├── (paginas)/             # Servicios, sistemas, soporte, FAQs, contacto
+│   └── api/
+│       ├── chat/route.js      # Route Handler del chatbot (OpenAI)
+│       └── leads/route.js     # Route Handler de captación de leads
+├── components/
+│   ├── ui/                    # Button, Card, Input
+│   ├── layout/                # Header, Footer
+│   ├── sections/              # Secciones de página
+│   └── ChatBot.jsx
+├── lib/
+│   ├── constants.js           # Configuración del sitio
+│   └── schemas.js             # Generadores de JSON-LD
+├── hooks/                     # Custom hooks
+└── data/                      # Contenido estático
 ```
 
-## 🛠️ Instalación y Desarrollo
+---
 
-1. **Clonar el repositorio**
-   ```bash
-   git clone <tu-repositorio>
-   cd dsw-landing
-   ```
+## Cómo ejecutarlo localmente
 
-2. **Instalar dependencias**
-   ```bash
-   pnpm install
-   ```
+```bash
+git clone https://github.com/NeryVic/dsw-landing.git
+cd dsw-landing
+pnpm install
+```
 
-3. **Ejecutar en desarrollo**
-   ```bash
-   pnpm dev
-   ```
+Copia `.env.example` a `.env.local` y completa:
 
-4. **Construir para producción**
-   ```bash
-   pnpm build
-   pnpm start
-   ```
+```env
+GMAIL_USER=
+GMAIL_APP_PASSWORD=
+LEADS_TO_EMAIL=
+LEADS_FROM_EMAIL=
+OPENAI_API_KEY=
+```
 
-## 📩 Envio de Leads a Gmail
+```bash
+pnpm dev      # desarrollo
+pnpm build    # build de producción
+pnpm start    # servidor de producción
+```
 
-Para que el formulario de diagnostico en home envie correos reales:
+Sin las variables configuradas el sitio navega normalmente, pero el chatbot y el formulario de contacto no responden.
 
-1. Copia [.env.example](.env.example) a `.env.local`.
-2. Configura estas variables:
-   - `GMAIL_USER`: tu cuenta de Gmail.
-   - `GMAIL_APP_PASSWORD`: App Password de 16 caracteres (no es tu password normal).
-   - `LEADS_TO_EMAIL`: correo que recibe los leads.
-   - `LEADS_FROM_EMAIL`: remitente del correo.
-3. Reinicia el servidor de Next.js.
+---
 
-Endpoint usado por el formulario: [src/app/api/leads/route.js](src/app/api/leads/route.js)
+## Notas
 
-## 🎨 Personalización
+- El almacenamiento de leads en memoria (últimos 500) no es persistente: es una salvaguarda, no una base de datos.
+- Las credenciales nunca se commitean; viven en variables de entorno.
 
-### Colores y Branding
-- Edita `src/lib/constants.js` para cambiar información de la empresa
-- Modifica los colores en `tailwind.config.js`
-- Actualiza el logo en el componente `Header.jsx`
+---
 
-### Contenido
-- **Hero Section**: Edita `src/components/sections/HeroSection.jsx`
-- **Features**: Modifica `src/data/features.js`
-- **Testimonials**: Actualiza `src/data/testimonials.js`
-- **Pricing**: Cambia `src/data/pricing.js`
+## Autor
 
-### Agregar Nuevas Secciones
-1. Crea un nuevo componente en `src/components/sections/`
-2. Agrega los datos en `src/data/` si es necesario
-3. Importa y usa en `src/app/page.js`
-
-## 📱 Componentes Disponibles
-
-### UI Components
-- `Button` - Botón con variantes (primary, secondary, outline, ghost)
-- `Card` - Tarjetas con header, content y footer
-- `Input` - Input con validación y estilos
-- `Textarea` - Textarea para formularios
-
-### Layout Components
-- `Header` - Navegación fija con logo y menú
-- `Footer` - Pie de página con links y redes sociales
-
-### Section Components
-- `HeroSection` - Sección principal con CTA
-- `FeaturesSection` - Características del producto/servicio
-
-## 🔧 Hooks Disponibles
-
-- `useForm` - Manejo de formularios con validación
-- `useScroll` - Tracking de scroll y dirección
-- `useIntersectionObserver` - Animaciones en scroll
-
-## 🚀 Próximos Pasos
-
-Para hacer tu landing page aún mejor, considera agregar:
-
-1. **Más Secciones**:
-   - Testimonios
-   - Pricing
-   - FAQ
-   - Contact Form
-   - Blog/News
-
-2. **Funcionalidades**:
-   - Animaciones (Framer Motion)
-   - Analytics (Google Analytics, Vercel Analytics)
-   - SEO avanzado (next-seo)
-   - Formularios (React Hook Form + API routes)
-
-3. **Optimizaciones**:
-   - Imágenes optimizadas (next/image)
-   - Lazy loading
-   - Code splitting
-   - PWA support
-
-## 📄 Licencia
-
-Este proyecto está bajo la licencia MIT.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Victor Neri Duré** — Desarrollador Front End / Full Stack
+[LinkedIn](https://linkedin.com/in/nerydev-it) · [GitHub](https://github.com/NeryVic)

@@ -10,7 +10,7 @@ export const SITE_CONFIG = {
     instagram: 'https://instagram.com/dsw3.0',
     linkedin1: 'https://www.linkedin.com/in/nerydev-it/',
     linkedin2: 'https://www.linkedin.com/in/alejandro-pintos-44b0a62a6/',
-    email: 'digitalsolutionsweb3.0@gmail.com'
+    email: ''
   }
 }
 
@@ -25,7 +25,7 @@ export const NAVIGATION_ITEMS = [
 
 export const CONTACT_INFO = {
   email: SITE_CONFIG.links.email,
-  phone: '+54 9 3704 360388',
+  phone: '',
   whatsapp: SITE_CONFIG.links.whatsapp,
   address: 'Formosa, Argentina'
 }
